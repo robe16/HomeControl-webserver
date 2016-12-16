@@ -1,0 +1,40 @@
+.channel_container {
+    border-left: 1px solid #ccc;
+    border-left: 1px solid rgba(0, 0, 0, .15);
+    border-right: 1px solid #ccc;
+    border-right: 1px solid rgba(0, 0, 0, .15);
+    border-bottom: 1px solid #ccc;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+    margin-bottom: 50px;
+    border-radius: 2px;
+}
+.channel_container_item {
+    text-align: center;
+    height: 100px;
+    padding: 15px 5px;
+}
+
+.chan_img {
+    height: 40px;
+}
+.chan_name {
+    margin: auto 10px;
+}
+.chan_header {
+    margin: 10px
+}
+
+
+@media (max-width: 500px) {
+    .chan_img {
+        height: 30px;
+    }
+    .chan_name {
+        font-size: 12px;
+    }
+}
+
+.chan-highlight {
+    border:2px solid #FFC400;
+    border-radius: 2px;
+}

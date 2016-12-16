@@ -1,0 +1,21 @@
+<tr id="{id}" class="tbl_border{cls_highlight}" style="height:35px; padding-bottom:2px; padding-top:2px" bgcolor="{color}">
+    <td style="width: 5%; vertical-align: center; cursor: pointer;" valign="center" align="right" data-toggle="collapse" data-target="#collapse_{chan_id}"><img src="/img/icon/ic_{imgtype}.png" style="height:20px;"/></td>
+    <td style="width: 10%; vertical-align: center" align="center"><img src="/img/channel/{imgchan}" style="height:25px;"/></td>
+    <td style="width: 10%;">{channame}</td>
+    <td style="width: 50%; vertical-align: center">
+        <div class="row" valign="center" style="padding-bottom:2px; padding-top:2px">
+            <div class="col-md-6">
+                {now}
+            </div>
+            <div class="col-md-6">
+                {next}
+            </div>
+        </div>
+    </td>
+    <td style="width: 5%; vertical-align: center" valign="center" align="center">
+        {go}
+    </td>
+</tr>
+<tr id="collapse_{chan_id}" class="collapse out tbl_border{cls_lastitem}" style="height:35px; padding-bottom:2px; padding-top:2px" bgcolor="{color}">
+    <td style="width: 5%; padding:10px; vertical-align: center" colspan="5">{blurb}</td>
+</tr>

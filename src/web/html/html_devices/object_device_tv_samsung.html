@@ -1,0 +1,228 @@
+<div class="row">
+    <div class="col-md-12" style="padding: 10px;">
+        <div class="panel panel-default" style="padding: 10px;">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-1 btn-container-padding">
+                                    <span class="btn-remote btn-col-red" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=power', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-off material-text-light-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-2 col-xs-offset-9 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=volup', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-chevron-up material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-xs-offset-10 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=mute', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-volume-off material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-xs-offset-10 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=voldown', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-chevron-down material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-2 col-xs-offset-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=up', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-arrow-up material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=applist', null, 'POST', 0, true)">
+                                        App List
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-xs-offset-1 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=left', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-arrow-left material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-2 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=ok', null, 'POST', 0, true)">
+                                        OK
+                                    </span>
+                                </div>
+                                <div class="col-xs-2 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=right', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-arrow-right material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-2 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=prev', null, 'POST', 0, true)">
+                                        Prev
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-2 col-xs-offset-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=down', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-arrow-down material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 col-xs-offset-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=exit', null, 'POST', 0, true)">
+                                        <span class="glyphicon glyphicon-remove material-text-dark-primary" aria-hidden="true"></span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=hdmi1', null, 'POST', 0, true)">
+                                        HDMI 1
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=hdmi2', null, 'POST', 0, true)">
+                                        HDMI 2
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=hdmi3', null, 'POST', 0, true)">
+                                        HDMI 3
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=hdmi4', null, 'POST', 0, true)">
+                                        HDMI 4
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=av1', null, 'POST', 0, true)">
+                                        AV 1
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=av2', null, 'POST', 0, true)">
+                                        AV 2
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=av3', null, 'POST', 0, true)">
+                                        AV 3
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=component1', null, 'POST', 0, true)">
+                                        Component 1
+                                    </span>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="row">
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=1', null, 'POST', 0, true)">
+                                        1
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=2', null, 'POST', 0, true)">
+                                        2
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=3', null, 'POST', 0, true)">
+                                        3
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=4', null, 'POST', 0, true)">
+                                        4
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=5', null, 'POST', 0, true)">
+                                        5
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=6', null, 'POST', 0, true)">
+                                        6
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=7', null, 'POST', 0, true)">
+                                        7
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=8', null, 'POST', 0, true)">
+                                        8
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=9', null, 'POST', 0, true)">
+                                        9
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=back', null, 'POST', 0, true)">
+                                        Clear
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=0', null, 'POST', 0, true)">
+                                        0
+                                    </span>
+                                </div>
+                                <div class="col-xs-4 btn-container-padding">
+                                    <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=clear', null, 'POST', 0, true)">
+                                        Clear
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-red btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=actionA', null, 'POST', 0, true)">
+                                        <span style="visibility: hidden;">-</span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-green btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=actionB', null, 'POST', 0, true)">
+                                        <span style="visibility: hidden;">-</span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-yellow btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=actionC', null, 'POST', 0, true)">
+                                        <span style="visibility: hidden;">-</span>
+                                    </span>
+                                </div>
+                                <div class="col-xs-3 btn-container-padding">
+                                    <span class="btn-remote btn-col-blue btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=command&code=actionD', null, 'POST', 0, true)">
+                                        <span style="visibility: hidden;">-</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <br>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,152 @@
+
+#page-content-wrapper {
+    padding: 20px 70px;
+}
+
+/* Sidebar spans */
+
+.sidebar_lhs {
+    z-index: 8;
+    position: fixed;
+    left: 20px;
+    top: 20px;
+    width: 50px;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.sidebar_rhs {
+    z-index: 8;
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 50px;
+}
+
+.sidebar_cmd_alert {
+    z-index: 8;
+    position: fixed;
+    right: 20px;
+    top: 20px;
+    width: 50px;
+}
+
+
+@media (max-width: 575px) {
+    .sidebar_lhs {
+        left: 10px;
+    }
+    .sidebar_rhs {
+        right: 10px;
+    }
+    .sidebar_cmd_alert {
+        right: 10px;
+    }
+    #page-content-wrapper {
+        padding: 20px 60px;
+    }
+}
+
+/* Sidebar buttons */
+
+.sidebar_img {
+    height:40px;
+    width:40px;
+    left: 50%;
+    top: 50%;
+    margin: 0px;
+}
+
+.btn_sidebar_lhs {
+    background: #fff;
+    float: left;
+    margin: 10px 0px;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    display:table-cell;
+    vertical-align:middle;
+    text-align:center;
+}
+
+.btn_sidebar_rhs {
+    float: right;
+    margin-top: 20px;
+    display: inherit;
+}
+
+.icon_cmd_alert {
+    float: right;
+    margin-bottom: 20px;
+}
+
+/* Sidebar dividers */
+
+.sidebar_divider {
+    float: left;
+    background: transparent;
+    width: 40px;
+    height: 1px;
+    margin: 10px 0px;
+    border-top: 1px solid black;
+}
+
+/* Shadow to spans and images */
+
+span.box-shadow {
+    -webkit-box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.7);
+    -moz-box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.7);
+    box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.7);
+}
+img.box-shadow {
+    -webkit-box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.7);
+    -moz-box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.7);
+    box-shadow: 2px 2px 7px 0px rgba(50, 50, 50, 0.7);
+}
+
+/* Popup message */
+
+div.hidden {
+    display: none;
+}
+
+div.visible {
+    display: block;
+}
+
+div.viewport_centre {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+div.message {
+    z-index: 24;
+    padding: 20px;
+    text-align: center;
+    text-align: -webkit-center;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+            background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+
+p.message {
+    text-align: center;
+    margin: 10px 40px 20px 40px;
+}
+
+/* TV guide table border */
+
+.tbl_border {
+    border-left: 1px solid #ddd;
+    border-right: 1px solid #ddd;
+}
+.tbl_border_last {
+    border-bottom: 1px solid #ddd;
+}

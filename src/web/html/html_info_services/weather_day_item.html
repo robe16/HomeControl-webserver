@@ -1,0 +1,85 @@
+<div class="item_day_cell col-xs-12 col-lg-6">
+    <div class="item_day material-shadow material-col-grey-50">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header_day">{date_day}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="header_date">{date}</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="daynight daytime">
+                    <div class="row">
+                        <div class="col-xs-6 weather_detail_type align_left">
+                            <i class="weather_type_glyph_dy wi {d_weather_type_glyph}"></i>
+                        </div>
+                        <div class="col-xs-6 weather_detail_div align_right">
+                            <div class="temp_div"><p class="weather_detail_large">{d_temp}</p><p class="temp_unit_day">{d_temp_unit}</p></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 weather_detail_div align_right">
+                            <p class="weather_detail">Chance of rain: {d_precipitation_prob}%</p>
+                        </div>
+                    </div>
+                    <div class="row align_left">
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><i class="weather_glyph wi wi-wind {d_weather_direction_glyph}"></i>{d_wind_direction}</p>
+                        </div>
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><span class="weather_glyph glyphicon glyphicon-flag"></span>{d_wind_speed}{d_wind_speed_unit}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><span class="weather_glyph glyphicon glyphicon-eye-open"></span>{d_visibility}</p>
+                        </div>
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><span class="weather_glyph glyphicon glyphicon-sunglasses"></span>{d_uv_index}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="daynight nighttime">
+                    <div class="row">
+                        <div class="col-xs-6 weather_detail_type align_left">
+                            <i class="weather_type_glyph_dy wi {n_weather_type_glyph}"></i>
+                        </div>
+                        <div class="col-xs-6 weather_detail_div align_right">
+                            <div class="temp_div"><p class="weather_detail_large">{n_temp}</p><p class="temp_unit_day">{n_temp_unit}</p></div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12 weather_detail_div align_right">
+                            <p class="weather_detail">Chance of rain: {n_precipitation_prob}%</p>
+                        </div>
+                    </div>
+                    <div class="row align_left">
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><i class="weather_glyph wi wi-wind {n_weather_direction_glyph}"></i>{n_wind_direction}</p>
+                        </div>
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><span class="weather_glyph glyphicon glyphicon-flag"></span>{n_wind_speed}{n_wind_speed_unit}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><span class="weather_glyph glyphicon glyphicon-eye-open"></span>{n_visibility}</p>
+                        </div>
+                        <div class="col-xs-6 weather_detail_div">
+                            <p class="weather_detail_small"><span class="weather_glyph glyphicon glyphicon-sunglasses"></span>-</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="hourly">
+            {hour_weather}
+        </div>
+    </div>
+</div>

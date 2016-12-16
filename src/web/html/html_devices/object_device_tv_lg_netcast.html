@@ -1,0 +1,94 @@
+<!--img src="/img/logo/logo_lg.png" style="height:25px;"/-->
+<div class="row">
+    <div class="col-md-6">
+        <div class="panel panel-default" style="padding: 10px;">
+            <div class="panel-body">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-xs-1 btn-container-padding">
+                            <span class="btn-remote btn-col-red" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=power', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-off material-text-light-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                        <div class="col-xs-2 col-xs-offset-9 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=volup', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-chevron-up material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 col-xs-offset-10 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=mute', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-volume-off material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 col-xs-offset-10 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=voldown', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-chevron-down material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <br>
+                    <div class="row">
+                        <div class="col-xs-2 col-xs-offset-3 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=up', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-arrow-up material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                        <div class="col-xs-3 col-xs-offset-4 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=externalinput', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-log-in material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 col-xs-offset-1 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=left', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-arrow-left material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                        <div class="col-xs-2 btn-container-padding">
+                            <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=ok', null, 'POST', 0, true)">
+                                OK
+                            </span>
+                        </div>
+                        <div class="col-xs-2 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=right', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-arrow-right material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                        <div class="col-xs-3 col-xs-offset-2 btn-container-padding">
+                            <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=prev', null, 'POST', 0, true)">
+                                Prev
+                            </span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-2 col-xs-offset-3 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=down', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-arrow-down material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                        <div class="col-xs-3 col-xs-offset-4 btn-container-padding">
+                            <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{room_id}/{device_id}?command=exit', null, 'POST', 0, true)">
+                                <span class="glyphicon glyphicon-remove material-text-dark-primary" aria-hidden="true"></span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-default" style="height: 300px; padding: 10px;">
+            <div class="panel-body" style="padding: 0;">
+                <div style="height: 275px; overflow-y: auto;">
+                    {apps}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

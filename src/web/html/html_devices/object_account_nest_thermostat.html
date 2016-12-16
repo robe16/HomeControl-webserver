@@ -1,0 +1,19 @@
+<div class="col-md-{colwidth}">
+    <div class="nest_device_container">
+        <span class="nest_therm_border img-circle nest-box-shadow">
+            <span class="obj_thermostat obj_thermostat_{hvac} img-circle">
+                <img class="img_leaf leaf_{has_leaf}" src="/img/nest/nest_leaf.png">
+                <div class="therm_temp_label">
+                    <p style="margin-bottom: 5px; font-size: 12dp;">{temp_hvac}</p>
+                    <h3 style="margin-top: 5px;">{temp_target}{temp_unit}</h3>
+                </div>
+                <div class="therm_temp_cmds">
+                    <span class="therm_temp_glyph therm_temp_glyph_{is_online} glyphicon glyphicon-chevron-down" aria-hidden="true" onclick="sendNestCmd('{account_id}', 'temp', {new_temp_down}, 'devices', 'thermostats', '{nest_device_id}')"></span>
+                    <span class="therm_temp_glyph therm_temp_glyph_{is_online} glyphicon glyphicon-chevron-up" aria-hidden="true" onclick="sendNestCmd('{account_id}', 'temp', {new_temp_up}, 'devices', 'thermostats', '{nest_device_id}')"></span>
+                </div>
+            </span>
+        </span>
+        <h4 class="" style="text-align: center;">{therm_label}{temp_ambient}{temp_unit}</h4>
+        <h5 style="text-align: center;">{name}</h5>
+    </div>
+</div>

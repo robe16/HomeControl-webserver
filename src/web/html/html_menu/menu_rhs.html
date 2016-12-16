@@ -1,0 +1,23 @@
+<span class="sidebar_rhs">
+    {settings}
+    <!--li id="about" class="btn_sidebar_rhs">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <img class="sidebar_img img-circle box-shadow" src="/img/icon/ic_about.png" />
+        </a>
+    </li-->
+    <li id="user" class="dropdown btn_sidebar_rhs">
+        <a class="dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            <img class="img-circle box-shadow" style="height:40px; width:40px;" src="/img/users/{user_image}" />
+        </a>
+        <ul class="dropdown-menu dropdown-menu-right" style="top: -450%; right: 50px;">
+            <li style="text-align:center;">
+                <img class="img-circle" style="height:75px;" src="/img/users/{user_image}" />
+            </li>
+            <li class="dropdown-header" style="text-align:center;">Signed in as {user}</li>
+            <li role="separator" class="divider"></li>
+            <li id="pref_tvguide"><a href="/web/preferences/tvguide">TV Guide Favourites</a></li>
+            <li id="profile"><a href="/web/profile">Profile</a></li>
+            <li id="logout"><a href="/web/logout">Logout</a></li>
+        </ul>
+    </li>
+</span>

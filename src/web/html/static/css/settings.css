@@ -1,0 +1,76 @@
+.settings_box {
+    margin: 10px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+}
+
+
+.group_header {
+    cursor: pointer;
+}
+
+
+.settings_btn {
+    width: 100%;
+    margin: 20px 0;
+    padding: 10px;
+    text-align: center;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+}
+.settings_btn:hover {
+    -webkit-box-shadow: none;
+            box-shadow: none;
+}
+
+
+.settings_group_add {
+    background-color: #ccccff;
+}
+.settings_group_add:hover {
+    background-color: #b3b3ff;
+}
+
+
+.settings_device_add {
+    background-color: #ccffcc;
+}
+.settings_device_add:hover {
+    background-color: #b3ffb3;
+}
+
+
+.settings_device_selection_item {
+    width: 80px;
+    height: 125px;
+    display: inline-block;
+    margin: 10px;
+    padding: 15px 5px;
+    vertical-align: top;
+    background-color: #ffffff;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    cursor: pointer;
+}
+.settings_device_selection_item:hover {
+    background-color: #cccccc;
+}
+
+
+.settings_device_selection_img {
+    width: 50px;
+    height: 50px;
+    margin: auto auto 5px auto;
+}
+
+.remove_device {
+    text-align: right;
+    margin: 10px 0px;
+    cursor: pointer;
+}
+.remove_device_color {
+    color: #cc0000;
+}
