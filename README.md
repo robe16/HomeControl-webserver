@@ -58,12 +58,12 @@ Elements that have been developed:
 <strike><p>
 <code>POST</code> <code>/settings/{category}</code>
 <br>Used to submit and save the config/settings via a json payload. Variables for {category} include 'tvguide' and 'devices' and admin access is required.
-</p></strike>
-
-<br><p>
+</p><<br><p>
 <code>POST</code> <code>/preferences/{category}</code>
 <br>Used to submit and save the user preferences via a json payload.
-</p><br><p>
+</p><br>/strike>
+
+<p>
 <code>GET</code> <code>/favicon.ico</code>
 <br>Returns favicon for HTML pages.
 </p><br><p>
