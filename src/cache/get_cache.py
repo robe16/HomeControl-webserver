@@ -5,10 +5,9 @@ import requests
 
 def create_cache(cache):
     cache['setup'] = request_setup()
-    cache['weather'] = request_weather()
     cache['users'] = request_users()
     cache['tvchannels'] = request_tvchannels()
-    cache['tvlistings'] = request_tvlistings()
+    # cache['tvlistings'] = request_tvlistings()
 
 
 def request_setup():
@@ -20,18 +19,6 @@ def request_setup():
         return r.json()
     else:
         print_error('SETUP CACHE failed to be retrieved - {status_code}'.format(status_code=r.status_code))
-        return False
-
-
-def request_weather():
-    url = server_url('cache/weather')
-    r = requests.get(url)
-    #
-    if r.status_code == requests.codes.ok:
-        print_msg('WEATHER CACHE retrieved successfully - {status_code}'.format(status_code=r.status_code))
-        return r.json()
-    else:
-        print_error('WEATHER CACHE failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         return False
 
 
@@ -59,13 +46,13 @@ def request_tvchannels():
         return False
 
 
-def request_tvlistings():
-    url = server_url('cache/tvlistings')
-    r = requests.get(url)
-    #
-    if r.status_code == requests.codes.ok:
-        print_msg('TVLISTINGS CACHE retrieved successfully - {status_code}'.format(status_code=r.status_code))
-        return r.json()
-    else:
-        print_error('TVLISTINGS CACHE failed to be retrieved - {status_code}'.format(status_code=r.status_code))
-        return False
+# def request_tvlistings():
+#     url = server_url('cache/tvlistings')
+#     r = requests.get(url)
+#     #
+#     if r.status_code == requests.codes.ok:
+#         print_msg('TVLISTINGS CACHE retrieved successfully - {status_code}'.format(status_code=r.status_code))
+#         return r.json()
+#     else:
+#         print_error('TVLISTINGS CACHE failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+#         return False

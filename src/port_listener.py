@@ -1,6 +1,4 @@
-import datetime
 import os
-import time
 
 from bottle import error, HTTPError
 from bottle import get, post
@@ -10,13 +8,11 @@ import requests as requests
 
 import cfg
 from cfg import server_url
-from src.cache.setup import get_cfg_room_index, get_cfg_device_index, get_cfg_account_index
 from src.cache.setup import get_cfg_room_name, get_cfg_device_name, get_cfg_account_name
 from src.cache.setup import get_cfg_device_type, get_cfg_account_type
 from src.cache.users import check_user
 from src.web.web_create_error import create_error
 from web.web_create_pages import create_login, create_home, create_about, create_tvguide, create_weather, create_device
-from web.web_create_preferences import create_preference_tvguide
 
 from src.bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
 from src.bundles.devices.tivo.html_tivo import html_tivo
@@ -30,8 +26,10 @@ _cache = False
 ################################################################################################
 
 def start_bottle(cache):
+    #
     global _cache
     _cache = cache
+    #
     run_bottle()
 
 ################################################################################################
@@ -241,7 +239,6 @@ def send_command_device(room_id=False, device_id=False):
                           json=cmd_dict)
         #
         if r.status_code == requests.codes.ok:
-            print(r.content)
             if r.content:
                 return HTTPResponse(body=r.content, status=200)
             else:

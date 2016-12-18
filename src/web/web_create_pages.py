@@ -38,7 +38,7 @@ def create_about(user, _cache):
 def create_weather(user, _cache):
     return create_page(user,
                        _cache,
-                       weather_body(_cache['weather']),
+                       weather_body(),
                        'Weather',
                        'Weather')
 

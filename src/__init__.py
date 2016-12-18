@@ -8,19 +8,11 @@ from src.log.console_messages import print_msg
 ################################
 # Shared variable for processes
 ################################
-# cache = Manager().dict()
-# cache['setup'] = {}
-# cache['users'] = {}
-# cache['weather'] = {}
-# cache['tvchannels'] = {}
-# cache['tvlistings'] = {}
-#
 cache = Manager().dict()
 cache['setup'] = {}
-cache['weather'] = {}
 cache['users'] = {}
 cache['tvchannels'] = {}
-cache['tvlistings'] = {}
+# cache['tvlistings'] = {}
 #
 ################################
 # Process for port_listener

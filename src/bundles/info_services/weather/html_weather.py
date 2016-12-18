@@ -1,8 +1,14 @@
 import datetime
+import requests
+import ast
 from urllib import urlopen
+from src.cfg import server_url
+from src.log.console_messages import print_msg, print_error
 from src.bundles.info_services.weather.weather_lists import *
 
-def weather_body(forecast):
+def weather_body():
+    #
+    forecast = request_weather()
     #
     if not str(forecast)=='False':
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
@@ -17,6 +23,19 @@ def weather_body(forecast):
     #
     return urlopen('web/html/html_info_services/weather_main.html').read().encode('utf-8').format(**args)
 
+
+def request_weather():
+    url = server_url('data/info/weather/forecast')
+    r = requests.get(url)
+    #
+    if r.status_code == requests.codes.ok:
+        print_msg('Weather info retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        data = r.content
+        return ast.literal_eval(data)
+    else:
+        print_error('Weather info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        return False
+
 def _create_html(forecast):
     #
     html = ''
@@ -25,7 +44,7 @@ def _create_html(forecast):
     #
     while days_count < len(forecast['days']):
         #
-        day_item = forecast['days'][str(days_count)]
+        day_item = forecast['days'][days_count]
         daytime = day_item['daytime']
         nighttime = day_item['nighttime']
         hourly = day_item['3hourly']
@@ -45,7 +64,7 @@ def _create_html(forecast):
         #
         while hours_count < len(hourly):
             #
-            hour_item = hourly[str(hours_count)]
+            hour_item = hourly[hours_count]
             #
             args_hours = {'time': hour_item['time'],
                           'weather_type_glyph': getWeatherType_glyph(hour_item['weather_type']),
@@ -87,6 +106,7 @@ def _create_html(forecast):
             **args_item)
         #
     return html
+
 
 # def convert_TempToHue(self, temp):
 #     # temp_colour is the 'h' in hsl based colour
