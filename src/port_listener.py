@@ -312,7 +312,9 @@ def get_image(category, filename):
                                                                        filename=filename)))
         #
         if r.status_code == requests.codes.ok:
-            return HTTPResponse(status=200, body=r.content)
+            response = HTTPResponse(status=200, body=r.content)
+            response.set_header("Cache-Control", "public, max-age=604800")
+            return response
         else:
             return HTTPResponse(status=400)
         #
