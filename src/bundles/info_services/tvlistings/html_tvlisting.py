@@ -7,6 +7,7 @@ from src.log.console_messages import print_msg, print_error
 
 
 hourly_width_px = 400
+max_hours = 6
 isoformat = '%Y-%m-%d %H:%M:%S'
 time_format = '%H:%M'
 
@@ -44,12 +45,12 @@ def _create_html(channels, listings):
                                                     datetime.time(current_hour))
     #
     html_hours_title = ''
-    for x in range(0, 6, 1):
+    for x in range(0, (2 * max_hours) + 1, 1):
         hr = int(float(x)/2)
         mn = int((float(x)/2 - hr) * 60)
-        t = datetime.time(current_hour + hr, mn).strftime(time_format)
+        t = current_hourly_time + datetime.timedelta(hours=hr, minutes=mn)
         args_time = {'width': hourly_width_px/2,
-                     'hour': t}
+                     'hour': t.strftime(time_format)}
         html_hours_title += urlopen('web/html/html_info_services/tvlistings_listing_row_listings_title_item.html').read().encode('utf-8').format(**args_time)
     #
     html_channels = urlopen('web/html/html_info_services/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
@@ -80,17 +81,32 @@ def _create_html(channels, listings):
                         start = datetime.datetime.strptime(listings[str(cat)][str(chan)][item]['start'], isoformat)
                         end = datetime.datetime.strptime(listings[str(cat)][str(chan)][item]['end'], isoformat)
                         #
-                        if start > current_hourly_time or end > current_hourly_time:
+                        if (start > current_hourly_time or end > current_hourly_time) and start < (current_hourly_time + datetime.timedelta(hours=max_hours)):
                             #
                             if start < current_hourly_time:
-                                item_width = _calc_item_width(current_hourly_time, end)
+                                width_s = current_hourly_time
                             else:
-                                item_width = _calc_item_width(start, end)
+                                width_s = start
+                            #
+                            if end > current_hourly_time + datetime.timedelta(hours=max_hours):
+                                width_e = current_hourly_time + datetime.timedelta(hours=max_hours)
+                            else:
+                                width_e = end
+                            #
+                            item_width = _calc_item_width(width_s, width_e)
+                            #
+                            subtitle = ''
+                            try:
+                                if listings[str(cat)][str(chan)][item]['subtitle'] != '':
+                                    subtitle = '{subtitle}: '.format(subtitle=listings[str(cat)][str(chan)][item]['subtitle'])
+                            except Exception as e:
+                                pass
                             #
                             args_item = {'width': item_width - 2,
                                          'start': start.strftime(time_format),
                                          'end': end.strftime(time_format),
                                          'title': listings[str(cat)][str(chan)][item]['title'],
+                                         'subtitle': subtitle,
                                          'desc': listings[str(cat)][str(chan)][item]['desc']}
                             temp_html += urlopen('web/html/html_info_services/tvlistings_listing_row_listings_item.html').read().encode('utf-8').format(**args_item)
                 else:
