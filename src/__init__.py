@@ -12,7 +12,6 @@ cache = Manager().dict()
 cache['setup'] = {}
 cache['users'] = {}
 cache['tvchannels'] = {}
-# cache['tvlistings'] = {}
 #
 ################################
 # Process for port_listener

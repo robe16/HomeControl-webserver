@@ -3,6 +3,7 @@ from urllib import urlopen
 from web_create_login import html_users
 from web_menu import html_menu
 from src.bundles.info_services.weather.html_weather import weather_body
+from src.bundles.info_services.tvlistings.html_tvlisting import tvlisting_body
 # from web_tvlistings import html_listings_user_and_all
 
 
@@ -43,13 +44,13 @@ def create_weather(user, _cache):
                        'Weather')
 
 
-def create_tvguide(user, _cache):
+def create_tvlistings(user, _cache):
     # listings = html_listings_user_and_all(_cache['tvlistings'], user=user)
     return create_page(user,
                        _cache,
-                       urlopen('web/html/html_tvguide/tvguide.html').read().encode('utf-8').format(listings=''),
-                       'TV Guide',
-                       'TV Guide')
+                       tvlisting_body(_cache['tvchannels']),
+                       'TV Listings',
+                       'TV Listings')
 
 
 def create_device(user, _cache, device_html, browser_title, page_title):

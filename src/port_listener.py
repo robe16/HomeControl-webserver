@@ -12,7 +12,7 @@ from src.cache.setup import get_cfg_room_name, get_cfg_device_name, get_cfg_acco
 from src.cache.setup import get_cfg_device_type, get_cfg_account_type
 from src.cache.users import check_user
 from src.web.web_create_error import create_error
-from web.web_create_pages import create_login, create_home, create_about, create_tvguide, create_weather, create_device
+from web.web_create_pages import create_login, create_home, create_about, create_tvlistings, create_weather, create_device
 
 from src.bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
 from src.bundles.devices.tivo.html_tivo import html_tivo
@@ -88,8 +88,8 @@ def web_info(service=False):
     if not user:
         redirect('/web/login')
     #
-    if service == 'tvguide':
-        return HTTPResponse(body=create_tvguide(user, _cache), status=200)
+    if service == 'tvlistings':
+        return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
     elif service == 'weather':
         return HTTPResponse(body=create_weather(user, _cache), status=200)
     else:
