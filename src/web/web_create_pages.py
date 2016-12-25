@@ -48,7 +48,7 @@ def create_tvlistings(user, _cache):
     # listings = html_listings_user_and_all(_cache['tvlistings'], user=user)
     return create_page(user,
                        _cache,
-                       tvlisting_body(_cache['tvchannels']),
+                       tvlisting_body(user, _cache),
                        'TV Listings',
                        'TV Listings')
 
