@@ -2,9 +2,9 @@ import datetime
 import requests
 import ast
 from urllib import urlopen
-from src.cfg import server_url
-from src.log.console_messages import print_msg, print_error
-from src.bundles.info_services.weather.weather_lists import *
+from cfg import server_url
+from log.console_messages import print_msg, print_error
+from bundles.info_services.weather.weather_lists import *
 
 def weather_body():
     #

@@ -2,9 +2,9 @@ import datetime
 import ast
 from urllib import urlopen
 import requests
-from src.cfg import server_url
-from src.log.console_messages import print_error
-from src.lists.devices.list_devices import get_device_html_command, get_device_detail
+from cfg import server_url
+from log.console_messages import print_error
+from lists.devices.list_devices import get_device_html_command, get_device_detail
 
 
 _temp_unit = 'c'

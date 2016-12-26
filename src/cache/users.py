@@ -1,5 +1,5 @@
 import requests
-from src.cfg import server_url
+from cfg import server_url
 
 def check_user(data, user):
     if data != None:

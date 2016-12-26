@@ -1,9 +1,9 @@
 from urllib import urlopen
 
-from src.cache.setup import get_cfg_room_name
-from src.cache.setup import get_cfg_device_name, get_cfg_device_value
-from src.cache.setup import get_cfg_account_name, get_cfg_account_value
-from src.cache.users import get_userrole, get_userimage
+from cache.setup import get_cfg_room_name
+from cache.setup import get_cfg_device_name, get_cfg_device_value
+from cache.setup import get_cfg_account_name, get_cfg_account_value
+from cache.users import get_userrole, get_userimage
 
 
 def html_menu(user, _cache):

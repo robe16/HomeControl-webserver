@@ -1,5 +1,5 @@
-from src.cfg import server_url
-from src.log.console_messages import print_msg, print_error
+from cfg import server_url
+from log.console_messages import print_msg, print_error
 import requests
 import time
 

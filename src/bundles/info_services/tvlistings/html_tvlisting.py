@@ -2,9 +2,9 @@ import datetime
 import requests
 import ast
 from urllib import urlopen
-from src.cfg import server_url
-from src.log.console_messages import print_msg, print_error
-from src.cache.users import get_userchannels
+from cfg import server_url
+from log.console_messages import print_msg, print_error
+from cache.users import get_userchannels
 
 
 hourly_width_px = 400

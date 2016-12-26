@@ -8,15 +8,15 @@ import requests as requests
 
 import cfg
 from cfg import server_url
-from src.cache.setup import get_cfg_room_name, get_cfg_device_name, get_cfg_account_name
-from src.cache.setup import get_cfg_device_type, get_cfg_account_type
-from src.cache.users import check_user
-from src.web.web_create_error import create_error
+from cache.setup import get_cfg_room_name, get_cfg_device_name, get_cfg_account_name
+from cache.setup import get_cfg_device_type, get_cfg_account_type
+from cache.users import check_user
+from web.web_create_error import create_error
 from web.web_create_pages import create_login, create_home, create_about, create_tvlistings, create_weather, create_device
 
-from src.bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
-from src.bundles.devices.tivo.html_tivo import html_tivo
-from src.bundles.accounts.nest.html_nest import html_nest
+from bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
+from bundles.devices.tivo.html_tivo import html_tivo
+from bundles.accounts.nest.html_nest import html_nest
 
 
 ################################################################################################

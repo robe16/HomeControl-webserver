@@ -2,8 +2,8 @@ from urllib import urlopen
 
 from web_create_login import html_users
 from web_menu import html_menu
-from src.bundles.info_services.weather.html_weather import weather_body
-from src.bundles.info_services.tvlistings.html_tvlisting import tvlisting_body
+from bundles.info_services.weather.html_weather import weather_body
+from bundles.info_services.tvlistings.html_tvlisting import tvlisting_body
 # from web_tvlistings import html_listings_user_and_all
 
 

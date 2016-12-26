@@ -1,9 +1,9 @@
 # from datetime import datetime
 # from urllib import urlopen
 #
-# from src.cache.setup import get_cfg_device_type
-# from src.cache.users import get_userchannels
-# from src.tvlistings.tvlisting import returnnownext
+# from cache.setup import get_cfg_device_type
+# from cache.users import get_userchannels
+# from tvlistings.tvlisting import returnnownext
 #
 #
 # def html_listings_user_and_all (listings, room_id=False, device_id=False, user=False, chan_current=False, package=False):

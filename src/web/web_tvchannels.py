@@ -1,7 +1,7 @@
 from urllib import urlopen
 
-from src.cache.users import get_userchannels
-from src.cache.tvchannels import *
+from cache.users import get_userchannels
+from cache.tvchannels import *
 
 
 def html_channels_user_and_all (_cache, user=False, _device_details=False):

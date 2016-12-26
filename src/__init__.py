@@ -1,8 +1,8 @@
 from multiprocessing import Process, Manager
 import cfg
 from port_listener import start_bottle
-from src.cache.get_cache import create_cache
-from src.log.console_messages import print_msg
+from cache.get_cache import create_cache
+from log.console_messages import print_msg
 
 
 ################################

@@ -1,11 +1,11 @@
 import requests
 import ast
 from urllib import urlopen
-from src.cfg import server_url
-from src.cache.setup import get_cfg_device_detail_public
-from src.lists.devices.list_devices import get_device_html_command
-from src.log.console_messages import print_error, print_msg
-from src.web.web_tvchannels import html_channels_user_and_all
+from cfg import server_url
+from cache.setup import get_cfg_device_detail_public
+from lists.devices.list_devices import get_device_html_command
+from log.console_messages import print_error, print_msg
+from web.web_tvchannels import html_channels_user_and_all
 
 
 def html_tivo(user, _cache, room_id, device_id):

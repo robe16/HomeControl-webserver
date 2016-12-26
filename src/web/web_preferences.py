@@ -2,7 +2,7 @@ import json
 import os
 from urllib import urlopen
 
-from src.cache.users import get_userchannels
+from cache.users import get_userchannels
 
 
 def _preference_tvguide(user):
