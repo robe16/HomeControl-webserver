@@ -61,6 +61,9 @@ def _create_html(user, _cache, listings):
                      'hour': t.strftime(time_format)}
         html_hours_title += urlopen('web/html/html_info_services/tvlistings_listing_row_listings_title_item.html').read().encode('utf-8').format(**args_time)
     #
+    # vertical line for now() time
+    left_dist = _calc_item_width(current_hourly_time, datetime.datetime.now())
+    #
     first_tab = True
     html_pill_contents = ''
     #
@@ -76,7 +79,7 @@ def _create_html(user, _cache, listings):
             active = ''
         #
         html_channels = urlopen('web/html/html_info_services/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
-        html_listings = urlopen('web/html/html_info_services/tvlistings_listing_row_listings_title.html').read().encode('utf-8').format(hour_titles=html_hours_title)
+        html_listings = urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(listings=html_hours_title)
         cat = 0
         while cat < len(channels['channels']):
             chan = 0
@@ -154,7 +157,8 @@ def _create_html(user, _cache, listings):
                                                                                               category=str(user).lower(),
                                                                                               title=str(user)+'\'s favourites')
         #
-        html_cat_pill_body = urlopen('web/html/html_info_services/tvlistings_listing.html').read().encode('utf-8').format(rows_channel_images=html_channels,
+        html_cat_pill_body = urlopen('web/html/html_info_services/tvlistings_listing.html').read().encode('utf-8').format(left_dist=left_dist,
+                                                                                                                          rows_channel_images=html_channels,
                                                                                                                           rows_listings=html_listings)
         #
         html_pill_contents += urlopen('web/html/pills_contents.html').read().encode('utf-8').format(active=active,
@@ -180,7 +184,7 @@ def _create_html(user, _cache, listings):
                                                                                               title=category)
         #
         html_channels = urlopen('web/html/html_info_services/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
-        html_listings = urlopen('web/html/html_info_services/tvlistings_listing_row_listings_title.html').read().encode('utf-8').format(hour_titles=html_hours_title)
+        html_listings = urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(listings=html_hours_title)
         #
         chan = 0
         while chan < len(channels['channels'][str(cat)]['channels']):
@@ -245,7 +249,8 @@ def _create_html(user, _cache, listings):
             chan += 1
             #
         #
-        html_cat_pill_body = urlopen('web/html/html_info_services/tvlistings_listing.html').read().encode('utf-8').format(rows_channel_images=html_channels,
+        html_cat_pill_body = urlopen('web/html/html_info_services/tvlistings_listing.html').read().encode('utf-8').format(left_dist=left_dist,
+                                                                                                                          rows_channel_images=html_channels,
                                                                                                                           rows_listings=html_listings)
         #
         html_pill_contents += urlopen('web/html/pills_contents.html').read().encode('utf-8').format(active=active,
