@@ -14,7 +14,7 @@ cache['users'] = {}
 cache['tvchannels'] = {}
 #
 ################################
-# Process for port_listener
+# Process for building caches
 ################################
 print_msg('Starting process: Cache')
 process_cache = Process(target=create_cache, args=(cache, ))
