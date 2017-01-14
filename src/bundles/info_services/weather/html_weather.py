@@ -4,7 +4,7 @@ import ast
 from urllib import urlopen
 from cfg import server_url
 from log.console_messages import print_msg, print_error
-from bundles.info_services.weather.weather_lists import *
+from weather_lists import *
 
 def weather_body():
     #
@@ -31,6 +31,7 @@ def request_weather():
     if r.status_code == requests.codes.ok:
         print_msg('Weather info retrieved successfully - {status_code}'.format(status_code=r.status_code))
         data = r.content
+        print(data)
         return ast.literal_eval(data)
     else:
         print_error('Weather info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
@@ -44,7 +45,7 @@ def _create_html(forecast):
     #
     while days_count < len(forecast['days']):
         #
-        day_item = forecast['days'][days_count]
+        day_item = forecast['days'][str(days_count)]
         daytime = day_item['daytime']
         nighttime = day_item['nighttime']
         hourly = day_item['3hourly']
@@ -64,7 +65,7 @@ def _create_html(forecast):
         #
         while hours_count < len(hourly):
             #
-            hour_item = hourly[hours_count]
+            hour_item = hourly[str(hours_count)]
             #
             args_hours = {'time': hour_item['time'],
                           'weather_type_glyph': getWeatherType_glyph(hour_item['weather_type']),
