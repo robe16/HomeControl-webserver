@@ -15,13 +15,13 @@ def html_menu(user, _cache):
 def html_menu_lhs(_cache_setup):
     #
     html = ''
+    html += '<span class="sidebar_divider box-shadow"></span>'
     #
     for item_account in _cache_setup['structure']['accounts']:
         #
         label = get_cfg_account_name(_cache_setup, _cache_setup['structure']['accounts'][item_account]['account_id'])
         img = get_cfg_account_value(_cache_setup, _cache_setup['structure']['accounts'][item_account]['account_id'], 'logo')
         #
-        html += '<span class="sidebar_divider box-shadow"></span>'
         html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/account/{account_id}').format(account_id=_cache_setup['structure']['accounts'][item_account]['account_id']),
                                                                                               id='{account_id}'.format(account_id=_cache_setup['structure']['accounts'][item_account]['account_id']),
                                                                                               cls='',
