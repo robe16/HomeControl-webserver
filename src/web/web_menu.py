@@ -17,36 +17,36 @@ def html_menu_lhs(_cache_setup):
     html = ''
     html += '<span class="sidebar_divider box-shadow"></span>'
     #
-    for item_account in _cache_setup['structure']['accounts']:
+    for item_account in _cache_setup['accounts']:
         #
-        label = get_cfg_account_name(_cache_setup, _cache_setup['structure']['accounts'][item_account]['account_id'])
-        img = get_cfg_account_value(_cache_setup, _cache_setup['structure']['accounts'][item_account]['account_id'], 'logo')
+        label = get_cfg_account_name(_cache_setup, _cache_setup['accounts'][item_account]['account_id'])
+        img = get_cfg_account_value(_cache_setup, _cache_setup['accounts'][item_account]['account_id'], 'logo')
         #
-        html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/account/{account_id}').format(account_id=_cache_setup['structure']['accounts'][item_account]['account_id']),
-                                                                                              id='{account_id}'.format(account_id=_cache_setup['structure']['accounts'][item_account]['account_id']),
+        html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/account/{account_id}').format(account_id=_cache_setup['accounts'][item_account]['account_id']),
+                                                                                              id='{account_id}'.format(account_id=_cache_setup['accounts'][item_account]['account_id']),
                                                                                               cls='',
                                                                                               name=label,
                                                                                               img=img)
     #
-    for item_room in _cache_setup['structure']['rooms']:
+    for item_room in _cache_setup['rooms']:
         #
         html += '<span class="sidebar_divider box-shadow"></span>'
         #
-        html += urlopen('web/html/html_menu/menu_sidebar_title.html').read().encode('utf-8').format(name=get_cfg_room_name(_cache_setup, _cache_setup['structure']['rooms'][item_room]['room_id']))
+        html += urlopen('web/html/html_menu/menu_sidebar_title.html').read().encode('utf-8').format(name=get_cfg_room_name(_cache_setup, _cache_setup['rooms'][item_room]['room_id']))
         #
-        for item_device in _cache_setup['structure']['rooms'][item_room]['devices']:
+        for item_device in _cache_setup['rooms'][item_room]['devices']:
             #
             label = get_cfg_device_name(_cache_setup,
-                                        _cache_setup['structure']['rooms'][item_room]['room_id'],
-                                        _cache_setup['structure']['rooms'][item_room]['devices'][item_device]['device_id'])
+                                        _cache_setup['rooms'][item_room]['room_id'],
+                                        _cache_setup['rooms'][item_room]['devices'][item_device]['device_id'])
             img = get_cfg_device_value(_cache_setup,
-                                       _cache_setup['structure']['rooms'][item_room]['room_id'],
-                                       _cache_setup['structure']['rooms'][item_room]['devices'][item_device]['device_id'], 'logo')
+                                       _cache_setup['rooms'][item_room]['room_id'],
+                                       _cache_setup['rooms'][item_room]['devices'][item_device]['device_id'], 'logo')
             #
-            html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/device/{room_id}/{device_id}').format(room_id=_cache_setup['structure']['rooms'][item_room]['room_id'],
-                                                                                                                                                    device_id=_cache_setup['structure']['rooms'][item_room]['devices'][item_device]['device_id']),
-                                                                                                  id='{room_id}_{device_id}'.format(room_id=_cache_setup['structure']['rooms'][item_room]['room_id'],
-                                                                                                                                    device_id=_cache_setup['structure']['rooms'][item_room]['devices'][item_device]['device_id']),
+            html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/device/{room_id}/{device_id}').format(room_id=_cache_setup['rooms'][item_room]['room_id'],
+                                                                                                                                                    device_id=_cache_setup['rooms'][item_room]['devices'][item_device]['device_id']),
+                                                                                                  id='{room_id}_{device_id}'.format(room_id=_cache_setup['rooms'][item_room]['room_id'],
+                                                                                                                                    device_id=_cache_setup['rooms'][item_room]['devices'][item_device]['device_id']),
                                                                                                   cls='',
                                                                                                   name=label,
                                                                                                   img=img)
