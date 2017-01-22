@@ -4,15 +4,15 @@
 
 
 def get_cfg_count_rooms(data):
-    return len(data['structure']['rooms'])
+    return len(data['rooms'])
 
 
 def get_cfg_count_devices(data, room_id):
-    return len(data['structure']['rooms'][room_id]['devices'])
+    return len(data['rooms'][room_id]['devices'])
 
 
 def get_cfg_count_accounts(data):
-    return len(data['structure']['accounts'])
+    return len(data['accounts'])
 
 ################################################################################################
 # Return list of room, device and account ids
@@ -23,7 +23,7 @@ def get_cfg_idlist_rooms(data):
     #
     r_list = []
     #
-    for key, value in data['structure']['rooms'].iteritems():
+    for key, value in data['rooms'].iteritems():
         r_list.append(key)
     #
     return r_list
@@ -33,7 +33,7 @@ def get_cfg_idlist_devices(data, room_id):
     #
     d_list = []
     #
-    for key, value in data['structure']['rooms'][room_id]['devices'].iteritems():
+    for key, value in data['rooms'][room_id]['devices'].iteritems():
         d_list.append(key)
     #
     return d_list
@@ -43,7 +43,7 @@ def get_cfg_idlist_accounts(data):
     #
     a_list = []
     #
-    for key, value in data['structure']['accounts'].iteritems():
+    for key, value in data['accounts'].iteritems():
         a_list.append(key)
     #
     return a_list
@@ -57,7 +57,7 @@ def get_cfg_room_index(data, room_id):
     #
     count = 0
     #
-    for key, value in data['structure']['rooms'].iteritems():
+    for key, value in data['rooms'].iteritems():
         if key == room_id:
             return count
         count += 1
@@ -69,7 +69,7 @@ def get_cfg_device_index(data, room_id, device_id):
     #
     count = 0
     #
-    for key, value in data['structure']['rooms'][room_id]['devices'].iteritems():
+    for key, value in data['rooms'][room_id]['devices'].iteritems():
         if key == device_id:
             return count
         count += 1
@@ -81,7 +81,7 @@ def get_cfg_account_index(data, account_id):
     #
     count = 0
     #
-    for key, value in data['structure']['accounts'].iteritems():
+    for key, value in data['accounts'].iteritems():
         if key == account_id:
             return count
         count += 1
@@ -184,17 +184,17 @@ def get_cfg_structure_value(data, key):
 
 def get_cfg_room_value(data, room_id, key):
     #
-    return data['structure']['rooms'][room_id][key]
+    return data['rooms'][room_id][key]
 
 
 def get_cfg_device_value(data, room_id, device_id, key):
     #
-    return data['structure']['rooms'][room_id]['devices'][device_id][key]
+    return data['rooms'][room_id]['devices'][device_id][key]
 
 
 def get_cfg_account_value(data, account_id, key):
     #
-    return data['structure']['accounts'][account_id][key]
+    return data['accounts'][account_id][key]
 
 ################################################################################################
 ################################################################################################
