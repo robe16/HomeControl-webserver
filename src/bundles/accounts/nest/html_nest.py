@@ -35,6 +35,7 @@ def _htmlbody(account_id):
     #
     try:
         json_devices = _get_nest_data(account_id)
+        json_devices = json_devices['devices']
         #
         if not json_devices:
             print_error('Nest devices could not retrieved from Nest server', dvc_or_acc_id=account_id)
@@ -48,7 +49,7 @@ def _htmlbody(account_id):
             #
             try:
                 therm_ids = json_devices['thermostats'].keys()
-            except:
+            except Exception as e:
                 therm_ids = False
             #
             if bool(therm_ids):
@@ -106,7 +107,7 @@ def _htmlbody(account_id):
                         new_temp_down = ''
                         #
                     #
-                    devices_html += urlopen('web/html_devices/{html_therm}'.format(html_therm=html_therm))\
+                    devices_html += urlopen('web/html/html_devices/{html_therm}'.format(html_therm=html_therm))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
@@ -133,7 +134,7 @@ def _htmlbody(account_id):
             #
             try:
                 smoke_ids = json_devices['smoke_co_alarms'].keys()
-            except:
+            except Exception as e:
                 smoke_ids = False
             #
             if bool(smoke_ids):
@@ -179,7 +180,7 @@ def _htmlbody(account_id):
                         ui_color_state = ''
                         #
                     #
-                    devices_html += urlopen('web/html_devices/{html_smoke}'.format(html_smoke=html_smoke))\
+                    devices_html += urlopen('web/html/html_devices/{html_smoke}'.format(html_smoke=html_smoke))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
@@ -201,7 +202,7 @@ def _htmlbody(account_id):
             #
             try:
                 cam_ids = json_devices['cameras'].keys()
-            except:
+            except Exception as e:
                 cam_ids = False
             #
             if bool(cam_ids):
@@ -236,7 +237,7 @@ def _htmlbody(account_id):
                         cam_streaming = ''
                         #
                     #
-                    devices_html += urlopen('web/html_devices/{html_cam}'.format(html_cam=html_cam))\
+                    devices_html += urlopen('web/html/html_devices/{html_cam}'.format(html_cam=html_cam))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
