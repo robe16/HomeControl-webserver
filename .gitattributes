@@ -1,0 +1,15 @@
+$ cat .gitattributes
+src/web/html/static/css/bootstrap-switch.css linguist-vendored
+src/web/html/static/css/bootstrap-theme.css linguist-vendored
+src/web/html/static/css/bootstrap-theme.min.css linguist-vendored
+src/web/html/static/css/bootstrap.css linguist-vendored
+src/web/html/static/css/bootstrap.min.css linguist-vendored
+src/web/html/static/css/weather-icons-wind.css linguist-vendored
+src/web/html/static/css/weather-icons-wind.min.css linguist-vendored
+src/web/html/static/css/weather-icons.css linguist-vendored
+src/web/html/static/css/weather-icons.min.csss linguist-vendored
+src/web/html/static/fonts/* linguist-vendored
+src/web/html/static/js/bootstrap-switch.js linguist-vendored
+src/web/html/static/js/bootstrap.js linguist-vendored
+src/web/html/static/js/bootstrap.min.js linguist-vendored
+src/web/html/static/js/jquery.js linguist-vendored
