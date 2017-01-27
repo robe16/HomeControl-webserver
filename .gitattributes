@@ -1,4 +1,5 @@
 $ cat .gitattributes
+*.* linguist-language=Python
 src/web/html/static/css/bootstrap-switch.css linguist-vendored
 src/web/html/static/css/bootstrap-theme.css linguist-vendored
 src/web/html/static/css/bootstrap-theme.min.css linguist-vendored
