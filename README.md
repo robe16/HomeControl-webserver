@@ -24,16 +24,6 @@ Elements that have been developed:
 </p><br>
 
 <strike><p>
-<code>GET</code> <code>/web/settings/{page}</code>
-<br>Returns a HTML page for creating/amending the configuration for the server. Page returned dependant on the {page} variable, including devices and tvguide. Only accessible if user has admin rights.
-</p><br><p>
-<code>GET</code> <code>/web/settings?gethtml={html_request}&...</code>
-<br>Used by the settings page /web/settings/devices for individual components when added by user.
-<br>Additional query parameters dependant on value of <code>gethtml</code>:
-<br>'group': <code>grpnum</code> (0,1,etc)
-<br>'selection': <code>grpnum</code> (0,1,etc) & <code>dvcnum</code> (0,1,etc)
-<br>'device': <code>grpnum</code> (0,1,etc), <code>dvcnum</code> (0,1,etc) & <code>device</code> (eg. tivo, nest)
-</p><br><p>
 <code>GET</code> <code>/web/preferences/{page}</code>
 <br>Only one value available at present for {page} - tvguide. Returns a page for the logged in user to choose their favourite channels for showing in channel lists.
 </p></strike>
@@ -56,12 +46,9 @@ Elements that have been developed:
 </p><br>
 
 <strike><p>
-<code>POST</code> <code>/settings/{category}</code>
-<br>Used to submit and save the config/settings via a json payload. Variables for {category} include 'tvguide' and 'devices' and admin access is required.
-</p><<br><p>
 <code>POST</code> <code>/preferences/{category}</code>
 <br>Used to submit and save the user preferences via a json payload.
-</p><br>/strike>
+</p><br></strike>
 
 <p>
 <code>GET</code> <code>/favicon.ico</code>
