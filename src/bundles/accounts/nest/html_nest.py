@@ -24,14 +24,18 @@ def html_nest(account_id):
     args = {'account_id': account_id,
             'timestamp': timestamp,
             'script': script,
-            'body_nest': body}
+            'body_nest_therm': body['nest_therm'],
+            'body_nest_protect': body['nest_protect'],
+            'body_nest_cam': body['nest_cam']}
     #
     return urlopen('web/html/html_devices/' + get_device_html_command('nest_account')).read().encode('utf-8').format(**args)
 
 
 def _htmlbody(account_id):
     #
-    devices_html = '<div class="row">'
+    devices_therm_html = ''
+    devices_protect_html = ''
+    devices_cam_html = ''
     #
     try:
         json_devices = _get_nest_data(account_id)
@@ -42,6 +46,8 @@ def _htmlbody(account_id):
             return False
         #
         # Thermostats
+        #
+        devices_therm_html = '<div class="row">'
         #
         html_therm = get_device_detail('nest_account', 'html_therm')
         #
@@ -56,7 +62,7 @@ def _htmlbody(account_id):
                 count = 0
                 for therm in therm_ids:
                     if count> 0 and count % 4 == 0:
-                        devices_html += '</div><div class="row">'
+                        devices_therm_html += '</div><div class="row">'
                     #
                     colwidth = '3'
                     rem = len(therm_ids) - count
@@ -107,7 +113,7 @@ def _htmlbody(account_id):
                         new_temp_down = ''
                         #
                     #
-                    devices_html += urlopen('web/html/html_devices/{html_therm}'.format(html_therm=html_therm))\
+                    devices_therm_html += urlopen('web/html/html_devices/{html_therm}'.format(html_therm=html_therm))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
@@ -126,7 +132,11 @@ def _htmlbody(account_id):
                     count += 1
                     #
         #
+        devices_therm_html += '</div>'
+        #
         # Smoke and CO detectors
+        #
+        devices_protect_html = '<div class="row">'
         #
         html_smoke = get_device_detail('nest_account', 'html_smoke')
         #
@@ -141,7 +151,7 @@ def _htmlbody(account_id):
                 count = 0
                 for smoke in smoke_ids:
                     if count> 0 and count % 4 == 0:
-                        devices_html += '</div><div class="row">'
+                        devices_protect_html += '</div><div class="row">'
                     #
                     colwidth = '3'
                     rem = len(smoke_ids) - count
@@ -180,7 +190,7 @@ def _htmlbody(account_id):
                         ui_color_state = ''
                         #
                     #
-                    devices_html += urlopen('web/html/html_devices/{html_smoke}'.format(html_smoke=html_smoke))\
+                    devices_protect_html += urlopen('web/html/html_devices/{html_smoke}'.format(html_smoke=html_smoke))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
@@ -194,7 +204,11 @@ def _htmlbody(account_id):
                     count += 1
                     #
         #
+        devices_protect_html += '</div>'
+        #
         # Cameras
+        #
+        devices_cam_html = '<div class="row">'
         #
         html_cam = get_device_detail('nest_account', 'html_cam')
         #
@@ -209,7 +223,7 @@ def _htmlbody(account_id):
                 count = 0
                 for cam in cam_ids:
                     if count> 0 and count % 4 == 0:
-                        devices_html += '</div><div class="row">'
+                        devices_cam_html += '</div><div class="row">'
                     #
                     colwidth = '3'
                     rem = len(cam_ids) - count
@@ -237,7 +251,7 @@ def _htmlbody(account_id):
                         cam_streaming = ''
                         #
                     #
-                    devices_html += urlopen('web/html/html_devices/{html_cam}'.format(html_cam=html_cam))\
+                    devices_cam_html += urlopen('web/html/html_devices/{html_cam}'.format(html_cam=html_cam))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
@@ -248,12 +262,14 @@ def _htmlbody(account_id):
                     count += 1
                     #
         #
+        devices_cam_html += '</div>'
         #
     except Exception as e:
         print_error('Nest devices could not be compiled into html - ' + str(e), dvc_or_acc_id=account_id)
     #
-    devices_html += '</div>'
-    return devices_html
+    return {'nest_therm': devices_therm_html,
+            'nest_protect': devices_protect_html,
+            'nest_cam': devices_cam_html}
 
 
 def _get_nest_data(account_id):
