@@ -1,6 +1,6 @@
 function sendNestCmd(account_id, command, value, nest_model, nest_device, nest_device_id) {
     //
-    x = sendHttp('/command/device/' + account_id +
+    x = sendHttp('/command/account/' + account_id +
                 '?command=' + command +
                 '&value=' + value +
                 '&nest_model=' + nest_model +
@@ -15,7 +15,7 @@ function sendNestCmd(account_id, command, value, nest_model, nest_device, nest_d
 
 function updateNest(url){
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.open('POST', url, false);
+    xmlHttp.open('GET', url, false);
     xmlHttp.send(null);
     if (xmlHttp.status==200) {
         document.getElementById('body_nest').innerHTML = xmlHttp.responseText}
