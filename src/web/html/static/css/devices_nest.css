@@ -170,6 +170,7 @@
     width: 100%;
     height: 50px;
     margin: 5px 0px;
+    cursor: pointer;
 }
 .nest_device_type_body {
     padding: 5px 15px;

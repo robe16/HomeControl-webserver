@@ -20,6 +20,7 @@
     "nest_account": {
         "name": "Nest Account",
         "html_command": "object_account_nest.html",
+        "html_command_body": "object_account_nest_body.html",
         "html_therm": "object_account_nest_thermostat.html",
         "html_smoke": "object_account_nest_smoke_co_alarm.html",
         "html_cam": "object_account_nest_cam.html",

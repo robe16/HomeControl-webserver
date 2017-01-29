@@ -9,7 +9,7 @@ from lists.devices.list_devices import get_device_html_command, get_device_detai
 
 _temp_unit = 'c'
 
-def html_nest(account_id):
+def html_nest(account_id, query_dict):
     #
     body = _htmlbody(account_id)
     #
@@ -21,14 +21,21 @@ def html_nest(account_id):
     #
     timestamp = datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S')
     #
-    args = {'account_id': account_id,
-            'timestamp': timestamp,
-            'script': script,
-            'body_nest_therm': body['nest_therm'],
-            'body_nest_protect': body['nest_protect'],
-            'body_nest_cam': body['nest_cam']}
+    args_body = {'timestamp': timestamp,
+                 'body_nest_therm': body['nest_therm'],
+                 'body_nest_protect': body['nest_protect'],
+                 'body_nest_cam': body['nest_cam']}
     #
-    return urlopen('web/html/html_devices/' + get_device_html_command('nest_account')).read().encode('utf-8').format(**args)
+    html_body = urlopen('web/html/html_devices/' + get_device_detail('nest_account', 'html_command_body')).read().encode('utf-8').format(**args_body)
+    #
+    if len(query_dict) > 0:
+        if query_dict['body']:
+            return html_body
+    #
+    args_html = {'script': script,
+                 'nest_body': html_body}
+    #
+    return urlopen('web/html/html_devices/' + get_device_html_command('nest_account')).read().encode('utf-8').format(**args_html)
 
 
 def _htmlbody(account_id):
