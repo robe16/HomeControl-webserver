@@ -83,17 +83,24 @@ def web_about():
 @get('/web/info/<service>')
 def web_info(service=False):
     global _cache
-    # Get and check user
-    user = _check_user(request.get_cookie('user'))
-    if not user:
-        redirect('/web/login')
     #
-    if service == 'tvlistings':
-        return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
-    elif service == 'weather':
-        return HTTPResponse(body=create_weather(user, _cache), status=200)
-    else:
-        raise HTTPError(404)
+    try:
+        if not service:
+            raise HTTPError(404)
+        #
+        # Get and check user
+        user = _check_user(request.get_cookie('user'))
+        if not user:
+            redirect('/web/login')
+        #
+        if service == 'tvlistings':
+            return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
+        elif service == 'weather':
+            return HTTPResponse(body=create_weather(user, _cache), status=200)
+        else:
+            raise HTTPError(404)
+    except Exception as e:
+        raise HTTPError(500)
 
 
 @get('/web/device/<room_id>/<device_id>')
@@ -131,7 +138,7 @@ def web_devices(room_id=False, device_id=False):
                                                        device=get_cfg_device_name(_cache['setup'], room_id, device_id)))
         #
         return HTTPResponse(body=body, status=200)
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -148,10 +155,18 @@ def web_accounts(account_id=False):
         if not user:
             redirect('/web/login')
         #
+        query_dict = dict(request.query)
+        #
         account_type = get_cfg_account_type(_cache['setup'], account_id)
         #
         if account_type == 'nest_account':
-            html_body = html_nest(account_id)
+            html_body = html_nest(account_id,
+                                  query_dict)
+            try:
+                if query_dict['body']:
+                    return html_body
+            except Exception as e:
+                pass
         else:
             return HTTPError(404)
         #
@@ -162,7 +177,7 @@ def web_accounts(account_id=False):
                              get_cfg_account_name(_cache['setup'], account_id))
         #
         return HTTPResponse(body=body, status=200)
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -194,7 +209,7 @@ def get_data_device(room_id=False, device_id=False, resource_requested=False):
         else:
             return HTTPResponse(status=400)
             #
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -216,7 +231,7 @@ def get_data_account(account_id=False, resource_requested=False):
         else:
             return HTTPResponse(status=400)
             #
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -246,7 +261,7 @@ def send_command_device(room_id=False, device_id=False):
         else:
             return HTTPResponse(status=400)
             #
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -267,7 +282,7 @@ def send_command_account(account_id=False):
         else:
             return HTTPResponse(status=400)
         #
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -301,7 +316,7 @@ def get_favicon():
         else:
             return HTTPResponse(status=400)
         #
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
@@ -318,7 +333,7 @@ def get_image(category, filename):
         else:
             return HTTPResponse(status=400)
         #
-    except:
+    except Exception as e:
         raise HTTPError(500)
 
 
