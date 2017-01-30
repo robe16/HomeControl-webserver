@@ -4,11 +4,21 @@ Client to run alongside the main server - intention to have both run 24/7 on a R
 
 A web interface  that will dynamically be created on the fly when requested, and will allow for commands to be sent to the server for controlling devices.
 
-Elements that have been developed:
+<h4>Bundles that have been developed:</h4>
+
+<p>Devices</p>
 - LG TV control
 - Virgin Media TiVo control
+
+<p>Accounts</p>
 - Nest (thermostat & smoke detectors)
+
+<p>Info Services</p>
 - Weather forecast
+- TV Listings
+
+<img src="https://github.com/robe16/HomeControl-documentation/blob/master/img_interfaces_webserver-server.jpg">
+<h5>Figure: Interfaces between server and devices/accounts/info sources</h5>
 
 <hr>
 <h3>API Guide</h3>
