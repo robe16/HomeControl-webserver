@@ -18,7 +18,7 @@ A web interface  that will dynamically be created on the fly when requested, and
 - TV Listings
 
 <img src="https://github.com/robe16/HomeControl-documentation/blob/master/img_interfaces_webserver-server.jpg">
-<h5>Figure: Interfaces between server and devices/accounts/info sources</h5>
+<h5>Figure: Interfaces between HomeControl-webserver and HomeControl-server</h5>
 
 <hr>
 <h3>API Guide</h3>
