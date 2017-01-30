@@ -2,7 +2,7 @@
 
 Client to run alongside the main server - intention to have both run 24/7 on a Raspberry Pi.
 
-A web interface  that will dynamically be created on the fly when requested, and will allow for commands to be sent to the server for controlling devices.
+A web interface that will dynamically be created on the fly when requested, and will allow for commands to be sent to the server for controlling devices.
 
 <h4>Bundles that have been developed:</h4>
 
