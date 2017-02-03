@@ -25,8 +25,8 @@
 .obj_thermostat {
     display: block;
     position: relative;
-    height: 163px;
-    width: 163px;
+    height: 168px;
+    width: 168px;
     vertical-align: middle;
     text-align: center;
     top: 50%;
@@ -35,16 +35,24 @@
     z-index: 1100;
 }
 .obj_thermostat_heating {
-    background-color: #eb6d00;
+    background-color: #ec7800;
+    /* box-shadow: 0 0.8rem 1.6rem #e86500; */
+    /* card bg = #eb6d00 */
 }
 .obj_thermostat_cooling {
-    background-color: blue;
+    background-color: #0060ff;
+    /* box-shadow: 0 0.8rem 1.6rem #0048ff; */
+    /* card bg = #05f */
 }
 .obj_thermostat_off {
-    background-color: #454657;
+    background-color: #3b444c;
+    /* box-shadow: 0 0.8rem 1.6rem #333B43; */
+    /* card bg = #373f48 */
 }
 .obj_thermostat_offline {
-    background-color: #B8B8BE;
+    background-color: #3b444c;
+    /* box-shadow: 0 0.8rem 1.6rem #333B43; */
+    /* card bg = #373f48 */
 }
 
 
@@ -94,6 +102,49 @@
 }
 .leaf_false {
     visibility: hidden;
+}
+
+
+svg .ticks .background-ticks line {
+    stroke-width: 1.5;
+}
+.obj_thermostat_heating svg .ticks .background-ticks line {
+    stroke: #f4a700;
+}
+.obj_thermostat_cooling svg .ticks .background-ticks line {
+    stroke: #009dff;
+}
+.obj_thermostat_off svg .ticks .background-ticks line {
+    stroke: #687078;
+}
+.obj_thermostat_offline svg {
+    display: none;
+}
+
+
+svg .ticks .target-ticks line {
+    display: none;
+    stroke-width: 9;
+    stroke: #D2D5D7;
+}
+svg .ticks .target-ticks .tick-target-active {
+    display: inherit;
+}
+
+
+svg .ticks .ambient-ticks line {
+    display: none;
+    stroke-width: 6;
+    stroke: #D2D5D7;
+}
+svg .ticks .ambient-ticks .tick-ambient-active {
+    display: inherit;
+}
+svg .ticks .ambient-ticks .tick-ambient-active-blue {
+    stroke: #05f;
+}
+svg .ticks .ambient-ticks .tick-ambient-active-red {
+    stroke: #eb6d00;
 }
 
 

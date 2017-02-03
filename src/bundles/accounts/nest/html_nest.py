@@ -120,7 +120,7 @@ def _htmlbody(account_id):
                         new_temp_down = ''
                         #
                     #
-                    devices_therm_html += urlopen('web/html/html_devices/{html_therm}'.format(html_therm=html_therm))\
+                    temp_therm_html = urlopen('web/html/html_devices/{html_therm}'.format(html_therm=html_therm))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,
@@ -135,6 +135,23 @@ def _htmlbody(account_id):
                                                        hvac=therm_hvac_state,
                                                        new_temp_up=new_temp_up,
                                                        new_temp_down=new_temp_down)
+                    #
+                    if _temp_unit == 'c':
+                        #
+                        _str_to_replace = 'tick-target temp-tick-c-{temp}'.format(temp=therm_temp_target)
+                        temp_therm_html = temp_therm_html.replace(_str_to_replace,
+                                                                  'tick-target tick-target-active')
+                        #
+                        if therm_hvac_state == 'heating' or therm_hvac_state =='cooling':
+                            _str_to_replace = 'tick-ambient temp-tick-c-{temp}'.format(temp=therm_temp_ambient)
+                            if therm_temp_ambient < therm_temp_target:
+                                _col = 'blue'
+                            else:
+                                _col = 'red'
+                            temp_therm_html = temp_therm_html.replace(_str_to_replace,
+                                                                      'tick-ambient tick-ambient-active tick-ambient-active-{col}'.format(col=_col))
+                    #
+                    devices_therm_html += temp_therm_html
                     #
                     count += 1
                     #
