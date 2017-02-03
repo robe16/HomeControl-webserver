@@ -17,7 +17,7 @@ A web interface that will dynamically be created on the fly when requested, and 
 - Weather forecast
 - TV Listings
 
-<img src="https://github.com/robe16/HomeControl-documentation/blob/master/img_interfaces_webserver-server.jpg">
+<img src="https://github.com/robe16/HomeControl-documentation/blob/master/images/interfaces/img_interfaces_webserver-server.jpg">
 <h5>Figure: Interfaces between HomeControl-webserver and HomeControl-server</h5>
 
 <hr>
