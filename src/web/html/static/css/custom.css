@@ -6,6 +6,27 @@ body {
 }
 
 
+.datetime {
+    display: block;
+}
+.date {
+	font-size: 20px;
+}
+
+.time {
+	font-size: 60px;
+    font-weight: bold;
+    display: inline-block;
+}
+.time_item {
+    display: inline-block;
+}
+.second {
+    bottom: 0;
+	font-size: 30px;
+}
+
+
 .btn-container-padding {
     padding: 2px;
 }

@@ -1,10 +1,21 @@
 <div class="container">
     <div class="row">
         <div class="col-md-12">
-            <br>
-            <h1>Welcome...</h1>
-            <h4>...to Home Automation web application</h4>
-            <p>Use the buttons to the left to use device commands.</p>
+            <script src="/web/static/js/clock.js"></script>
+            <script>
+                window.onload=function() {
+                    startClock();
+                }
+            </script>
+            <div class="datetime">
+                <div id="date" class="date material-text-dark-disabled"></div>
+                <div class="time">
+                    <div id="hour" class="time_item"></div>
+                    <div class="time_item">:</div>
+                    <div id="minute" class="time_item"></div>
+                    <div id="second" class="time_item second"></div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
