@@ -158,13 +158,13 @@ def _htmlbody(account_id):
         #
         devices_therm_html += '</div>'
         #
-        # Smoke and CO detectors
+        # Protect (Smoke and CO) detectors
         #
         devices_protect_html = '<div class="row">'
         #
-        html_smoke = get_device_detail('nest_account', 'html_smoke')
+        html_protect = get_device_detail('nest_account', 'html_protect')
         #
-        if html_smoke:
+        if html_protect:
             #
             try:
                 smoke_ids = json_devices['smoke_co_alarms'].keys()
@@ -214,7 +214,7 @@ def _htmlbody(account_id):
                         ui_color_state = ''
                         #
                     #
-                    devices_protect_html += urlopen('web/html/html_devices/{html_smoke}'.format(html_smoke=html_smoke))\
+                    devices_protect_html += urlopen('web/html/html_devices/{html_protect}'.format(html_protect=html_protect))\
                         .read().encode('utf-8').format(colwidth=colwidth,
                                                        account_id=account_id,
                                                        nest_device_id=nest_device_id,

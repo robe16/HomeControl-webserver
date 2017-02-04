@@ -148,56 +148,66 @@ svg .ticks .ambient-ticks .tick-ambient-active-red {
 }
 
 
-/* Smoke detectors */
+/* protect */
 
-
-.nest_smoke_border {
+.nest_protect {
+    height: 175px;
+    width: 175px;
+}
+.nest_protect_container {
     display: inline-block;
     position: relative;
     height: 175px;
     width: 175px;
-    border-radius: 25px;
     z-index: 1000;
 }
-.nest_smoke_border_gray {
-    background-color: #B8B8BE;
+.nest_protect_img {
+    height: 175px;
+    width: 175px;
 }
-.nest_smoke_border_green {
-    background-color: #39C226;
-}
-.nest_smoke_border_yellow {
-    background-color: #FBCD36;
-}
-.nest_smoke_border_red {
-    background-color: #E63117;
-}
-
-.smoke_status_label {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);%;
-    color: black;
-}
-
-.obj_smoke {
+.nest_protect_img {
+    height: 175px;
+    width: 175px;
     display: block;
     position: relative;
-    height: 163px;
-    width: 163px;
+    z-index: 1100;
+}
+
+.obj_protect_circle {
+    height: 90px;
+    width: 90px;
+    display: block;
+    position: absolute;
     vertical-align: middle;
-    text-align: center;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    border-radius: 19px;
-    z-index: 1100;
+    z-index: 1200;
 }
-.obj_smoke_online {
+.nest_protect_gray {
+    -webkit-box-shadow: inset 0px 0px 10px 2px #B8B8BE;
+    -moz-box-shadow: inset 0px 0px 10px 2px #B8B8BE;
+    box-shadow: inset 0px 0px 10px 2px #B8B8BE;
+}
+.nest_protect_green {
+    -webkit-box-shadow: inset 0px 0px 10px 2px #39C226;
+    -moz-box-shadow: inset 0px 0px 10px 2px #39C226;
+    box-shadow: inset 0px 0px 10px 2px #39C226;
+}
+.nest_protect_yellow {
+    -webkit-box-shadow: inset 0px 0px 10px 2px #FBCD36;
+    -moz-box-shadow: inset 0px 0px 10px 2px #FBCD36;
+    box-shadow: inset 0px 0px 10px 2px #FBCD36;
+}
+.nest_protect_red {
+    -webkit-box-shadow: inset 0px 0px 10px 2px #E63117;
+    -moz-box-shadow: inset 0px 0px 10px 2px #E63117;
+    box-shadow: inset 0px 0px 10px 2px #E63117;
+}
+.obj_protect_online {
     background-color: white;
 }
-.obj_smoke_offline {
+.obj_protect_offline {
     background-color: #B8B8BE;
 }
 

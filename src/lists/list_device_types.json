@@ -22,7 +22,7 @@
         "html_command": "object_account_nest.html",
         "html_command_body": "object_account_nest_body.html",
         "html_therm": "object_account_nest_thermostat.html",
-        "html_smoke": "object_account_nest_smoke_co_alarm.html",
+        "html_protect": "object_account_nest_protect.html",
         "html_cam": "object_account_nest_cam.html",
         "logo": "logo_nest_blue.png",
         "type": "nest_account"
