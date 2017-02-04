@@ -31,7 +31,6 @@ def request_weather():
     if r.status_code == requests.codes.ok:
         print_msg('Weather info retrieved successfully - {status_code}'.format(status_code=r.status_code))
         data = r.content
-        print(data)
         return ast.literal_eval(data)
     else:
         print_error('Weather info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
