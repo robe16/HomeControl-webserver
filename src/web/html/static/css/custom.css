@@ -25,6 +25,11 @@ body {
     bottom: 0;
 	font-size: 30px;
 }
+@media (max-width: 450px) {
+    .date {font-size: 15px;}
+    .time {font-size: 45px;}
+    .second {font-size: 22px;}
+}
 
 
 .btn-container-padding {
@@ -90,7 +95,7 @@ body {
 
 
 .material-text-dark-primary {color: #000000; opacity: 0.87;}
-.material-text-dark-seconday {color: #000000; opacity: 0.54;}
+.material-text-dark-secondary {color: #000000; opacity: 0.54;}
 .material-text-dark-disabled {color: #000000; opacity: 0.38;}
 .material-text-dark-divider {color: #000000; opacity: 0.12;}
 .material-text-light-primary {color: #FFFFFF; opacity: 1.0;}
