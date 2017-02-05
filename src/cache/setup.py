@@ -1,88 +1,62 @@
 ################################################################################################
-# Return count of rooms, devices and accounts
+# Return count of groups and devices
 ################################################################################################
 
 
-def get_cfg_count_rooms(data):
-    return len(data['rooms'])
+def get_cfg_count_groups(data):
+    return len(data['groups'])
 
 
-def get_cfg_count_devices(data, room_id):
-    return len(data['rooms'][room_id]['devices'])
-
-
-def get_cfg_count_accounts(data):
-    return len(data['accounts'])
+def get_cfg_count_devices(data, group_id):
+    return len(data['groups'][group_id]['devices'])
 
 ################################################################################################
-# Return list of room, device and account ids
+# Return list of group and device ids
 ################################################################################################
 
 
-def get_cfg_idlist_rooms(data):
+def get_cfg_idlist_groups(data):
     #
     r_list = []
     #
-    for key, value in data['rooms'].iteritems():
+    for key, value in data['groups'].iteritems():
         r_list.append(key)
     #
     return r_list
 
 
-def get_cfg_idlist_devices(data, room_id):
+def get_cfg_idlist_devices(data, group_id):
     #
     d_list = []
     #
-    for key, value in data['rooms'][room_id]['devices'].iteritems():
+    for key, value in data['groups'][group_id]['devices'].iteritems():
         d_list.append(key)
     #
     return d_list
 
-
-def get_cfg_idlist_accounts(data):
-    #
-    a_list = []
-    #
-    for key, value in data['accounts'].iteritems():
-        a_list.append(key)
-    #
-    return a_list
-
 ################################################################################################
-# Return number/index for room, device and account
+# Return number/index for group and device
 ################################################################################################
 
 
-def get_cfg_room_index(data, room_id):
+def get_cfg_group_index(data, group_id):
     #
     count = 0
     #
-    for key, value in data['rooms'].iteritems():
-        if key == room_id:
+    for key, value in data['groups'].iteritems():
+        if key == group_id:
             return count
         count += 1
     #
     return -1
 
 
-def get_cfg_device_index(data, room_id, device_id):
+def get_cfg_device_index(data, group_id, device_id):
     #
     count = 0
     #
-    for key, value in data['rooms'][room_id]['devices'].iteritems():
+    for key, value in data['groups'][group_id]['devices'].iteritems():
         if key == device_id:
-            return count
-        count += 1
-    #
-    return -1
-
-
-def get_cfg_account_index(data, account_id):
-    #
-    count = 0
-    #
-    for key, value in data['accounts'].iteritems():
-        if key == account_id:
             return count
         count += 1
     #
@@ -103,76 +77,52 @@ def get_cfg_structure_town(data):
     return get_cfg_structure_value(data, 'structure_town')
 
 ################################################################################################
-# Return name of room, device and account
+# Return name of group and device
 ################################################################################################
 
 
-def get_cfg_room_name(data, room_id):
+def get_cfg_group_name(data, group_id):
     #
-    return get_cfg_room_value(data, room_id, 'room_name')
+    return get_cfg_group_value(data, group_id, 'group_name')
 
 
-def get_cfg_device_name(data, room_id, device_id):
+def get_cfg_device_name(data, group_id, device_id):
     #
-    return get_cfg_device_value(data, room_id, device_id, 'device_name')
-
-
-def get_cfg_account_name(data, account_id):
-    #
-    return get_cfg_account_value(data, account_id, 'account_name')
+    return get_cfg_device_value(data, group_id, device_id, 'device_name')
 
 ################################################################################################
-# Return type of device and account
+# Return type of device
 ################################################################################################
 
 
-def get_cfg_device_type(data, room_id, device_id):
+def get_cfg_device_type(data, group_id, device_id):
     #
-    return get_cfg_device_value(data, room_id, device_id, 'device_type')
-
-
-def get_cfg_account_type(data, account_id):
-    #
-    return get_cfg_account_value(data, account_id, 'account_type')
+    return get_cfg_device_value(data, group_id, device_id, 'device_type')
 
 ################################################################################################
-# Return private detail value of device and account
+# Return private detail value of device
 ################################################################################################
 
 
-def get_cfg_device_detail(data, room_id, device_id, detail):
+def get_cfg_device_detail(data, group_id, device_id, detail):
     #
-    details = get_cfg_device_value(data, room_id, device_id, 'details')
-    #
-    return details[detail]
-
-
-def get_cfg_account_detail(data, account_id, detail):
-    #
-    details = get_cfg_account_value(data, account_id, 'details')
+    details = get_cfg_device_value(data, group_id, device_id, 'details')
     #
     return details[detail]
 
 ################################################################################################
-# Return public detail value of device and account
+# Return public detail value of device
 ################################################################################################
 
 
-def get_cfg_device_detail_public(data, room_id, device_id, detail):
+def get_cfg_device_detail_public(data, group_id, device_id, detail):
     #
-    details = get_cfg_device_value(data, room_id, device_id, 'details_public')
-    #
-    return details[detail]
-
-
-def get_cfg_account_detail_public(data, account_id, detail):
-    #
-    details = get_cfg_account_value(data, account_id, 'details_public')
+    details = get_cfg_device_value(data, group_id, device_id, 'details_public')
     #
     return details[detail]
 
 ################################################################################################
-# Return value for structure room, device and account
+# Return value for structure group and device
 # (used as 'master' code for returning name, type, etc. in above defs)
 ################################################################################################
 
@@ -182,19 +132,14 @@ def get_cfg_structure_value(data, key):
     return data['structure'][key]
 
 
-def get_cfg_room_value(data, room_id, key):
+def get_cfg_group_value(data, group_id, key):
     #
-    return data['rooms'][room_id][key]
+    return data['groups'][group_id][key]
 
 
-def get_cfg_device_value(data, room_id, device_id, key):
+def get_cfg_device_value(data, group_id, device_id, key):
     #
-    return data['rooms'][room_id]['devices'][device_id][key]
-
-
-def get_cfg_account_value(data, account_id, key):
-    #
-    return data['accounts'][account_id][key]
+    return data['groups'][group_id]['devices'][device_id][key]
 
 ################################################################################################
 ################################################################################################

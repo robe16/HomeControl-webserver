@@ -15,21 +15,21 @@ def html_channels_user_and_all (_cache, user=False, _device_details=False):
     #
     if _device_details:
         type = _device_details['type']
-        room_id = _device_details['room_id']
+        group_id = _device_details['group_id']
         device_id = _device_details['device_id']
         package = _device_details['package']
         current_chan = _device_details['current_chan']
     else:
         type = False
-        room_id = False
+        group_id = False
         device_id = False
         package = False
         current_chan = False
     #
     html_channels = ''
     #
-    if room_id and device_id:
-        html_channels += '<script>setTimeout(function () {getChannel(\'/data/device/' + str(room_id) + \
+    if group_id and device_id:
+        html_channels += '<script>setTimeout(function () {getChannel(\'/data/device/' + str(group_id) + \
                          '/' + str(device_id) + \
                          '/channel\', true);}, 10000);</script>'
     #
@@ -137,13 +137,13 @@ def _channels_contents(channel_items, user=False, _device_details=False):
     #
     if _device_details:
         type = _device_details['type']
-        room_id = _device_details['room_id']
+        group_id = _device_details['group_id']
         device_id = _device_details['device_id']
         package = _device_details['package']
         current_chan = _device_details['current_chan']
     else:
         type = False
-        room_id = False
+        group_id = False
         device_id = False
         package = False
         current_chan = False
@@ -176,7 +176,7 @@ def _channels_contents(channel_items, user=False, _device_details=False):
                                                                                                  cls_highlight=chan_highlight,
                                                                                                  imgchan=channel_items['channels'][str(chanCount)][res]['logo'],
                                                                                                  channame=channel_items['channels'][str(chanCount)]['name'],
-                                                                                                 room_id=room_id,
+                                                                                                 group_id=group_id,
                                                                                                  device_id=device_id,
                                                                                                  channo=channo)
 

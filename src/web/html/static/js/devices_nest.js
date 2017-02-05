@@ -1,6 +1,7 @@
-function sendNestCmd(account_id, command, value, nest_model, nest_device, nest_device_id) {
+function sendNestCmd(group_id, device_id, command, value, nest_model, nest_device, nest_device_id) {
     //
-    x = sendHttp('/command/account/' + account_id +
+    x = sendHttp('/command/device/' + group_id +
+                '/' + device_id +
                 '?command=' + command +
                 '&value=' + value +
                 '&nest_model=' + nest_model +

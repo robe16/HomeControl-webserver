@@ -6,19 +6,19 @@ from lists.devices.list_devices import get_device_html_command
 from log.console_messages import print_error
 
 
-def html_tv_lg_netcast(room_id, device_id):
+def html_tv_lg_netcast(group_id, device_id):
     #
-    args = {'room_id': room_id,
+    args = {'group_id': group_id,
             'device_id': device_id,
-            'apps': _html_apps(room_id, device_id)}
+            'apps': _html_apps(group_id, device_id)}
     #
     return urlopen('web/html/html_devices/' + get_device_html_command('tv_lg_netcast')).read().encode('utf-8').format(**args)
 
 
-def _html_apps(room_id, device_id):
+def _html_apps(group_id, device_id):
     #
     try:
-        json_applist = _get_applist(room_id, device_id)
+        json_applist = _get_applist(group_id, device_id)
         #
         html = '<table style="width:100%">' +\
                '<tr style="height:80px; padding-bottom:2px; padding-top:2px">'
@@ -27,10 +27,10 @@ def _html_apps(room_id, device_id):
         for app in json_applist:
             try:
                 #
-                html += ('<td class="grid_item" style="width: 20%; cursor: pointer; vertical-align: top;" align="center" onclick="sendHttp(\'/command/{room_id}/{device_id}?command=app&auid={auid}&name={app_name}\', null, \'GET\', false, true)">' +
-                         '<img src="/command/device/{room_id}/{device_id}?command=image&auid={auid}&name={app_name}" style="height:50px;"/>' +
+                html += ('<td class="grid_item" style="width: 20%; cursor: pointer; vertical-align: top;" align="center" onclick="sendHttp(\'/command/{group_id}/{device_id}?command=app&auid={auid}&name={app_name}\', null, \'GET\', false, true)">' +
+                         '<img src="/command/device/{group_id}/{device_id}?command=image&auid={auid}&name={app_name}" style="height:50px;"/>' +
                          '<p style="text-align:center; font-size: 13px;">{name}</p>' +
-                         '</td>').format(room_id=room_id,
+                         '</td>').format(group_id=group_id,
                                          device_id=device_id,
                                          auid = json_applist[app]['auid'],
                                          app_name = json_applist[app]['name'].replace(' ', '%20'),
@@ -51,16 +51,16 @@ def _html_apps(room_id, device_id):
                '<p style="text-align:center">Please check the TV is turned on and then try again.</p>'
 
 
-def _get_applist(room_id, device_id):
-    data = _getData(room_id, device_id, 'applist')
+def _get_applist(group_id, device_id):
+    data = _getData(group_id, device_id, 'applist')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(room_id, device_id, datarequest):
-    r = requests.get(server_url('data/device/{room_id}/{device_id}/{datarequest}'.format(room_id=room_id,
+def _getData(group_id, device_id, datarequest):
+    r = requests.get(server_url('data/device/{group_id}/{device_id}/{datarequest}'.format(group_id=group_id,
                                                                                          device_id=device_id,
                                                                                          datarequest=datarequest)))
     if r.status_code == requests.codes.ok:

@@ -9,13 +9,13 @@ from lists.devices.list_devices import get_device_html_command, get_device_detai
 
 _temp_unit = 'c'
 
-def html_nest(account_id, query_dict):
+def html_nest(group_id, device_id, query_dict):
     #
-    body = _htmlbody(account_id)
+    body = _htmlbody(group_id, device_id)
     #
     script = ("\r\n<script>\r\n" +
               "setTimeout(function () {\r\n" +
-              "updateNest('/web/account/" + account_id + "?body=true');\r\n" +
+              "updateNest('/web/device/" + group_id + "/" + device_id + "?body=true');\r\n" +
               "}, 30000);\r\n" +
               "</script>\r\n")
     #
@@ -38,18 +38,20 @@ def html_nest(account_id, query_dict):
     return urlopen('web/html/html_devices/' + get_device_html_command('nest_account')).read().encode('utf-8').format(**args_html)
 
 
-def _htmlbody(account_id):
+def _htmlbody(group_id, device_id):
     #
     devices_therm_html = ''
     devices_protect_html = ''
     devices_cam_html = ''
     #
+    dvc_id = group_id + ':' + device_id
+    #
     try:
-        json_devices = _get_nest_data(account_id)
+        json_devices = _get_nest_data(group_id, device_id)
         json_devices = json_devices['devices']
         #
         if not json_devices:
-            print_error('Nest devices could not retrieved from Nest server', dvc_or_acc_id=account_id)
+            print_error('Nest devices could not retrieved from Nest server', dvc_id=dvc_id)
             return False
         #
         # Thermostats
@@ -122,7 +124,8 @@ def _htmlbody(account_id):
                     #
                     temp_therm_html = urlopen('web/html/html_devices/{html_therm}'.format(html_therm=html_therm))\
                         .read().encode('utf-8').format(colwidth=colwidth,
-                                                       account_id=account_id,
+                                                       group_id=group_id,
+                                                       device_id=device_id,
                                                        nest_device_id=nest_device_id,
                                                        name=therm_name,
                                                        therm_label=therm_label,
@@ -216,8 +219,6 @@ def _htmlbody(account_id):
                     #
                     devices_protect_html += urlopen('web/html/html_devices/{html_protect}'.format(html_protect=html_protect))\
                         .read().encode('utf-8').format(colwidth=colwidth,
-                                                       account_id=account_id,
-                                                       nest_device_id=nest_device_id,
                                                        name=smoke_name,
                                                        online=smoke_online,
                                                        ui_color_state=ui_color_state,
@@ -277,8 +278,6 @@ def _htmlbody(account_id):
                     #
                     devices_cam_html += urlopen('web/html/html_devices/{html_cam}'.format(html_cam=html_cam))\
                         .read().encode('utf-8').format(colwidth=colwidth,
-                                                       account_id=account_id,
-                                                       nest_device_id=nest_device_id,
                                                        name=cam_name,
                                                        color=img_color,
                                                        online=cam_online)
@@ -289,24 +288,25 @@ def _htmlbody(account_id):
         devices_cam_html += '</div>'
         #
     except Exception as e:
-        print_error('Nest devices could not be compiled into html - ' + str(e), dvc_or_acc_id=account_id)
+        print_error('Nest devices could not be compiled into html - ' + str(e), dvc_id=dvc_id)
     #
     return {'nest_therm': devices_therm_html,
             'nest_protect': devices_protect_html,
             'nest_cam': devices_cam_html}
 
 
-def _get_nest_data(account_id):
-    data = _getData(account_id, 'data')
+def _get_nest_data(group_id, device_id):
+    data = _getData(group_id, device_id, 'data')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(account_id, datarequest):
-    r = requests.get(server_url('data/account/{account_id}/{datarequest}'.format(account_id=account_id,
-                                                                                 datarequest=datarequest)))
+def _getData(group_id, device_id, datarequest):
+    r = requests.get(server_url('data/device/{group_id}/{device_id}/{datarequest}'.format(group_id=group_id,
+                                                                                          device_id=device_id,
+                                                                                          datarequest=datarequest)))
     if r.status_code == requests.codes.ok:
         return r.content
     else:

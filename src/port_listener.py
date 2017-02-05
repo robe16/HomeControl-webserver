@@ -1,22 +1,20 @@
 import os
 
+import requests as requests
 from bottle import error, HTTPError
 from bottle import get, post
 from bottle import request, run, static_file, HTTPResponse, redirect, response
 
-import requests as requests
-
 import cfg
-from cfg import server_url
-from cache.setup import get_cfg_room_name, get_cfg_device_name, get_cfg_account_name
-from cache.setup import get_cfg_device_type, get_cfg_account_type
+from bundles.devices.tivo.html_tivo import html_tivo
+from bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
+from cache.setup import get_cfg_device_type
+from cache.setup import get_cfg_group_name, get_cfg_device_name
 from cache.users import check_user
+from cfg import server_url
+from src.bundles.devices.nest.html_nest import html_nest
 from web.web_create_error import create_error
 from web.web_create_pages import create_login, create_home, create_about, create_tvlistings, create_weather, create_device
-
-from bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
-from bundles.devices.tivo.html_tivo import html_tivo
-from bundles.accounts.nest.html_nest import html_nest
 
 
 ################################################################################################
@@ -103,51 +101,12 @@ def web_info(service=False):
         raise HTTPError(500)
 
 
-@get('/web/device/<room_id>/<device_id>')
-def web_devices(room_id=False, device_id=False):
+@get('/web/device/<group_id>/<device_id>')
+def web_devices(group_id=False, device_id=False):
     global _cache
     #
     try:
-        if (not room_id) or (not device_id):
-            raise HTTPError(404)
-        #
-        # Get and check user
-        user = _check_user(request.get_cookie('user'))
-        if not user:
-            redirect('/web/login')
-        #
-        device_type = get_cfg_device_type(_cache['setup'], room_id, device_id)
-        #
-        if device_type == 'tv_lg_netcast':
-            html_body = html_tv_lg_netcast(room_id,
-                                           device_id)
-        elif device_type == 'tivo':
-            html_body = html_tivo(user,
-                                  _cache,
-                                  room_id,
-                                  device_id)
-        else:
-            return HTTPError(404)
-        #
-        body = create_device(user,
-                             _cache,
-                             html_body,
-                             '{room}: {device}'.format(room=get_cfg_room_name(_cache['setup'], room_id),
-                                                       device=get_cfg_device_name(_cache['setup'], room_id, device_id)),
-                             '{room}: {device}'.format(room=get_cfg_room_name(_cache['setup'], room_id),
-                                                       device=get_cfg_device_name(_cache['setup'], room_id, device_id)))
-        #
-        return HTTPResponse(body=body, status=200)
-    except Exception as e:
-        raise HTTPError(500)
-
-
-@get('/web/account/<account_id>')
-def web_accounts(account_id=False):
-    global _cache
-    #
-    try:
-        if not account_id:
+        if (not group_id) or (not device_id):
             raise HTTPError(404)
         #
         # Get and check user
@@ -157,10 +116,19 @@ def web_accounts(account_id=False):
         #
         query_dict = dict(request.query)
         #
-        account_type = get_cfg_account_type(_cache['setup'], account_id)
+        device_type = get_cfg_device_type(_cache['setup'], group_id, device_id)
         #
-        if account_type == 'nest_account':
-            html_body = html_nest(account_id,
+        if device_type == 'tv_lg_netcast':
+            html_body = html_tv_lg_netcast(group_id,
+                                           device_id)
+        elif device_type == 'tivo':
+            html_body = html_tivo(user,
+                                  _cache,
+                                  group_id,
+                                  device_id)
+        elif device_type == 'nest_account':
+            html_body = html_nest(group_id,
+                                  device_id,
                                   query_dict)
             try:
                 if query_dict['body']:
@@ -173,12 +141,45 @@ def web_accounts(account_id=False):
         body = create_device(user,
                              _cache,
                              html_body,
-                             get_cfg_account_name(_cache['setup'], account_id),
-                             get_cfg_account_name(_cache['setup'], account_id))
+                             '{group}: {device}'.format(group=get_cfg_group_name(_cache['setup'], group_id),
+                                                       device=get_cfg_device_name(_cache['setup'], group_id, device_id)),
+                             '{group}: {device}'.format(group=get_cfg_group_name(_cache['setup'], group_id),
+                                                       device=get_cfg_device_name(_cache['setup'], group_id, device_id)))
         #
         return HTTPResponse(body=body, status=200)
     except Exception as e:
         raise HTTPError(500)
+
+
+# @get('/web/account/<account_id>')
+# def web_accounts(account_id=False):
+#     global _cache
+#     #
+#     try:
+#         if not account_id:
+#             raise HTTPError(404)
+#         #
+#         # Get and check user
+#         user = _check_user(request.get_cookie('user'))
+#         if not user:
+#             redirect('/web/login')
+#         #
+#         query_dict = dict(request.query)
+#         #
+#         account_type = get_cfg_account_type(_cache['setup'], account_id)
+#         #
+#         else:
+#             return HTTPError(404)
+#         #
+#         body = create_device(user,
+#                              _cache,
+#                              html_body,
+#                              get_cfg_account_name(_cache['setup'], account_id),
+#                              get_cfg_account_name(_cache['setup'], account_id))
+#         #
+#         return HTTPResponse(body=body, status=200)
+#     except Exception as e:
+#         raise HTTPError(500)
 
 
 @get('/web/static/<folder>/<filename>')
@@ -190,38 +191,16 @@ def get_resource(folder, filename):
 # Handle requests for resource data
 ################################################################################################
 
-@get('/data/device/<room_id>/<device_id>/<resource_requested>')
-def get_data_device(room_id=False, device_id=False, resource_requested=False):
+@get('/data/device/<group_id>/<device_id>/<resource_requested>')
+def get_data_device(group_id=False, device_id=False, resource_requested=False):
     #
-    if (not room_id) or (not device_id) or (not resource_requested):
+    if (not group_id) or (not device_id) or (not resource_requested):
         raise HTTPError(404)
     #
     try:
-        r = requests.get(server_url('data/device/{room_id}/{device_id}/{resource_requested}'.format(room_id=room_id,
+        r = requests.get(server_url('data/device/{group_id}/{device_id}/{resource_requested}'.format(group_id=group_id,
                                                                                                     device_id=device_id,
                                                                                                     resource_requested=resource_requested)))
-        #
-        if r.status_code == requests.codes.ok:
-            if r.content:
-                return HTTPResponse(body=r.content, status=200)
-            else:
-                return HTTPResponse(status=200)
-        else:
-            return HTTPResponse(status=400)
-            #
-    except Exception as e:
-        raise HTTPError(500)
-
-
-@get('/data/account/<account_id>/<resource_requested>')
-def get_data_account(account_id=False, resource_requested=False):
-    #
-    if (not account_id) or (not resource_requested):
-        raise HTTPError(404)
-    #
-    try:
-        r = requests.get(server_url('data/account/{account_id}/{resource_requested}'.format(account_id=account_id,
-                                                                                            resource_requested=resource_requested)))
         #
         if r.status_code == requests.codes.ok:
             if r.content:
@@ -240,17 +219,17 @@ def get_data_account(account_id=False, resource_requested=False):
 ################################################################################################
 
 
-@get('/command/device/<room_id>/<device_id>')
-@post('/command/device/<room_id>/<device_id>')
-def send_command_device(room_id=False, device_id=False):
+@get('/command/device/<group_id>/<device_id>')
+@post('/command/device/<group_id>/<device_id>')
+def send_command_device(group_id=False, device_id=False):
     #
-    if (not room_id) or (not device_id):
+    if (not group_id) or (not device_id):
         raise HTTPError(404)
     #
     cmd_dict = dict(request.query)
     #
     try:
-        r = requests.post(server_url('command/device/{room_id}/{device_id}'.format(room_id=room_id, device_id=device_id)),
+        r = requests.post(server_url('command/device/{group_id}/{device_id}'.format(group_id=group_id, device_id=device_id)),
                           json=cmd_dict)
         #
         if r.status_code == requests.codes.ok:
@@ -261,27 +240,6 @@ def send_command_device(room_id=False, device_id=False):
         else:
             return HTTPResponse(status=400)
             #
-    except Exception as e:
-        raise HTTPError(500)
-
-
-@get('/command/account/<account_id>')
-def send_command_account(account_id=False):
-    #
-    if not account_id:
-        raise HTTPError(404)
-    #
-    cmd_dict = dict(request.query)
-    #
-    try:
-        r = requests.post(server_url('command/account/{account_id}'.format(account_id=account_id)),
-                          json=cmd_dict)
-        #
-        if r.status_code == requests.codes.ok:
-            return HTTPResponse(status=200)
-        else:
-            return HTTPResponse(status=400)
-        #
     except Exception as e:
         raise HTTPError(500)
 

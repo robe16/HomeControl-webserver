@@ -8,11 +8,11 @@ from log.console_messages import print_error, print_msg
 from web.web_tvchannels import html_channels_user_and_all
 
 
-def html_tivo(user, _cache, room_id, device_id):
+def html_tivo(user, _cache, group_id, device_id):
     #
-    json_recordings = _get_recordings(room_id, device_id)
+    json_recordings = _get_recordings(group_id, device_id)
     #
-    chan_current = _get_current_chan(room_id, device_id)
+    chan_current = _get_current_chan(group_id, device_id)
     if chan_current:
         currentChan_name = chan_current['channel']['name']
         currentChan_number = chan_current['channel']['number']
@@ -24,9 +24,9 @@ def html_tivo(user, _cache, room_id, device_id):
     #
     _device_details = {}
     _device_details['type'] = 'tivo'
-    _device_details['room_id'] = room_id
+    _device_details['group_id'] = group_id
     _device_details['device_id'] = device_id
-    _device_details['package'] = ["virginmedia_package", get_cfg_device_detail_public(_cache['setup'], room_id, device_id, 'package')]
+    _device_details['package'] = ["virginmedia_package", get_cfg_device_detail_public(_cache['setup'], group_id, device_id, 'package')]
     _device_details['current_chan'] = currentChan_number
     #
     try:
@@ -37,7 +37,7 @@ def html_tivo(user, _cache, room_id, device_id):
         print_error('Could not create TV channel HTML - {error}'.format(error=e))
         html_channels = ''
     #
-    args = {'room_id': room_id,
+    args = {'group_id': group_id,
             'device_id': device_id,
             'html_recordings': _html_recordings(json_recordings),
             'timestamp_recordings': json_recordings['timestamp'],
@@ -125,24 +125,24 @@ def _html_recordings(json_recordings):
         return '<p>Error</p>'
 
 
-def _get_recordings(room_id, device_id):
-    data = _getData(room_id, device_id, 'recordings')
+def _get_recordings(group_id, device_id):
+    data = _getData(group_id, device_id, 'recordings')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _get_current_chan(room_id, device_id):
-    data = _getData(room_id, device_id, 'channel')
+def _get_current_chan(group_id, device_id):
+    data = _getData(group_id, device_id, 'channel')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(room_id, device_id, datarequest):
-    r = requests.get(server_url('data/device/{room_id}/{device_id}/{datarequest}'.format(room_id=room_id,
+def _getData(group_id, device_id, datarequest):
+    r = requests.get(server_url('data/device/{group_id}/{device_id}/{datarequest}'.format(group_id=group_id,
                                                                                          device_id=device_id,
                                                                                          datarequest=datarequest)))
     if r.status_code == requests.codes.ok:
