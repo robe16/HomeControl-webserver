@@ -6,119 +6,123 @@ from cache.tvchannels import *
 
 def html_channels_user_and_all (_cache, user=False, _device_details=False):
     #
-    cache_channels = _cache['tvchannels']
-    cache_devices = _cache['setup']
-    cache_users = _cache['users']
-    #
-    if not cache_channels:
-        return _html_no_channels()
-    #
-    if _device_details:
-        type = _device_details['type']
-        group_id = _device_details['group_id']
-        device_id = _device_details['device_id']
-        package = _device_details['package']
-        current_chan = _device_details['current_chan']
-    else:
-        type = False
-        group_id = False
-        device_id = False
-        package = False
-        current_chan = False
-    #
-    html_channels = ''
-    #
-    if group_id and device_id:
-        html_channels += '<script>setTimeout(function () {getChannel(\'/data/device/' + str(group_id) + \
-                         '/' + str(device_id) + \
-                         '/channel\', true);}, 10000);</script>'
-    #
-    first_tab = True
-    html_nav_user = ''
-    html_nav_all = ''
-    html_content = ''
-    #
-    user_channels = get_userchannels(cache_users, user)
-    #
-    # If user_channels has a value, then create a
-    # tab and contents for user favourite channels
-    if user_channels:
+    try:
+        cache_channels = _cache['tvchannels']
+        cache_devices = _cache['setup']
+        cache_users = _cache['users']
         #
-        if first_tab:
-            active = 'active'
-            first_tab = False
+        if not cache_channels:
+            return _html_no_channels()
+        #
+        if _device_details:
+            type = _device_details['type']
+            group_id = _device_details['group_id']
+            device_id = _device_details['device_id']
+            package = _device_details['package']
+            current_chan = _device_details['current_chan']
         else:
-            active = ''
+            type = False
+            group_id = False
+            device_id = False
+            package = False
+            current_chan = False
         #
-        userCount = 0
-        user_channels_temp = {}
-        user_channels_temp['category'] = user
-        user_channels_temp['channels'] = {}
+        html_channels = ''
+        #
+        if group_id and device_id:
+            html_channels += '<script>setTimeout(function () {getChannel(\'/data/device/' + str(group_id) + \
+                             '/' + str(device_id) + \
+                             '/channel\', true);}, 10000);</script>'
+        #
+        first_tab = True
+        html_nav_user = ''
+        html_nav_all = ''
+        html_content = ''
+        #
+        user_channels = get_userchannels(cache_users, user)
+        #
+        # If user_channels has a value, then create a
+        # tab and contents for user favourite channels
+        if user_channels:
+            #
+            if first_tab:
+                active = 'active'
+                first_tab = False
+            else:
+                active = ''
+            #
+            userCount = 0
+            user_channels_temp = {}
+            user_channels_temp['category'] = user
+            user_channels_temp['channels'] = {}
+            #
+            catCount = 0
+            while catCount < len(cache_channels['channels']):
+                chanCount = 0
+                while chanCount < len(cache_channels['channels'][str(catCount)]['channels']):
+                    #
+                    if cache_channels['channels'][str(catCount)]['channels'][str(chanCount)]['name'] in user_channels:
+                        #
+                        user_channels_temp['channels'][str(userCount)] = cache_channels['channels'][str(catCount)]['channels'][str(chanCount)]
+                        userCount += 1
+                        #
+                    #
+                    chanCount += 1
+                catCount += 1
+            #
+            # Pill header
+            html_nav_user += urlopen('web/html/html_pills/pills_nav.html').read().encode('utf-8').format(active=active,
+                                                                                                    category=str(user).lower(),
+                                                                                                    title=str(user)+'\'s favourites')
+            #
+            body = _html_channels_container(user_channels_temp,
+                                            user=user,
+                                            _device_details=_device_details)
+            # Pill contents
+            html_content += urlopen('web/html/html_pills/pills_contents.html').read().encode('utf-8').format(active=active,
+                                                                                                        category=str(user).lower(),
+                                                                                                        body=body)
+        #
         #
         catCount = 0
         while catCount < len(cache_channels['channels']):
-            chanCount = 0
-            while chanCount < len(cache_channels['channels'][str(catCount)]['channels']):
-                #
-                if cache_channels['channels'][str(catCount)]['channels'][str(chanCount)]['name'] in user_channels:
-                    #
-                    user_channels_temp['channels'][str(userCount)] = cache_channels['channels'][str(catCount)]['channels'][str(chanCount)]
-                    userCount += 1
-                    #
-                #
-                chanCount += 1
+            #
+            if first_tab:
+                active = 'active'
+                first_tab = False
+            else:
+                active = ''
+            #
+            category = cache_channels['channels'][str(catCount)]['category']
+            #
+            html_nav_all += urlopen('web/html/html_pills/pills_nav.html').read().encode('utf-8').format(active=active,
+                                                                                                   category=category.lower(),
+                                                                                                   title=category)
+            #
+            body = _html_channels_container(cache_channels['channels'][str(catCount)],
+                                            _device_details=_device_details)
+            #
+            html_content += urlopen('web/html/html_pills/pills_contents.html').read().encode('utf-8').format(active=active,
+                                                                                                        category=category.lower(),
+                                                                                                        body=body)
+            #
             catCount += 1
         #
-        # Pill header
-        html_nav_user += urlopen('web/html/pills_nav.html').read().encode('utf-8').format(active=active,
-                                                                                    category=str(user).lower(),
-                                                                                    title=str(user)+'\'s favourites')
+        # If user channels available, change categories into dropdown menu
+        if user_channels:
+            html_nav_all = urlopen('web/html/html_pills/pills_nav_dropdown.html').read().encode('utf-8').format(title='All Channels',
+                                                                                                           dropdowns=html_nav_all)
         #
-        body = _html_channels_container(user_channels_temp,
-                                        user=user,
-                                        _device_details=_device_details)
-        # Pill contents
-        html_content += urlopen('web/html/pills_contents.html').read().encode('utf-8').format(active=active,
-                                                                                         category=str(user).lower(),
-                                                                                         body=body)
-    #
-    #
-    catCount = 0
-    while catCount < len(cache_channels['channels']):
+        # Combine html_pills for 'user' and 'all' channel listings
+        html_nav = html_nav_user + html_nav_all
         #
-        if first_tab:
-            active = 'active'
-            first_tab = False
-        else:
-            active = ''
+        html_channels += urlopen('web/html/html_pills/pills_parent.html').read().encode('utf-8').format(nav=html_nav,
+                                                                                                   content=html_content)
         #
-        category = cache_channels['channels'][str(catCount)]['category']
+        return html_channels
         #
-        html_nav_all += urlopen('web/html/pills_nav.html').read().encode('utf-8').format(active=active,
-                                                                                         category=category.lower(),
-                                                                                         title=category)
-        #
-        body = _html_channels_container(cache_channels['channels'][str(catCount)],
-                                        _device_details=_device_details)
-        #
-        html_content += urlopen('web/html/pills_contents.html').read().encode('utf-8').format(active=active,
-                                                                                              category=category.lower(),
-                                                                                              body=body)
-        #
-        catCount += 1
-    #
-    # If user channels available, change categories into dropdown menu
-    if user_channels:
-        html_nav_all = urlopen('web/html/pills_nav_dropdown.html').read().encode('utf-8').format(title='All Channels',
-                                                                                            dropdowns=html_nav_all)
-    #
-    # Combine pills for 'user' and 'all' channel listings
-    html_nav = html_nav_user + html_nav_all
-    #
-    html_channels += urlopen('web/html/pills_parent.html').read().encode('utf-8').format(nav=html_nav,
-                                                                                   content=html_content)
-    #
-    return html_channels
+    except Exception as e:
+        raise Exception
 
 
 def _html_channels_container(channels_items, user=False, _device_details=False):

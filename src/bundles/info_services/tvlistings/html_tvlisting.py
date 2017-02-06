@@ -15,16 +15,20 @@ time_format = '%H:%M'
 
 def tvlisting_body(user, _cache):
     #
-    listings = request_tvlistings()
-    #
-    if not str(listings)=='False':
-        args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-                'body_tvlistings': _create_html(user, _cache, listings)}
-    else:
-        args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
-                'body_tvlistings': 'ERROR'}
-    #
-    return urlopen('web/html/html_info_services/tvlistings_main.html').read().encode('utf-8').format(**args)
+    try:
+        listings = request_tvlistings()
+        #
+        if not str(listings)=='False':
+            args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
+                    'body_tvlistings': _create_html(user, _cache, listings)}
+        else:
+            args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
+                    'body_tvlistings': 'ERROR'}
+        #
+        return urlopen('web/html/html_info_services/tvlistings_main.html').read().encode('utf-8').format(**args)
+        #
+    except Exception as e:
+        raise Exception
 
 
 def request_tvlistings():
@@ -153,7 +157,7 @@ def _create_html(user, _cache, listings):
             cat += 1
         #
         #
-        html_pill_nav_user = urlopen('web/html/pills_nav.html').read().encode('utf-8').format(active=active,
+        html_pill_nav_user = urlopen('web/html/html_pills/pills_nav.html').read().encode('utf-8').format(active=active,
                                                                                               category=str(user).lower(),
                                                                                               title=str(user)+'\'s favourites')
         #
@@ -161,7 +165,7 @@ def _create_html(user, _cache, listings):
                                                                                                                           rows_channel_images=html_channels,
                                                                                                                           rows_listings=html_listings)
         #
-        html_pill_contents += urlopen('web/html/pills_contents.html').read().encode('utf-8').format(active=active,
+        html_pill_contents += urlopen('web/html/html_pills/pills_contents.html').read().encode('utf-8').format(active=active,
                                                                                                     category=str(user).lower(),
                                                                                                     body=html_cat_pill_body)
     #
@@ -179,7 +183,7 @@ def _create_html(user, _cache, listings):
         #
         category = channels['channels'][str(cat)]['category']
         #
-        html_pill_nav_cat += urlopen('web/html/pills_nav.html').read().encode('utf-8').format(active=active,
+        html_pill_nav_cat += urlopen('web/html/html_pills/pills_nav.html').read().encode('utf-8').format(active=active,
                                                                                               category=category.lower(),
                                                                                               title=category)
         #
@@ -253,7 +257,7 @@ def _create_html(user, _cache, listings):
                                                                                                                           rows_channel_images=html_channels,
                                                                                                                           rows_listings=html_listings)
         #
-        html_pill_contents += urlopen('web/html/pills_contents.html').read().encode('utf-8').format(active=active,
+        html_pill_contents += urlopen('web/html/html_pills/pills_contents.html').read().encode('utf-8').format(active=active,
                                                                                                     category=category.lower(),
                                                                                                     body=html_cat_pill_body)
         #
@@ -261,12 +265,12 @@ def _create_html(user, _cache, listings):
         #
     #
     if user_channels:
-        html_pill_nav_cat = urlopen('web/html/pills_nav_dropdown.html').read().encode('utf-8').format(title='Categories',
+        html_pill_nav_cat = urlopen('web/html/html_pills/pills_nav_dropdown.html').read().encode('utf-8').format(title='Categories',
                                                                                                       dropdowns=html_pill_nav_cat)
     #
     html_pill_nav = html_pill_nav_user + html_pill_nav_cat
     #
-    return urlopen('web/html/pills_parent.html').read().encode('utf-8').format(nav=html_pill_nav,
+    return urlopen('web/html/html_pills/pills_parent.html').read().encode('utf-8').format(nav=html_pill_nav,
                                                                                content=html_pill_contents)
 
 

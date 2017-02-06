@@ -83,7 +83,7 @@
 #         html_nav_all = urlopen('web/html/pills_nav_dropdown.html').read().encode('utf-8').format(title='All Channels',
 #                                                                                             dropdowns=html_nav_all)
 #     #
-#     # Combine pills for 'user' and 'all' channel listings
+#     # Combine html_pills for 'user' and 'all' channel listings
 #     html_nav = html_nav_user + html_nav_all
 #     #
 #     html_tvguide += urlopen('web/html/pills_parent.html').read().encode('utf-8').format(nav=html_nav,

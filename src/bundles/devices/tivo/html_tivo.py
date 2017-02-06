@@ -37,10 +37,15 @@ def html_tivo(user, _cache, group_id, device_id):
         print_error('Could not create TV channel HTML - {error}'.format(error=e))
         html_channels = ''
     #
+    try:
+        recordings_timestamp = json_recordings['timestamp']
+    except:
+        recordings_timestamp = 'n/a'
+    #
     args = {'group_id': group_id,
             'device_id': device_id,
             'html_recordings': _html_recordings(json_recordings),
-            'timestamp_recordings': json_recordings['timestamp'],
+            'timestamp_recordings': recordings_timestamp,
             'now_viewing_logo': currentChan_logo,
             'now_viewing': currentChan_name,
             'html_channels': html_channels}
