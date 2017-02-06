@@ -151,37 +151,6 @@ def web_devices(group_id=False, device_id=False):
         raise HTTPError(500)
 
 
-# @get('/web/account/<account_id>')
-# def web_accounts(account_id=False):
-#     global _cache
-#     #
-#     try:
-#         if not account_id:
-#             raise HTTPError(404)
-#         #
-#         # Get and check user
-#         user = _check_user(request.get_cookie('user'))
-#         if not user:
-#             redirect('/web/login')
-#         #
-#         query_dict = dict(request.query)
-#         #
-#         account_type = get_cfg_account_type(_cache['setup'], account_id)
-#         #
-#         else:
-#             return HTTPError(404)
-#         #
-#         body = create_device(user,
-#                              _cache,
-#                              html_body,
-#                              get_cfg_account_name(_cache['setup'], account_id),
-#                              get_cfg_account_name(_cache['setup'], account_id))
-#         #
-#         return HTTPResponse(body=body, status=200)
-#     except Exception as e:
-#         raise HTTPError(500)
-
-
 @get('/web/static/<folder>/<filename>')
 def get_resource(folder, filename):
     return static_file(filename, root=os.path.join(os.path.dirname(__file__),('web/html/static/{folder}'.format(folder=folder))))
