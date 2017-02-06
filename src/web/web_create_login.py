@@ -12,7 +12,7 @@ def _useritems(data):
         STRhtml += '<p>No users are available on the server. Please continue as guest</p>'
         STRhtml += '<p>Users can be added within the settings pages</p>'
     else:
-        STRhtml += '<form action="html_login">'
+        STRhtml += '<form action="login">'
         x=0
         while x < len(data['users']):
             username = data['users'][str(x)]['name']
