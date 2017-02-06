@@ -12,7 +12,7 @@ from cache.setup import get_cfg_device_type
 from cache.setup import get_cfg_group_name, get_cfg_device_name
 from cache.users import check_user
 from cfg import server_url
-from src.bundles.devices.nest.html_nest import html_nest
+from bundles.devices.nest.html_nest import html_nest
 from web.web_create_error import create_error
 from web.web_create_pages import create_login, create_home, create_about, create_tvlistings, create_weather, create_device
 
