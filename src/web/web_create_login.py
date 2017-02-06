@@ -2,7 +2,7 @@ from urllib import urlopen
 
 
 def html_users(users):
-    return urlopen('web/html/html_login/html_login.html').read().encode('utf-8').format(users=_useritems(users))
+    return urlopen('web/html/html_login/login.html').read().encode('utf-8').format(users=_useritems(users))
 
 
 def _useritems(data):
@@ -20,6 +20,6 @@ def _useritems(data):
             x += 1
         STRhtml += '<button class="btn btn-success btn-block" type="submit">Continue</button>'
         STRhtml += '</form>'
-    STRhtml += '<button class="btn btn-default btn-block" onclick="window.location.href={guest}">Continue as guest</button>'.format(guest="'/web/html_login?user=Guest'")
+    STRhtml += '<button class="btn btn-default btn-block" onclick="window.location.href={guest}">Continue as guest</button>'.format(guest="'/web/login?user=Guest'")
     STRhtml += '</div>'
     return STRhtml
