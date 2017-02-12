@@ -54,6 +54,9 @@ def _create_html(forecast):
         date_name = date.strftime('%A')
         date_label = date.strftime('%d/%m')
         #
+        time_sunrise = datetime.datetime.strptime(day_item['sunRiseSet']['sunrise'], "%Y-%m-%d %H:%M:%S").strftime('%H:%M')
+        time_sunset = datetime.datetime.strptime(day_item['sunRiseSet']['sunset'], "%Y-%m-%d %H:%M:%S").strftime('%H:%M')
+        #
         if date_label == datetime.date.today().strftime('%d/%m'):
             date_label = 'Today'
         elif date_label == (datetime.date.today() + datetime.timedelta(days=1)).strftime('%d/%m'):
@@ -79,6 +82,8 @@ def _create_html(forecast):
         #
         args_item = {'date_day': date_name,
                      'date': date_label,
+                     'time_sunrise': time_sunrise,
+                     'time_sunset': time_sunset,
                      'd_weather_type_glyph': getWeatherType_glyph(daytime['weather_type']),
                      'd_temp': daytime['temp'],
                      'd_temp_unit': forecast['units']['daily']['temp'],

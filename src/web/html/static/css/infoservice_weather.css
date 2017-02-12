@@ -103,6 +103,11 @@ p.temp_unit_hour {
     font-weight: 400;
 }
 
+.weather_type_glyph_sun {
+    padding: 10px 0px 0px 0px;
+    font-size: 20px;
+}
+
 
 @media (max-width: 576px) {} /*xs*/
 @media (max-width: 768px) {} /*sm*/

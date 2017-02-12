@@ -1,13 +1,17 @@
 <div class="item_day_cell col-xs-12 col-lg-6">
     <div class="item_day material-shadow material-col-grey-50">
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-xs-6">
                 <div class="header_day">{date_day}</div>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-12">
                 <div class="header_date">{date}</div>
+            </div>
+            <div class="col-xs-5">
+                <div class="weather_detail_small time_header align_right"><h4>{time_sunrise}</h4></div>
+                <div class="weather_detail_small time_header align_right"><h4>{time_sunset}</h4></div>
+            </div>
+            <div class="col-xs-1" style="padding: 0px">
+                <div class="weather_detail"><i class="weather_type_glyph_sun wi wi-sunrise"></i></div>
+                <div class="weather_detail"><i class="weather_type_glyph_sun wi wi-sunset"></i></div>
             </div>
         </div>
         <div class="row">
