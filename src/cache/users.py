@@ -44,6 +44,14 @@ def get_userchannels(data, user):
     return None
 
 
+def get_usernews(data, user):
+    if data != None:
+        for id in data['users']:
+            if data['users'][id]['name']==user:
+                return data['users'][id]['news_sources']
+    return None
+
+
 def get_userrole(data, user):
     if data != None:
         for id in data['users']:
