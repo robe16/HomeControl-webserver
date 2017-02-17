@@ -40,7 +40,7 @@ def get_userchannels(data, user):
     if data != None:
         for id in data['users']:
             if data['users'][id]['name']==user:
-                return data['users'][id]['tvlistings']
+                return data['users'][id]['tvchannels']
     return None
 
 
