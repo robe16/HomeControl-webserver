@@ -823,11 +823,13 @@ if (typeof jQuery === 'undefined') {
 
       if (e.isDefaultPrevented()) return
 
-      $this.trigger('focus')
-      $this.attr('aria-expanded', 'true')
+      $this
+        .trigger('focus')
+        .attr('aria-expanded', 'true')
 
-      $parent.toggleClass('open')
-      $parent.trigger('shown.bs.dropdown', relatedTarget)
+      $parent
+        .toggleClass('open')
+        .trigger('shown.bs.dropdown', relatedTarget)
     }
 
     return false
