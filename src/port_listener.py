@@ -14,7 +14,8 @@ from cache.users import check_user
 from cfg import server_url
 from bundles.devices.nest.html_nest import html_nest
 from web.web_create_error import create_error
-from web.web_create_pages import create_login, create_home, create_about, create_tvlistings, create_weather, create_device
+from web.web_create_pages import create_login, create_home, create_about
+from web.web_create_pages import create_tvlistings, create_weather, create_news, create_device
 
 
 ################################################################################################
@@ -95,6 +96,8 @@ def web_info(service=False):
             return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
         elif service == 'weather':
             return HTTPResponse(body=create_weather(user, _cache), status=200)
+        elif service == 'news':
+            return HTTPResponse(body=create_news(user, _cache), status=200)
         else:
             raise HTTPError(404)
     except Exception as e:

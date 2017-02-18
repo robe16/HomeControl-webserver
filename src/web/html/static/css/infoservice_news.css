@@ -1,0 +1,9 @@
+.news_item {
+    padding: 10px;
+    margin: 5px 0px;
+}
+
+.news_logo {
+    max-height: 25px;
+    max-width: 50px;
+}
