@@ -8,12 +8,11 @@ from cache.users import get_usernews
 
 def news_body(user, _cache):
     #
-    news = request_news(user, _cache)
-    #
-    if not str(news)=='False':
+    try:
+        news = request_news(user, _cache)
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                 'body_news_articles': _create_html(news)}
-    else:
+    except Exception as e:
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                 'body_news_articles': ''}
     #
@@ -40,32 +39,72 @@ def request_news(user, _cache):
     #
     if r.status_code == requests.codes.ok:
         print_msg('News articles retrieved successfully - {status_code}'.format(status_code=r.status_code))
-        data = r.content
-        return ast.literal_eval(data)
+        return r.json()
     else:
         print_error('News articles failed to be retrieved - {status_code}'.format(status_code=r.status_code))
-        return False
+        raise Exception
 
 
 def _create_html(news):
     #
     html = ''
+    dict_html = {}
     #
     for k, v in news['news_articles'].items():
         #
         for article in news['news_articles'][k]['articles']:
-            #TODO: put in chronoclogical order first then re-run through temp created list and build html
-            args_item = {'source_name': news['news_articles'][k]['source_details']['name'],
-                         'source_logo': news['news_articles'][k]['source_details']['logos']['small'],
-                         'article_link': article['url'],
-                         'article_title': removeUnicodeChars(article['title']),
-                         'article_description': removeUnicodeChars(article['description'])}
             #
-            html += urlopen('web/html/html_info_services/news_article_item.html').read().encode('utf-8').format(**args_item)
-        #
+            try:
+                #
+                if article['description'] is None or article['description'] is None:
+                    raise Exception
+                #
+                if not article['publishedAt'] is None:
+                    #
+                    try:
+                        publish_datetime = datetime.datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%Sz")
+                    except:
+                         pass
+                    #
+                    try:
+                        publish_datetime = datetime.datetime.strptime(article['publishedAt'], "%Y-%m-%dT%H:%M:%Sz.%f")
+                    except:
+                         pass
+                    #
+                    try:
+                        publish_string = publish_datetime.strftime('%d-%m-%Y %H:%M')
+                    except:
+                        publish_datetime = datetime.datetime.now()
+                        publish_string = '-'
+                    #
+                else:
+                    publish_datetime = datetime.datetime.now()
+                    publish_string = '-'
+                #
+                if article['urlToImage']:
+                    image_url = article['urlToImage'].encode('utf-8')
+                else:
+                    image_url = ''
+                #
+                args_item = {'source_name': news['news_articles'][k]['source_details']['name'],
+                             'source_logo': news['news_articles'][k]['source_details']['logos']['small'],
+                             'article_link': article['url'].encode('utf-8'),
+                             'article_title': article['title'].encode('utf-8'),
+                             'article_description': article['description'].encode('utf-8'),
+                             'article_date': publish_string,
+                             'article_image': image_url}
+                #
+                dict_html[publish_datetime] = urlopen('web/html/html_info_services/news_article_item.html').read().encode('utf-8').format(**args_item)
+            except Exception as e:
+                pass
+    #
+    for html_key in sorted(dict_html.keys(), reverse=True):
+        html += dict_html[html_key]
+    #
     return html
 
 
 def removeUnicodeChars(text):
+    text = text.replace('\\u2019', '\'')
     text = text.replace('\u2019', '\'')
     return text
