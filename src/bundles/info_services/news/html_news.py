@@ -57,7 +57,9 @@ def _create_html(news):
             #TODO: put in chronoclogical order first then re-run through temp created list and build html
             args_item = {'source_name': news['news_articles'][k]['source_details']['name'],
                          'source_logo': news['news_articles'][k]['source_details']['logos']['small'],
-                         'article_title': removeUnicodeChars(article['title'])}
+                         'article_link': article['url'],
+                         'article_title': removeUnicodeChars(article['title']),
+                         'article_description': removeUnicodeChars(article['description'])}
             #
             html += urlopen('web/html/html_info_services/news_article_item.html').read().encode('utf-8').format(**args_item)
         #
