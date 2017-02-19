@@ -9,7 +9,12 @@
                                 <span class="glyphicon glyphicon-off material-text-light-primary" aria-hidden="true"></span>
                             </span>
                         </div>
-                        <div class="col-xs-2 col-xs-offset-9 btn-container-padding">
+                        <div class="col-xs-2 col-xs-offset-4 btn-container-padding">
+                            <span class="btn-remote btn-col-grey material-text-dark-primary btn-txt" onclick="sendHttp('/command/device/{group_id}/{device_id}?command=enterpin', null, 'POST', 0, true)">
+                                Enter PIN
+                            </span>
+                        </div>
+                        <div class="col-xs-2 col-xs-offset-3 btn-container-padding">
                             <span class="btn-remote btn-col-grey" onclick="sendHttp('/command/device/{group_id}/{device_id}?command=command&code=channelup', null, 'POST', 0, true)">
                                 <span class="glyphicon glyphicon-chevron-up material-text-dark-primary" aria-hidden="true"></span>
                             </span>
