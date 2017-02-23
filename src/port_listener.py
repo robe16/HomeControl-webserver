@@ -10,6 +10,7 @@ from bundles.devices.tivo.html_tivo import html_tivo
 from bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
 from cache.setup import get_cfg_device_type
 from cache.setup import get_cfg_group_name, get_cfg_device_name
+from cache.setup import get_cfg_info_enabled
 from cache.users import check_user
 from cfg import server_url
 from bundles.devices.nest.html_nest import html_nest
@@ -92,14 +93,15 @@ def web_info(service=False):
         if not user:
             redirect('/web/login')
         #
-        if service == 'tvlistings':
-            return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
-        elif service == 'weather':
-            return HTTPResponse(body=create_weather(user, _cache), status=200)
-        elif service == 'news':
-            return HTTPResponse(body=create_news(user, _cache), status=200)
-        else:
-            raise HTTPError(404)
+        if get_cfg_info_enabled(_cache['setup'], service):
+            if service == 'tvlistings':
+                return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
+            elif service == 'weather':
+                return HTTPResponse(body=create_weather(user, _cache), status=200)
+            elif service == 'news':
+                return HTTPResponse(body=create_news(user, _cache), status=200)
+        #
+        raise HTTPError(404)
     except Exception as e:
         raise HTTPError(500)
 

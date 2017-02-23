@@ -4,11 +4,11 @@
 
 
 def get_cfg_count_groups(data):
-    return len(data['groups'])
+    return len(data['bundles']['devices']['groups'])
 
 
 def get_cfg_count_devices(data, group_id):
-    return len(data['groups'][group_id]['devices'])
+    return len(data['bundles']['devices']['groups'][group_id]['devices'])
 
 ################################################################################################
 # Return list of group and device ids
@@ -19,7 +19,7 @@ def get_cfg_idlist_groups(data):
     #
     r_list = []
     #
-    for key, value in data['groups'].iteritems():
+    for key, value in data['bundles']['devices']['groups'].iteritems():
         r_list.append(key)
     #
     return r_list
@@ -29,7 +29,7 @@ def get_cfg_idlist_devices(data, group_id):
     #
     d_list = []
     #
-    for key, value in data['groups'][group_id]['devices'].iteritems():
+    for key, value in data['bundles']['devices']['groups'][group_id]['devices'].iteritems():
         d_list.append(key)
     #
     return d_list
@@ -43,7 +43,7 @@ def get_cfg_group_index(data, group_id):
     #
     count = 0
     #
-    for key, value in data['groups'].iteritems():
+    for key, value in data['bundles']['devices']['groups'].iteritems():
         if key == group_id:
             return count
         count += 1
@@ -55,7 +55,7 @@ def get_cfg_device_index(data, group_id, device_id):
     #
     count = 0
     #
-    for key, value in data['groups'][group_id]['devices'].iteritems():
+    for key, value in data['bundles']['devices']['groups'][group_id]['devices'].iteritems():
         if key == device_id:
             return count
         count += 1
@@ -122,6 +122,24 @@ def get_cfg_device_detail_public(data, group_id, device_id, detail):
     return details[detail]
 
 ################################################################################################
+# Return enabled status and other details of info_service
+################################################################################################
+
+
+def get_cfg_info_enabled(data, info_type):
+    #
+    enabled = get_cfg_info_value(data, info_type, 'enabled')
+    #
+    return enabled
+
+
+def get_cfg_info_detail(data, info_type, key):
+    #
+    enabled = get_cfg_info_value(data, info_type, key)
+    #
+    return enabled
+
+################################################################################################
 # Return value for structure group and device
 # (used as 'master' code for returning name, type, etc. in above defs)
 ################################################################################################
@@ -134,12 +152,17 @@ def get_cfg_structure_value(data, key):
 
 def get_cfg_group_value(data, group_id, key):
     #
-    return data['groups'][group_id][key]
+    return data['bundles']['devices']['groups'][group_id][key]
 
 
 def get_cfg_device_value(data, group_id, device_id, key):
     #
-    return data['groups'][group_id]['devices'][device_id][key]
+    return data['bundles']['devices']['groups'][group_id]['devices'][device_id][key]
+
+
+def get_cfg_info_value(data, info_type, key):
+    #
+    return data['bundles']['info_services'][info_type][key]
 
 ################################################################################################
 ################################################################################################
