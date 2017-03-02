@@ -8,8 +8,10 @@ def my_mac():
     return ':'.join(("%012X" % get_mac())[i:i + 2] for i in range(0, 12, 2))
 
 server_ip = 'http://0.0.0.0'
+self_ip = 'http://0.0.0.0'
 server_port = 1600
 self_port = 1610
+self_port_cache = 1611
 
 def server_url(uri):
     return '{ip}:{port}/{uri}'.format(ip=server_ip,
