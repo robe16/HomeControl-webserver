@@ -44,7 +44,12 @@ def html_menu_lhs(_cache_setup):
     if add_divider:
         html += '<span class="sidebar_divider box-shadow"></span>'
     #
+    add_divider = False
+    #
     for item_group in _cache_setup['bundles']['devices']['groups']:
+        #
+        if add_divider:
+            html += '<span class="sidebar_divider box-shadow"></span>'
         #
         html += urlopen('web/html/html_menu/menu_sidebar_title.html').read().encode('utf-8').format(name=get_cfg_group_name(_cache_setup, _cache_setup['bundles']['devices']['groups'][item_group]['group_id']))
         #
@@ -64,6 +69,9 @@ def html_menu_lhs(_cache_setup):
                                                                                                   cls='',
                                                                                                   name=label,
                                                                                                   img='/img/logo/{img}'.format(img=img))
+        #
+        add_divider = True
+        #
     #
     return urlopen('web/html/html_menu/menu_lhs.html').read().encode('utf-8').format(menu=html)
 
