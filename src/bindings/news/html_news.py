@@ -5,21 +5,22 @@ from urllib import urlopen
 from cfg import server_url
 from log.console_messages import print_msg, print_error
 from cache.users import get_usernews
+from cache.setup import cfg_urlencode, get_cfg_info_name
 
-def news_body(user, _cache):
+def news_body(user, _cache, info_seq):
     #
     try:
-        news = request_news(user, _cache)
+        news = request_news(user, _cache, info_seq)
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                 'body_news_articles': _create_html(news)}
     except Exception as e:
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                 'body_news_articles': ''}
     #
-    return urlopen('web/html/html_info_services/news_main.html').read().encode('utf-8').format(**args)
+    return urlopen('bindings/news/news_main.html').read().encode('utf-8').format(**args)
 
 
-def request_news(user, _cache):
+def request_news(user, _cache, info_seq):
     #
     if user:
         cache_users = _cache['users']
@@ -33,8 +34,9 @@ def request_news(user, _cache):
             user_sources += ' '
         user_sources += user_src
     #
-    url = server_url('data/info/news/articles?sources={sources}&sortby={sortby}'.format(sources=user_sources,
-                                                                                        sortby='latest'))
+    url = server_url('data/info/{info}/articles?sources={sources}&sortby={sortby}'.format(info=cfg_urlencode(get_cfg_info_name(_cache['setup'], info_seq)),
+                                                                                          sources=user_sources,
+                                                                                          sortby='latest'))
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
@@ -94,7 +96,7 @@ def _create_html(news):
                              'article_date': publish_string,
                              'article_image': image_url}
                 #
-                dict_html[publish_datetime] = urlopen('web/html/html_info_services/news_article_item.html').read().encode('utf-8').format(**args_item)
+                dict_html[publish_datetime] = urlopen('bindings/news/news_article_item.html').read().encode('utf-8').format(**args_item)
             except Exception as e:
                 pass
     #

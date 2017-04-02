@@ -1,5 +1,6 @@
 from urllib import urlopen
 
+from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
 from cache.users import get_userchannels
 from cache.tvchannels import *
 
@@ -16,22 +17,22 @@ def html_channels_user_and_all (_cache, user=False, _device_details=False):
         #
         if _device_details:
             type = _device_details['type']
-            group_id = _device_details['group_id']
-            device_id = _device_details['device_id']
+            group_seq = _device_details['group_seq']
+            thing_seq = _device_details['thing_seq']
             package = _device_details['package']
             current_chan = _device_details['current_chan']
         else:
             type = False
-            group_id = False
-            device_id = False
+            group_seq = False
+            thing_seq = False
             package = False
             current_chan = False
         #
         html_channels = ''
         #
-        if group_id and device_id:
-            html_channels += '<script>setTimeout(function () {getChannel(\'/data/device/' + str(group_id) + \
-                             '/' + str(device_id) + \
+        if group_seq and thing_seq:
+            html_channels += '<script>setTimeout(function () {getChannel(\'/data/' + cfg_urlencode(get_cfg_group_name(cache_devices, group_seq)) + \
+                             '/' + cfg_urlencode(get_cfg_thing_name(cache_devices, group_seq, thing_seq)) + \
                              '/channel\', true);}, 10000);</script>'
         #
         first_tab = True
@@ -72,10 +73,11 @@ def html_channels_user_and_all (_cache, user=False, _device_details=False):
             #
             # Pill header
             html_nav_user += urlopen('web/html/html_pills/pills_nav.html').read().encode('utf-8').format(active=active,
-                                                                                                    category=str(user).lower(),
-                                                                                                    title=str(user)+'\'s favourites')
+                                                                                                         category=str(user).lower(),
+                                                                                                         title=str(user)+'\'s favourites')
             #
-            body = _html_channels_container(user_channels_temp,
+            body = _html_channels_container(cache_devices,
+                                            user_channels_temp,
                                             user=user,
                                             _device_details=_device_details)
             # Pill contents
@@ -96,28 +98,29 @@ def html_channels_user_and_all (_cache, user=False, _device_details=False):
             category = cache_channels['channels'][str(catCount)]['category']
             #
             html_nav_all += urlopen('web/html/html_pills/pills_nav.html').read().encode('utf-8').format(active=active,
-                                                                                                   category=category.lower(),
-                                                                                                   title=category)
+                                                                                                        category=category.lower(),
+                                                                                                        title=category)
             #
-            body = _html_channels_container(cache_channels['channels'][str(catCount)],
+            body = _html_channels_container(cache_devices,
+                                            cache_channels['channels'][str(catCount)],
                                             _device_details=_device_details)
             #
             html_content += urlopen('web/html/html_pills/pills_contents.html').read().encode('utf-8').format(active=active,
-                                                                                                        category=category.lower(),
-                                                                                                        body=body)
+                                                                                                             category=category.lower(),
+                                                                                                             body=body)
             #
             catCount += 1
         #
         # If user channels available, change categories into dropdown menu
         if user_channels:
             html_nav_all = urlopen('web/html/html_pills/pills_nav_dropdown.html').read().encode('utf-8').format(title='All Channels',
-                                                                                                           dropdowns=html_nav_all)
+                                                                                                                dropdowns=html_nav_all)
         #
         # Combine html_pills for 'user' and 'all' channel listings
         html_nav = html_nav_user + html_nav_all
         #
         html_channels += urlopen('web/html/html_pills/pills_parent.html').read().encode('utf-8').format(nav=html_nav,
-                                                                                                   content=html_content)
+                                                                                                        content=html_content)
         #
         return html_channels
         #
@@ -125,11 +128,12 @@ def html_channels_user_and_all (_cache, user=False, _device_details=False):
         raise Exception
 
 
-def _html_channels_container(channels_items, user=False, _device_details=False):
+def _html_channels_container(_cache_setup, channels_items, user=False, _device_details=False):
     #
     header = '{user}\'s favourites'.format(user=user) if user else channels_items['category']
     #
-    html_chans = _channels_contents(channels_items,
+    html_chans = _channels_contents(_cache_setup,
+                                    channels_items,
                                     user=user,
                                     _device_details=_device_details)
     #
@@ -137,18 +141,18 @@ def _html_channels_container(channels_items, user=False, _device_details=False):
                                                                                             html_chans=html_chans)
 
 
-def _channels_contents(channel_items, user=False, _device_details=False):
+def _channels_contents(_cache_setup, channel_items, user=False, _device_details=False):
     #
     if _device_details:
         type = _device_details['type']
-        group_id = _device_details['group_id']
-        device_id = _device_details['device_id']
+        group_seq = _device_details['group_seq']
+        thing_seq = _device_details['thing_seq']
         package = _device_details['package']
         current_chan = _device_details['current_chan']
     else:
         type = False
-        group_id = False
-        device_id = False
+        group_seq = False
+        thing_seq = False
         package = False
         current_chan = False
     #
@@ -180,8 +184,8 @@ def _channels_contents(channel_items, user=False, _device_details=False):
                                                                                                  cls_highlight=chan_highlight,
                                                                                                  imgchan=channel_items['channels'][str(chanCount)][res]['logo'],
                                                                                                  channame=channel_items['channels'][str(chanCount)]['name'],
-                                                                                                 group_id=group_id,
-                                                                                                 device_id=device_id,
+                                                                                                 group=cfg_urlencode(get_cfg_group_name(_cache_setup, group_seq)),
+                                                                                                 device=cfg_urlencode(get_cfg_thing_name(_cache_setup, group_seq, thing_seq)),
                                                                                                  channo=channo)
 
         #
@@ -229,4 +233,4 @@ def _html_no_channels():
     body = '<strong>An error has occurred!!</strong> The list of channels on the server is empty. Please check server setup.'
     #
     return urlopen('web/html/comp_alert.html').read().encode('utf-8').format(type='alert-danger',
-                                                                        body=body)
+                                                                             body=body)

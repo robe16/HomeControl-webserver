@@ -1,66 +1,36 @@
+import sys
+import urllib
+
 ################################################################################################
-# Return count of groups and devices
+# Return count of groups, Things and info_services
 ################################################################################################
 
 
 def get_cfg_count_groups(data):
-    return len(data['bundles']['devices']['groups'])
+    #
+    return len(data['bindings']['groups'])
 
 
-def get_cfg_count_devices(data, group_id):
-    return len(data['bundles']['devices']['groups'][group_id]['devices'])
-
-################################################################################################
-# Return list of group and device ids
-################################################################################################
-
-
-def get_cfg_idlist_groups(data):
+def get_cfg_count_things(data, group_seq):
     #
-    r_list = []
+    for group in data['bindings']['groups']:
+        if group['sequence'] == group_seq:
+            return len(group['things'])
     #
-    for key, value in data['bundles']['devices']['groups'].iteritems():
-        r_list.append(key)
-    #
-    return r_list
+    return False
 
 
-def get_cfg_idlist_devices(data, group_id):
+def get_cfg_count_info(data):
     #
-    d_list = []
-    #
-    for key, value in data['bundles']['devices']['groups'][group_id]['devices'].iteritems():
-        d_list.append(key)
-    #
-    return d_list
-
-################################################################################################
-# Return number/index for group and device
-################################################################################################
+    return len(data['bindings']['info_services'])
 
 
-def get_cfg_group_index(data, group_id):
-    #
-    count = 0
-    #
-    for key, value in data['bundles']['devices']['groups'].iteritems():
-        if key == group_id:
-            return count
-        count += 1
-    #
-    return -1
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+# STRUCTURE
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
 
-
-def get_cfg_device_index(data, group_id, device_id):
-    #
-    count = 0
-    #
-    for key, value in data['bundles']['devices']['groups'][group_id]['devices'].iteritems():
-        if key == device_id:
-            return count
-        count += 1
-    #
-    return -1
 
 ################################################################################################
 # Return structure properties
@@ -76,72 +46,132 @@ def get_cfg_structure_town(data):
     #
     return get_cfg_structure_value(data, 'structure_town')
 
+
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+# THINGS
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+
+
 ################################################################################################
-# Return name of group and device
+# Return sequence for group and Thing from name
 ################################################################################################
 
 
-def get_cfg_group_name(data, group_id):
+def get_cfg_group_seq(data, group_name):
     #
-    return get_cfg_group_value(data, group_id, 'group_name')
-
-
-def get_cfg_device_name(data, group_id, device_id):
+    for group in data['bindings']['groups']:
+        if group['name'].lower() == group_name.lower():
+            return group['sequence']
     #
-    return get_cfg_device_value(data, group_id, device_id, 'device_name')
-
-################################################################################################
-# Return type of device
-################################################################################################
+    raise Exception
 
 
-def get_cfg_device_type(data, group_id, device_id):
+def get_cfg_thing_seq(data, group_name, thing_name):
     #
-    return get_cfg_device_value(data, group_id, device_id, 'device_type')
-
-################################################################################################
-# Return private detail value of device
-################################################################################################
-
-
-def get_cfg_device_detail(data, group_id, device_id, detail):
+    for group in data['bindings']['groups']:
+        if group['name'].lower() == group_name.lower():
+            for thing in group['things']:
+                if thing['name'].lower() == thing_name.lower():
+                    return thing['sequence']
     #
-    details = get_cfg_device_value(data, group_id, device_id, 'details')
+    raise Exception
+
+
+################################################################################################
+# Return name of group and Thing
+################################################################################################
+
+
+def get_cfg_group_name(data, group_seq):
+    return get_cfg_group_value(data, group_seq, 'name')
+
+
+def get_cfg_thing_name(data, group_seq, thing_seq):
+    return get_cfg_thing_value(data, group_seq, thing_seq, 'name')
+
+################################################################################################
+# Return type of Thing
+################################################################################################
+
+def get_cfg_thing_type(data, group_seq, thing_seq):
+    return get_cfg_thing_value(data, group_seq, thing_seq, 'type')
+
+################################################################################################
+# Return public detail value of Thing
+################################################################################################
+
+
+def get_cfg_thing_detail_public(data, group_seq, thing_seq, detail):
+    return get_cfg_thing_detail(data, group_seq, thing_seq, 'details_public', detail)
+
+
+def get_cfg_thing_detail(data, group_seq, thing_seq, privpub, detail):
+    #
+    details = get_cfg_thing_value(data, group_seq, thing_seq, privpub)
     #
     return details[detail]
 
+
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+# INFO_SERVICE
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+
+
 ################################################################################################
-# Return public detail value of device
+# Return sequence for info_service from name
 ################################################################################################
 
 
-def get_cfg_device_detail_public(data, group_id, device_id, detail):
+def get_cfg_info_seq(data, info_name):
     #
-    details = get_cfg_device_value(data, group_id, device_id, 'details_public')
+    for info in data['bindings']['info_services']:
+        if info['name'].lower() == info_name.lower():
+            return info['sequence']
+    #
+    raise Exception
+
+
+################################################################################################
+# Return name and type of info_service
+################################################################################################
+
+
+def get_cfg_info_name(data, info_seq):
+    return get_cfg_info_value(data, info_seq, 'name')
+
+
+def get_cfg_info_type(data, info_seq):
+    return get_cfg_info_value(data, info_seq, 'type')
+
+################################################################################################
+# Return private/public detail info_service of info_service
+################################################################################################
+
+
+def get_cfg_info_detail_public(data, info_seq, detail):
+    return get_cfg_info_detail(data, info_seq, 'details_public', detail)
+
+
+def get_cfg_info_detail(data, info_seq, privpub, detail):
+    #
+    details = get_cfg_info_value(data, info_seq, privpub)
     #
     return details[detail]
 
-################################################################################################
-# Return enabled status and other details of info_service
-################################################################################################
 
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
+# ----------------------------------------------------------------------------------------------
 
-def get_cfg_info_enabled(data, info_type):
-    #
-    enabled = get_cfg_info_value(data, info_type, 'enabled')
-    #
-    return enabled
-
-
-def get_cfg_info_detail(data, info_type, key):
-    #
-    enabled = get_cfg_info_value(data, info_type, key)
-    #
-    return enabled
 
 ################################################################################################
-# Return value for structure group and device
-# (used as 'master' code for returning name, type, etc. in above defs)
+# Return value for structure, group, Thing and info_service
+# (used as 'master' code for returning name, type, details etc. in above defs)
 ################################################################################################
 
 
@@ -150,19 +180,56 @@ def get_cfg_structure_value(data, key):
     return data['structure'][key]
 
 
-def get_cfg_group_value(data, group_id, key):
+def get_cfg_group_value(data, group_seq, key):
     #
-    return data['bundles']['devices']['groups'][group_id][key]
-
-
-def get_cfg_device_value(data, group_id, device_id, key):
+    for group in data['bindings']['groups']:
+        if group['sequence'] == group_seq:
+            return group[key]
     #
-    return data['bundles']['devices']['groups'][group_id]['devices'][device_id][key]
+    raise Exception('Requested group not found in config file')
 
 
-def get_cfg_info_value(data, info_type, key):
+def get_cfg_thing_value(data, group_seq, thing_seq, key):
     #
-    return data['bundles']['info_services'][info_type][key]
+    for group in data['bindings']['groups']:
+        if group['sequence'] == group_seq:
+            for thing in group['things']:
+                if thing['sequence'] == thing_seq:
+                    return thing[key]
+    #
+    raise Exception('Requested thing not found in config file')
+
+
+def get_cfg_info_value(data, info_seq, key):
+    #
+    for info in data['bindings']['info_services']:
+        if info['sequence'] == info_seq:
+            return info[key]
+    #
+    raise Exception('Requested info_service not found in config file')
 
 ################################################################################################
 ################################################################################################
+
+def cfg_urlencode(text):
+    try:
+        if (sys.version_info > (3, 0)):
+            # Python 3 code in this block
+            return urllib.parse.quote(text).lower()
+        else:
+            # Python 2 code in this block
+            return urllib.quote(text).lower()
+    except Exception as e:
+        return text.replace(' ', '').lower()
+
+
+def cfg_urldecode(text):
+    try:
+        if (sys.version_info > (3, 0)):
+            # Python 3 code in this block
+            return urllib.parse.unquote(text)
+        else:
+            # Python 2 code in this block
+            return urllib.unquote(text)
+    except Exception as e:
+        raise Exception

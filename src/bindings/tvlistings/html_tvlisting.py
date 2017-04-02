@@ -3,6 +3,7 @@ import requests
 import ast
 from urllib import urlopen
 from cfg import server_url
+from cache.setup import cfg_urlencode, get_cfg_info_name
 from log.console_messages import print_msg, print_error
 from cache.users import get_userchannels
 
@@ -13,10 +14,10 @@ isoformat = '%Y-%m-%d %H:%M:%S'
 time_format = '%H:%M'
 
 
-def tvlisting_body(user, _cache):
+def tvlisting_body(user, _cache, info_seq):
     #
     try:
-        listings = request_tvlistings()
+        listings = request_tvlistings(_cache, info_seq)
         #
         if not str(listings)=='False':
             args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
@@ -25,14 +26,14 @@ def tvlisting_body(user, _cache):
             args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                     'body_tvlistings': 'ERROR'}
         #
-        return urlopen('web/html/html_info_services/tvlistings_main.html').read().encode('utf-8').format(**args)
+        return urlopen('bindings/tvlistings/tvlistings_main.html').read().encode('utf-8').format(**args)
         #
     except Exception as e:
         raise Exception
 
 
-def request_tvlistings():
-    url = server_url('data/info/tvlistings/alllistings')
+def request_tvlistings(_cache, info_seq):
+    url = server_url('data/info/{info}/alllistings'.format(info=cfg_urlencode(get_cfg_info_name(_cache['setup'], info_seq))))
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
@@ -63,7 +64,7 @@ def _create_html(user, _cache, listings):
         t = current_hourly_time + datetime.timedelta(hours=hr, minutes=mn)
         args_time = {'width': hourly_width_px/2,
                      'hour': t.strftime(time_format)}
-        html_hours_title += urlopen('web/html/html_info_services/tvlistings_listing_row_listings_title_item.html').read().encode('utf-8').format(**args_time)
+        html_hours_title += urlopen('bindings/tvlistings/tvlistings_listing_row_listings_title_item.html').read().encode('utf-8').format(**args_time)
     #
     # vertical line for now() time
     left_dist = _calc_item_width(current_hourly_time, datetime.datetime.now())
@@ -82,8 +83,8 @@ def _create_html(user, _cache, listings):
         else:
             active = ''
         #
-        html_channels = urlopen('web/html/html_info_services/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
-        html_listings = urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(listings=html_hours_title)
+        html_channels = urlopen('bindings/tvlistings/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
+        html_listings = urlopen('bindings/tvlistings/tvlistings_listing_row_listings.html').read().encode('utf-8').format(listings=html_hours_title)
         cat = 0
         while cat < len(channels['channels']):
             chan = 0
@@ -97,7 +98,7 @@ def _create_html(user, _cache, listings):
                         logo = channels['channels'][str(cat)]['channels'][str(chan)]['sd']['logo']
                     #
                     args_channels = {'imgchan': logo}
-                    html_channels += urlopen('web/html/html_info_services/tvlistings_listing_row_channel.html').read().encode('utf-8').format(**args_channels)
+                    html_channels += urlopen('bindings/tvlistings/tvlistings_listing_row_channel.html').read().encode('utf-8').format(**args_channels)
                     #
                     temp_html = ''
                     #
@@ -141,17 +142,15 @@ def _create_html(user, _cache, listings):
                                                  'title': listings[str(cat)][str(chan)][item]['title'],
                                                  'subtitle': subtitle,
                                                  'desc': listings[str(cat)][str(chan)][item]['desc']}
-                                    temp_html += urlopen(
-                                        'web/html/html_info_services/tvlistings_listing_row_listings_item.html').read().encode(
-                                        'utf-8').format(**args_item)
+                                    temp_html += urlopen('bindings/tvlistings/tvlistings_listing_row_listings_item.html').read().encode('utf-8').format(**args_item)
                         else:
                             raise Exception
                         #
                         args_listings = {'listings': temp_html}
-                        html_listings += urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
+                        html_listings += urlopen('bindings/tvlistings/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
                     except Exception as e:
                         args_listings = {'listings': '<div style="padding: 5px;">No listings available</div>'}
-                        html_listings += urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
+                        html_listings += urlopen('bindings/tvlistings/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
                         #
                 chan += 1
             cat += 1
@@ -161,7 +160,7 @@ def _create_html(user, _cache, listings):
                                                                                               category=str(user).lower(),
                                                                                               title=str(user)+'\'s favourites')
         #
-        html_cat_pill_body = urlopen('web/html/html_info_services/tvlistings_listing.html').read().encode('utf-8').format(left_dist=left_dist,
+        html_cat_pill_body = urlopen('bindings/tvlistings/tvlistings_listing.html').read().encode('utf-8').format(left_dist=left_dist,
                                                                                                                           rows_channel_images=html_channels,
                                                                                                                           rows_listings=html_listings)
         #
@@ -187,8 +186,8 @@ def _create_html(user, _cache, listings):
                                                                                               category=category.lower(),
                                                                                               title=category)
         #
-        html_channels = urlopen('web/html/html_info_services/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
-        html_listings = urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(listings=html_hours_title)
+        html_channels = urlopen('bindings/tvlistings/tvlistings_listing_row_channel_title.html').read().encode('utf-8')
+        html_listings = urlopen('bindings/tvlistings/tvlistings_listing_row_listings.html').read().encode('utf-8').format(listings=html_hours_title)
         #
         chan = 0
         while chan < len(channels['channels'][str(cat)]['channels']):
@@ -199,7 +198,7 @@ def _create_html(user, _cache, listings):
                 logo = channels['channels'][str(cat)]['channels'][str(chan)]['sd']['logo']
             #
             args_channels = {'imgchan': logo}
-            html_channels += urlopen('web/html/html_info_services/tvlistings_listing_row_channel.html').read().encode('utf-8').format(**args_channels)
+            html_channels += urlopen('bindings/tvlistings/tvlistings_listing_row_channel.html').read().encode('utf-8').format(**args_channels)
             #
             temp_html = ''
             #
@@ -240,20 +239,20 @@ def _create_html(user, _cache, listings):
                                          'title': listings[str(cat)][str(chan)][item]['title'],
                                          'subtitle': subtitle,
                                          'desc': listings[str(cat)][str(chan)][item]['desc']}
-                            temp_html += urlopen('web/html/html_info_services/tvlistings_listing_row_listings_item.html').read().encode('utf-8').format(**args_item)
+                            temp_html += urlopen('bindings/tvlistings/tvlistings_listing_row_listings_item.html').read().encode('utf-8').format(**args_item)
                 else:
                     raise Exception
                 #
                 args_listings = {'listings': temp_html}
-                html_listings += urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
+                html_listings += urlopen('bindings/tvlistings/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
             except Exception as e:
                 args_listings = {'listings': '<div style="padding: 5px;">No listings available</div>'}
-                html_listings += urlopen('web/html/html_info_services/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
+                html_listings += urlopen('bindings/tvlistings/tvlistings_listing_row_listings.html').read().encode('utf-8').format(**args_listings)
             #
             chan += 1
             #
         #
-        html_cat_pill_body = urlopen('web/html/html_info_services/tvlistings_listing.html').read().encode('utf-8').format(left_dist=left_dist,
+        html_cat_pill_body = urlopen('bindings/tvlistings/tvlistings_listing.html').read().encode('utf-8').format(left_dist=left_dist,
                                                                                                                           rows_channel_images=html_channels,
                                                                                                                           rows_listings=html_listings)
         #

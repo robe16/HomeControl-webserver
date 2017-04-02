@@ -2,17 +2,17 @@ import requests
 import ast
 from urllib import urlopen
 from cfg import server_url
-from cache.setup import get_cfg_device_detail_public
-from lists.devices.list_devices import get_device_html_command
+from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
+from cache.setup import get_cfg_thing_detail_public
 from log.console_messages import print_error, print_msg
 from web.web_tvchannels import html_channels_user_and_all
 
 
-def html_tivo(user, _cache, group_id, device_id):
+def html_tivo(user, _cache, group_seq, thing_seq):
     #
-    json_recordings = _get_recordings(group_id, device_id)
+    json_recordings = _get_recordings(_cache['setup'], group_seq, thing_seq)
     #
-    chan_current = _get_current_chan(group_id, device_id)
+    chan_current = _get_current_chan(_cache['setup'], group_seq, thing_seq)
     if chan_current:
         currentChan_name = chan_current['channel']['name']
         currentChan_number = chan_current['channel']['number']
@@ -24,9 +24,9 @@ def html_tivo(user, _cache, group_id, device_id):
     #
     _device_details = {}
     _device_details['type'] = 'tivo'
-    _device_details['group_id'] = group_id
-    _device_details['device_id'] = device_id
-    _device_details['package'] = ["virginmedia_package", get_cfg_device_detail_public(_cache['setup'], group_id, device_id, 'package')]
+    _device_details['group_seq'] = group_seq
+    _device_details['thing_seq'] = thing_seq
+    _device_details['package'] = ["virginmedia_package", get_cfg_thing_detail_public(_cache['setup'], group_seq, thing_seq, 'package')]
     _device_details['current_chan'] = currentChan_number
     #
     try:
@@ -42,15 +42,15 @@ def html_tivo(user, _cache, group_id, device_id):
     except:
         recordings_timestamp = 'n/a'
     #
-    args = {'group_id': group_id,
-            'device_id': device_id,
+    args = {'group': cfg_urlencode(get_cfg_group_name(_cache['setup'], group_seq)),
+            'thing': cfg_urlencode(get_cfg_thing_name(_cache['setup'], group_seq, thing_seq)),
             'html_recordings': _html_recordings(json_recordings),
             'timestamp_recordings': recordings_timestamp,
             'now_viewing_logo': currentChan_logo,
             'now_viewing': currentChan_name,
             'html_channels': html_channels}
     #
-    return urlopen('web/html/html_devices/' + get_device_html_command('tivo')).read().encode('utf-8').format(**args)
+    return urlopen('bindings/tivo/object_device_tivo.html').read().encode('utf-8').format(**args)
 
 
 def _html_recordings(json_recordings):
@@ -130,26 +130,26 @@ def _html_recordings(json_recordings):
         return '<p>Error</p>'
 
 
-def _get_recordings(group_id, device_id):
-    data = _getData(group_id, device_id, 'recordings')
+def _get_recordings(_cache, group_seq, thing_seq):
+    data = _getData(_cache, group_seq, thing_seq, 'recordings')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _get_current_chan(group_id, device_id):
-    data = _getData(group_id, device_id, 'channel')
+def _get_current_chan(_cache, group_seq, thing_seq):
+    data = _getData(_cache, group_seq, thing_seq, 'channel')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(group_id, device_id, datarequest):
-    r = requests.get(server_url('data/device/{group_id}/{device_id}/{datarequest}'.format(group_id=group_id,
-                                                                                         device_id=device_id,
-                                                                                         datarequest=datarequest)))
+def _getData(_cache, group_seq, thing_seq, datarequest):
+    r = requests.get(server_url('data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
+                                                                            thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
+                                                                            datarequest=datarequest)))
     if r.status_code == requests.codes.ok:
         return r.content
     else:

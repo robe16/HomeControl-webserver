@@ -1,8 +1,5 @@
 from urllib import urlopen
-
-from cache.setup import get_cfg_group_name
-from cache.setup import get_cfg_device_name, get_cfg_device_value
-from cache.setup import get_cfg_info_enabled
+from cache.setup import cfg_urlencode
 from cache.users import get_userrole, get_userimage
 
 
@@ -15,60 +12,41 @@ def html_menu(user, _cache):
 def html_menu_lhs(_cache_setup):
     #
     html = ''
-    add_divider = False
     #
-    if get_cfg_info_enabled(_cache_setup, 'weather'):
+    if len(_cache_setup['bindings']['info_services']) > 0:
         add_divider = True
-        html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href='/web/info/weather',
-                                                                                                   id='weather',
-                                                                                                   cls='',
-                                                                                                   name='Weather',
-                                                                                                   img='/img/icon/ic_infoservice_weather.png')
+    else:
+        add_divider = False
     #
-    if get_cfg_info_enabled(_cache_setup, 'news'):
-        add_divider = True
-        html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href='/web/info/news',
-                                                                                                   id='news',
+    for info in _cache_setup['bindings']['info_services']:
+        #
+        html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/info/{info}').format(info=cfg_urlencode(info['name'])),
+                                                                                                   id='{info}'.format(info=info['sequence']),
                                                                                                    cls='',
-                                                                                                   name='News',
-                                                                                                   img='/img/icon/ic_infoservice_news.png')
-    #
-    if get_cfg_info_enabled(_cache_setup, 'tvlistings'):
-        add_divider = True
-        html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href='/web/info/tvlistings',
-                                                                                                   id='tvlistings',
-                                                                                                   cls='',
-                                                                                                   name='TV Listings',
-                                                                                                   img='/img/icon/ic_infoservice_tvguide.png')
+                                                                                                   name=info['name'],
+                                                                                                   img='/img/logo/{img}'.format(img=info['logo']))
     #
     if add_divider:
         html += '<span class="sidebar_divider box-shadow"></span>'
     #
     add_divider = False
     #
-    for item_group in _cache_setup['bundles']['devices']['groups']:
+    for group in _cache_setup['bindings']['groups']:
         #
         if add_divider:
             html += '<span class="sidebar_divider box-shadow"></span>'
         #
-        html += urlopen('web/html/html_menu/menu_sidebar_title.html').read().encode('utf-8').format(name=get_cfg_group_name(_cache_setup, _cache_setup['bundles']['devices']['groups'][item_group]['group_id']))
+        html += urlopen('web/html/html_menu/menu_sidebar_title.html').read().encode('utf-8').format(name=group['name'])
         #
-        for item_device in _cache_setup['bundles']['devices']['groups'][item_group]['devices']:
+        for thing in group['things']:
             #
-            label = get_cfg_device_name(_cache_setup,
-                                        _cache_setup['bundles']['devices']['groups'][item_group]['group_id'],
-                                        _cache_setup['bundles']['devices']['groups'][item_group]['devices'][item_device]['device_id'])
-            img = get_cfg_device_value(_cache_setup,
-                                       _cache_setup['bundles']['devices']['groups'][item_group]['group_id'],
-                                       _cache_setup['bundles']['devices']['groups'][item_group]['devices'][item_device]['device_id'], 'logo')
-            #
-            html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/device/{group_id}/{device_id}').format(group_id=_cache_setup['bundles']['devices']['groups'][item_group]['group_id'],
-                                                                                                                                                          device_id=_cache_setup['bundles']['devices']['groups'][item_group]['devices'][item_device]['device_id']),
-                                                                                                  id='{group_id}_{device_id}'.format(group_id=_cache_setup['bundles']['devices']['groups'][item_group]['group_id'],
-                                                                                                                                     device_id=_cache_setup['bundles']['devices']['groups'][item_group]['devices'][item_device]['device_id']),
-                                                                                                  cls='',
-                                                                                                  name=label,
-                                                                                                  img='/img/logo/{img}'.format(img=img))
+            html += urlopen('web/html/html_menu/menu_sidebar_item.html').read().encode('utf-8').format(href=('/web/{group}/{thing}').format(group=cfg_urlencode(group['name']),
+                                                                                                                                            thing=cfg_urlencode(thing['name'])),
+                                                                                                       id='{group}_{thing}'.format(group=group['sequence'],
+                                                                                                                                   thing=thing['sequence']),
+                                                                                                       cls='',
+                                                                                                       name=thing['name'],
+                                                                                                       img='/img/logo/{img}'.format(img=thing['logo']))
         #
         add_divider = True
         #

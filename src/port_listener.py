@@ -1,22 +1,25 @@
 import os
-
 import requests as requests
 from bottle import error, HTTPError
 from bottle import get, post
 from bottle import request, run, static_file, HTTPResponse, redirect, response
 
 import cfg
-from bundles.devices.tivo.html_tivo import html_tivo
-from bundles.devices.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
-from cache.setup import get_cfg_device_type
-from cache.setup import get_cfg_group_name, get_cfg_device_name
-from cache.setup import get_cfg_info_enabled
+from bindings.tivo.html_tivo import html_tivo
+from bindings.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
+from bindings.nest.html_nest import html_nest
+from bindings.news.html_news import news_body
+from bindings.tvlistings.html_tvlisting import tvlisting_body
+from bindings.weather.html_weather import weather_body
+#
+from cache.setup import get_cfg_group_seq, get_cfg_thing_seq, get_cfg_info_seq
+from cache.setup import get_cfg_thing_type, get_cfg_info_type
+from cache.setup import cfg_urldecode
+#
 from cache.users import check_user
 from cfg import server_url
-from bundles.devices.nest.html_nest import html_nest
 from web.web_create_error import create_error
-from web.web_create_pages import create_login, create_home, create_about
-from web.web_create_pages import create_tvlistings, create_weather, create_news, create_device
+from web.web_create_pages import create_login, create_home, create_about, create_page_body
 
 
 ################################################################################################
@@ -80,12 +83,12 @@ def web_about():
     return HTTPResponse(body=create_about(user, _cache), status=200)
 
 
-@get('/web/info/<service>')
-def web_info(service=False):
+@get('/web/info/<info>')
+def web_info(info=False):
     global _cache
     #
     try:
-        if not service:
+        if not info:
             raise HTTPError(404)
         #
         # Get and check user
@@ -93,25 +96,43 @@ def web_info(service=False):
         if not user:
             redirect('/web/login')
         #
-        if get_cfg_info_enabled(_cache['setup'], service):
-            if service == 'tvlistings':
-                return HTTPResponse(body=create_tvlistings(user, _cache), status=200)
-            elif service == 'weather':
-                return HTTPResponse(body=create_weather(user, _cache), status=200)
-            elif service == 'news':
-                return HTTPResponse(body=create_news(user, _cache), status=200)
+        info = cfg_urldecode(info)
         #
-        raise HTTPError(404)
+        info_seq = get_cfg_info_seq(_cache['setup'], info)
+        #
+        type = get_cfg_info_type(_cache['setup'], info_seq)
+        #
+        if type == 'news':
+            html_body = news_body(user,
+                                  _cache,
+                                  info_seq)
+        elif type == 'tvlistings':
+            html_body = tvlisting_body(user,
+                                       _cache,
+                                       info_seq)
+        elif type == 'weather':
+            html_body = weather_body(_cache['setup'],
+                                     info_seq)
+        else:
+            return HTTPError(404)
+        #
+        body = create_page_body(user,
+                                _cache,
+                                html_body,
+                                '{info}'.format(info=info),
+                                '{info}'.format(info=info))
+        #
+        return HTTPResponse(body=body, status=200)
     except Exception as e:
         raise HTTPError(500)
 
 
-@get('/web/device/<group_id>/<device_id>')
-def web_devices(group_id=False, device_id=False):
+@get('/web/<group>/<thing>')
+def web_devices(group=False, thing=False):
     global _cache
     #
     try:
-        if (not group_id) or (not device_id):
+        if (not group) or (not thing):
             raise HTTPError(404)
         #
         # Get and check user
@@ -119,21 +140,29 @@ def web_devices(group_id=False, device_id=False):
         if not user:
             redirect('/web/login')
         #
+        group = cfg_urldecode(group)
+        thing = cfg_urldecode(thing)
+        #
+        group_seq = get_cfg_group_seq(_cache['setup'], group)
+        thing_seq = get_cfg_thing_seq(_cache['setup'], group, thing)
+        #
         query_dict = dict(request.query)
         #
-        device_type = get_cfg_device_type(_cache['setup'], group_id, device_id)
+        type = get_cfg_thing_type(_cache['setup'], group_seq, thing_seq)
         #
-        if device_type == 'tv_lg_netcast':
-            html_body = html_tv_lg_netcast(group_id,
-                                           device_id)
-        elif device_type == 'tivo':
+        if type == 'tv_lg_netcast':
+            html_body = html_tv_lg_netcast(_cache['setup'],
+                                           group_seq,
+                                           thing_seq)
+        elif type == 'tivo':
             html_body = html_tivo(user,
                                   _cache,
-                                  group_id,
-                                  device_id)
-        elif device_type == 'nest_account':
-            html_body = html_nest(group_id,
-                                  device_id,
+                                  group_seq,
+                                  thing_seq)
+        elif type == 'nest_account':
+            html_body = html_nest(_cache['setup'],
+                                  group_seq,
+                                  thing_seq,
                                   query_dict)
             try:
                 if query_dict['body']:
@@ -143,13 +172,11 @@ def web_devices(group_id=False, device_id=False):
         else:
             return HTTPError(404)
         #
-        body = create_device(user,
-                             _cache,
-                             html_body,
-                             '{group}: {device}'.format(group=get_cfg_group_name(_cache['setup'], group_id),
-                                                       device=get_cfg_device_name(_cache['setup'], group_id, device_id)),
-                             '{group}: {device}'.format(group=get_cfg_group_name(_cache['setup'], group_id),
-                                                       device=get_cfg_device_name(_cache['setup'], group_id, device_id)))
+        body = create_page_body(user,
+                                _cache,
+                                html_body,
+                                '{group}: {thing}'.format(group=group, thing=thing),
+                                '{group}: {thing}'.format(group=group, thing=thing))
         #
         return HTTPResponse(body=body, status=200)
     except Exception as e:
@@ -165,16 +192,17 @@ def get_resource(folder, filename):
 # Handle requests for resource data
 ################################################################################################
 
-@get('/data/device/<group_id>/<device_id>/<resource_requested>')
-def get_data_device(group_id=False, device_id=False, resource_requested=False):
+@get('/data/<group>/<thing>/<resource_requested>')
+def get_data_device(group=False, thing=False, resource_requested=False):
     #
-    if (not group_id) or (not device_id) or (not resource_requested):
+    if (not group) or (not thing) or (not resource_requested):
         raise HTTPError(404)
     #
     try:
-        r = requests.get(server_url('data/device/{group_id}/{device_id}/{resource_requested}'.format(group_id=group_id,
-                                                                                                    device_id=device_id,
-                                                                                                    resource_requested=resource_requested)))
+        #
+        r = requests.get(server_url('data/{group}/{thing}/{resource_requested}'.format(group=group,
+                                                                                       thing=thing,
+                                                                                       resource_requested=resource_requested)))
         #
         if r.status_code == requests.codes.ok:
             if r.content:
@@ -193,17 +221,18 @@ def get_data_device(group_id=False, device_id=False, resource_requested=False):
 ################################################################################################
 
 
-@get('/command/device/<group_id>/<device_id>')
-@post('/command/device/<group_id>/<device_id>')
-def send_command_device(group_id=False, device_id=False):
+@get('/command/<group>/<thing>')
+@post('/command/<group>/<thing>')
+def send_command_device(group=False, thing=False):
     #
-    if (not group_id) or (not device_id):
+    if (not group) or (not thing):
         raise HTTPError(404)
     #
     cmd_dict = dict(request.query)
     #
     try:
-        r = requests.post(server_url('command/device/{group_id}/{device_id}'.format(group_id=group_id, device_id=device_id)),
+        #
+        r = requests.post(server_url('command/{group}/{thing}'.format(group=group, thing=thing)),
                           json=cmd_dict)
         #
         if r.status_code == requests.codes.ok:

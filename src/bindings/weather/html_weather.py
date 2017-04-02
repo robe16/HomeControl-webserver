@@ -3,12 +3,13 @@ import requests
 import ast
 from urllib import urlopen
 from cfg import server_url
+from cache.setup import cfg_urlencode, get_cfg_info_name
 from log.console_messages import print_msg, print_error
 from weather_lists import *
 
-def weather_body():
+def weather_body(_cache, info_seq):
     #
-    forecast = request_weather()
+    forecast = request_weather(_cache, info_seq)
     #
     if not str(forecast)=='False':
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
@@ -21,11 +22,11 @@ def weather_body():
                 'county': '-',
                 'body_weather_days': ''}
     #
-    return urlopen('web/html/html_info_services/weather_main.html').read().encode('utf-8').format(**args)
+    return urlopen('bindings/weather/weather_main.html').read().encode('utf-8').format(**args)
 
 
-def request_weather():
-    url = server_url('data/info/weather/forecast')
+def request_weather(_cache, info_seq):
+    url = server_url('data/info/{info}/forecast'.format(info=cfg_urlencode(get_cfg_info_name(_cache, info_seq))))
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
@@ -75,7 +76,7 @@ def _create_html(forecast):
                           'temp_unit': forecast['units']['3hourly']['temp'],
                           'precipitation_prob': hour_item['precipitation_prob']}
             #
-            html_hrs += urlopen('web/html/html_info_services/weather_hour_item.html').read().encode('utf-8').format(
+            html_hrs += urlopen('bindings/weather/weather_hour_item.html').read().encode('utf-8').format(
                 **args_hours)
             #
             hours_count += 1
@@ -107,7 +108,7 @@ def _create_html(forecast):
         #
         days_count += 1
         #
-        html += urlopen('web/html/html_info_services/weather_day_item.html').read().encode('utf-8').format(
+        html += urlopen('bindings/weather/weather_day_item.html').read().encode('utf-8').format(
             **args_item)
         #
     return html
