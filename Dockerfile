@@ -2,7 +2,7 @@ FROM resin/rpi-raspbian:latest
 MAINTAINER robe16
 
 # Update
-#RUN apk add --update python py-pip
+#RUN chmod +x apk add --update python py-pip
 
 # Install app dependencies
 RUN pip install -r req.txt
