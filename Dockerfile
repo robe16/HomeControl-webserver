@@ -2,8 +2,7 @@ FROM resin/rpi-raspbian:latest
 MAINTAINER robe16
 
 # Update
-RUN apt-get install -y python
-RUN apt-get install -y py-pip
+RUN apt-get update && apt-get install -y python python-pip
 
 # Install app dependencies
 RUN pip install -r -req.txt
