@@ -8,7 +8,7 @@ node {
         println commit_id
 
         stage "build"
-        def app = docker.build "HomeControl-webserver"
+        def app = docker.build "homecontrol-webserver"
 
         stage "publish"
         app.push 'master'
