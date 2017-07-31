@@ -2,11 +2,11 @@ FROM resin/rpi-raspbian:latest
 MAINTAINER robe16
 
 # Update
-RUN apk add --update python
-RUN apk add --update py-pip
+RUN apk add --update -y python
+RUN apk add --update -y py-pip
 
 # Install app dependencies
-RUN pip install -r req.txt
+RUN pip install -r -y req.txt
 
 # Bundle app source
 COPY src /usr/local/src
