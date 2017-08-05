@@ -1,4 +1,4 @@
-FROM resin/rpi-raspbian:latest
+FROM python:2.7-slim
 MAINTAINER robe16
 
 # Update
@@ -12,8 +12,6 @@ COPY src /HomeControl/webserver
 # Install app dependencies
 COPY req.txt requirements.txt
 RUN pip install -r requirements.txt
-
-RUN ls
 
 # Expose the application port and run application
 EXPOSE 1610
