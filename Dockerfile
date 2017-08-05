@@ -8,15 +8,10 @@ RUN apt-get update && apt-get install -y python python-pip
 WORKDIR /HomeControl
 COPY src /webserver
 
-RUN ls
-
 # Install app dependencies
 WORKDIR /HomeControl/webserver
 COPY req.txt requirements.txt
 RUN pip install -r requirements.txt
-
-RUN ls
-
 
 # Expose the application port and run application
 EXPOSE 1610
