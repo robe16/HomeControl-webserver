@@ -4,14 +4,20 @@ MAINTAINER robe16
 # Update
 RUN apt-get update && apt-get install -y python python-pip
 
+# Bundle app source
+WORKDIR /HomeControl
+COPY src /webserver
+
 RUN ls
 
 # Install app dependencies
-RUN pip install -r -req.txt
+WORKDIR /HomeControl/webserver
+COPY req.txt requirements.txt
+RUN pip install -r -requirements.txt
 
-# Bundle app source
-COPY src /usr/local/src
+RUN ls
+
 
 # Expose the application port and run application
 EXPOSE 1610
-CMD [“python”, ”/usr/local/src/start.py”]
+CMD [“python”, ”start.py”]
