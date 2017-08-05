@@ -9,13 +9,17 @@ A web interface that will dynamically be created on the fly when requested, and 
 <h4>Bundles that have been developed:</h4>
 
 <p>Devices</p>
-- LG TV control
-- Virgin Media TiVo control
-- Nest (thermostat & smoke detectors)
+<ul>
+<li>LG TV control</li>
+<li>Virgin Media TiVo control</li>
+<li>Nest (thermostat & smoke detectors)</li>
+</ul>
 
 <p>Info Services</p>
-- Weather forecast
-- TV Listings
+<ul>
+<li>Weather forecast</li>
+<li>TV Listings</li>
+</ul>
 
 <img src="https://github.com/robe16/HomeControl-documentation/blob/master/images/interfaces/img_interfaces_webserver-server.jpg">
 <h5>Figure: Interfaces between HomeControl-webserver and HomeControl-server</h5>
