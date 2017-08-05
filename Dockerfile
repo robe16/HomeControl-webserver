@@ -1,4 +1,4 @@
-FROM python:2.7-slim
+FROM resin/rpi-raspbian:latest
 MAINTAINER robe16
 
 # Update
