@@ -4,12 +4,12 @@ MAINTAINER robe16
 # Update
 RUN apt-get update && apt-get install -y python python-pip
 
+WORKDIR /HomeControl/webserver
+
 # Bundle app source
-WORKDIR /HomeControl
-COPY src /webserver
+COPY src /HomeControl/webserver
 
 # Install app dependencies
-WORKDIR /HomeControl/webserver
 COPY req.txt requirements.txt
 RUN pip install -r requirements.txt
 
