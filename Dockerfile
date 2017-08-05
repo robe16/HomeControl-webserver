@@ -13,7 +13,7 @@ RUN ls
 # Install app dependencies
 WORKDIR /HomeControl/webserver
 COPY req.txt requirements.txt
-RUN pip install -r -requirements.txt
+RUN pip install -r requirements.txt
 
 RUN ls
 
