@@ -4,6 +4,8 @@ MAINTAINER robe16
 # Update
 RUN apt-get update && apt-get install -y python python-pip
 
+RUN ls
+
 # Install app dependencies
 RUN pip install -r -req.txt
 
