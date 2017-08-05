@@ -8,9 +8,6 @@ node {
             println commit_id
         }
         stage("build") {
-            docker pull $app_name:latest && /
-            docker tag $app_name:latest $app_name:${env.BUILD_NUMBER} && /
-            docker push $app_name:${env.BUILD_NUMBER} || /
             def app = docker.build "homecontrol-webserver"
         }
         stage("publish") {
