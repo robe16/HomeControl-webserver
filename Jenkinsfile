@@ -1,6 +1,7 @@
 node {
     stage("prepare")
     println "**** PREPARE ****"
+    sh "docker login"
     def app_name = "homecontrol-webserver"
 
     stage("checkout")
