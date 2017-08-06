@@ -17,5 +17,4 @@ node {
     stage("publish")
     println "**** PUBLISH ****"
     app.push "${commit_id}"
-    app.push "latest"
 }
