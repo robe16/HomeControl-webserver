@@ -8,10 +8,10 @@ node {
             println commit_id
         }
         stage("build") {
-            def app = docker.build -t "homecontrol-webserver":"latest"
+            def app = docker.build "homecontrol-webserver"
         }
         stage("publish") {
-            println "no publish code"
+            app.push "${commit_id}"
         }
     }
 }
