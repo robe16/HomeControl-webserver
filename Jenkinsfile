@@ -11,8 +11,7 @@ node {
             def app = docker.build "homecontrol-webserver":latest
         }
         stage("publish") {
-            app.push 'master'
-            app.push "${commit_id}"
+            println "no publish code"
         }
     }
 }
