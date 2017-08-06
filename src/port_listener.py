@@ -3,8 +3,7 @@ import requests as requests
 from bottle import error, HTTPError
 from bottle import get, post
 from bottle import request, run, static_file, HTTPResponse, redirect, response
-
-import cfg
+#
 from bindings.tivo.html_tivo import html_tivo
 from bindings.tv_lg_netcast.html_tv_lg_netcast import html_tv_lg_netcast
 from bindings.nest.html_nest import html_nest
@@ -28,12 +27,13 @@ _cache = False
 
 ################################################################################################
 
-def start_bottle(cache):
+
+def start_bottle(cache, self_port):
     #
     global _cache
     _cache = cache
     #
-    run_bottle()
+    run_bottle(self_port)
 
 ################################################################################################
 # Web UI
@@ -325,7 +325,7 @@ def _check_user(user_cookie):
         else:
             return 'Guest'
 
-def run_bottle():
+def run_bottle(self_port):
     # '0.0.0.0' - all interfaces including the external one
     # 'localhost' - internal interfaces only
-    run(host='0.0.0.0', port=cfg.self_port, debug=True)
+    run(host='0.0.0.0', port=self_port, debug=True)
