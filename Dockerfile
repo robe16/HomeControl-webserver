@@ -17,4 +17,4 @@ RUN pip install -r requirements.txt
 
 # Expose the application port and run application
 EXPOSE 1610
-CMD [“python”, ”start.py”]
+CMD python ”start.py”
