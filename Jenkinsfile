@@ -1,7 +1,6 @@
 node {
     stage("prepare")
     println "**** PREPARE ****"
-    sh "docker login"
     def app_name = "homecontrol-webserver"
 
     stage("checkout")
@@ -13,9 +12,6 @@ node {
 
     stage("build")
     println "**** BUILD ****"
-    def app = docker.build "${app_name}"
+    def app = docker.build "${app_name}":"${commit_id}"
 
-    stage("publish")
-    println "**** PUBLISH ****"
-    app.push "${commit_id}"
 }
