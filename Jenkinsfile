@@ -14,7 +14,7 @@ node {
     println "**** BUILD ****"
     def app = docker.build "${app_name}"
 
-    docker rmi $app_name:"latest"
+    sh "docker rmi $app_name:latest"
 
     stage("publish")
     println "**** PUBLISH ****"
