@@ -12,6 +12,6 @@ node {
 
     stage("build")
     println "**** BUILD ****"
-    def app = docker.build "${app_name}":"${commit_id}"
+    def app = docker.build "${app_name}:${commit_id}"
 
 }
