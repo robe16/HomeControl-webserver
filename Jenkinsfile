@@ -8,7 +8,7 @@ node {
             println commit_id
         }
         stage("build") {
-            def app = docker.build "homecontrol-webserver":latest
+            def app = docker.build -t "homecontrol-webserver":"latest"
         }
         stage("publish") {
             println "no publish code"
