@@ -12,9 +12,9 @@ node {
 
     stage("build")
     println "**** BUILD ****"
-    def app = docker.build "$app_name"
+    def app = docker.build "${app_name}"
 
-    docker rmi "$app_name":"latest"
+    docker rmi "${app_name}":"latest"
 
     stage("publish")
     println "**** PUBLISH ****"
