@@ -34,5 +34,4 @@ print_msg('Process started: "bottle" server on port {port}'.format(port=cfg.self
 ################################
 process_cache.join()
 process_bottle.join()
-#
 ################################
