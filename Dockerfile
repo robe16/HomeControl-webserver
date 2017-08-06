@@ -19,5 +19,5 @@ COPY req.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Expose the application port and run application
-EXPOSE $env:port
-CMD python start.py $env:port
+EXPOSE ${port}
+CMD python start.py ${port}
