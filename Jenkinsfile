@@ -1,4 +1,7 @@
 node {
+
+    echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+
     stage("prepare")
     println "**** PREPARE ****"
     def app_name = "homecontrol-webserver"
@@ -17,9 +20,9 @@ node {
 
     stage("deploy")
     println "**** DEPLOY ****"
-    def container_running = curl -X GET "http://${deployment_server}:2375/containers/json?all=false" \
-                            | ./jq '[ .[].Names | .[] | . == "${app_name}" ] \
-                            | reduce .[] as $item (false; . | $item)'
+    def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
+                            | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
+                            | reduce .[] as $item (false; . | $item)'"
 
     println "Container running status: ${container_running}"
 }
