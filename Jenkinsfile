@@ -22,8 +22,8 @@ node {
         } catch (error) {
         }
         docker_img = docker.build "${app_name}"
-            app.docker_img("${commit_id}")
-            app.docker_img("latest")
+            docker_img.push("${commit_id}")
+            docker_img.push("latest")
         //docker_img = docker.build "${app_name}:${commit_id}"
     }
 
