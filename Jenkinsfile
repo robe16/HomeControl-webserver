@@ -1,6 +1,6 @@
 node {
 
-    echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
+    echo "Running Build ID: ${env.BUILD_ID}"
 
     def git_url = "https://github.com/robe16/HomeControl-webserver.git"
     def app_name = "homecontrol-webserver"
@@ -13,7 +13,7 @@ node {
         git url: "${git_url}"
         sh "git rev-parse HEAD > .git/commit-id"
         commit_id = readFile('.git/commit-id').trim()
-        println commit_id
+        echo "Git commit ID: ${commit_id}"
     }
 
     stage("build") {
