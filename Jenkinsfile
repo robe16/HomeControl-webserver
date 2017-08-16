@@ -17,7 +17,7 @@ node {
     }
 
     stage("build") {
-        docker_img = docker.build -t "${app_name}:${commit_id}" -t "${app_name}:latest"
+        docker_img = docker.build ${app_name}:${commit_id} -t ${app_name}:latest
     }
 
     stage("deploy"){
