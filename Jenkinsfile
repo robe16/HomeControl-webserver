@@ -20,9 +20,12 @@ node {
 
     stage("deploy")
     println "**** DEPLOY ****"
-    def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
-                            | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
-                            | reduce .[] as $item (false; . | $item)'"
+    try {
+        def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
+                                | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
+                                | reduce .[] as $item (false; . | $item)'"
+        println "Container running status: ${container_running}"
+    } catch (error) {
+    }
 
-    println "Container running status: ${container_running}"
 }
