@@ -6,15 +6,18 @@ node {
     def app_name = "homecontrol-webserver"
     def deployment_server = "192.168.0.102"
 
+    def commit_id
+    def docker_img
+
     stage("checkout") {
         git url: "${git_url}"
         sh "git rev-parse HEAD > .git/commit-id"
-        def commit_id = readFile('.git/commit-id').trim()
+        commit_id = readFile('.git/commit-id').trim()
         println commit_id
     }
 
     stage("build") {
-        def app = docker.build "${app_name}:${commit_id}"
+        docker_img = docker.build "${app_name}:${commit_id}"
     }
 
     stage("deploy"){
