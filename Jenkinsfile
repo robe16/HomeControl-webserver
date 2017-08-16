@@ -17,15 +17,22 @@ node {
     }
 
     stage("build") {
-        docker_img = docker.build "${app_name}:${commit_id}"
+        try {
+
+        } catch (error) {
+        }
+        docker.build "${app_name}:latest"
+        //docker_img = docker.build "${app_name}:${commit_id}"
     }
 
     stage("deploy"){
         try {
+            /*
             def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
                                     | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
                                     | reduce .[] as $item (false; . | $item)'"
             println "Container running status: ${container_running}"
+            */
         } catch (error) {
             println "Error determining container status"
         }
