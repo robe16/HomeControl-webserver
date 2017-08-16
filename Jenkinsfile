@@ -4,12 +4,13 @@ node {
 
     stage("prepare")
     println "**** PREPARE ****"
+    def git_url = "https://github.com/robe16/HomeControl-webserver.git"
     def app_name = "homecontrol-webserver"
     def deployment_server = "192.168.0.102"
 
     stage("checkout")
     println "**** CHECKOUT ****"
-    git url: "https://github.com/robe16/HomeControl-webserver.git"
+    git url: "${git_url}"
     sh "git rev-parse HEAD > .git/commit-id"
     def commit_id = readFile('.git/commit-id').trim()
     println commit_id
@@ -20,7 +21,7 @@ node {
 
     stage("deploy")
     println "**** DEPLOY ****"
-    def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
+    def container_running = "echo C/containers/json?all=false \
                             | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
                             | reduce .[] as $item (false; . | $item)'"
 
