@@ -27,6 +27,7 @@ node {
                                 | reduce .[] as $item (false; . | $item)'"
         println "Container running status: ${container_running}"
     } catch (error) {
+        println "Error determining container status"
     }
 
 }
