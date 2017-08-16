@@ -2,11 +2,9 @@ node {
 
     echo "Running ${env.BUILD_ID} on ${env.JENKINS_URL}"
 
-    stage("prepare") {
-        def git_url = "https://github.com/robe16/HomeControl-webserver.git"
-        def app_name = "homecontrol-webserver"
-        def deployment_server = "192.168.0.102"
-    }
+    def git_url = "https://github.com/robe16/HomeControl-webserver.git"
+    def app_name = "homecontrol-webserver"
+    def deployment_server = "192.168.0.102"
 
     stage("checkout") {
         git url: "${git_url}"
