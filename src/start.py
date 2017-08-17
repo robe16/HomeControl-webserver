@@ -12,7 +12,7 @@ from log.console_messages import print_msg
 try:
     self_port = sys.argv[1]
 except:
-    self_port = 8080
+    self_port = 8080  # default port
 #
 ################################
 # Shared variable for processes
