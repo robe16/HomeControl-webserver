@@ -1,13 +1,13 @@
+echo "Running Build ID: ${env.BUILD_ID}"
+
+def git_url = "https://github.com/robe16/HomeControl-webserver.git"
+def app_name = "homecontrol-webserver"
+def deployment_server = "192.168.0.102"
+
+def commit_id
+def docker_img
+
 node {
-
-    echo "Running Build ID: ${env.BUILD_ID}"
-
-    def git_url = "https://github.com/robe16/HomeControl-webserver.git"
-    def app_name = "homecontrol-webserver"
-    def deployment_server = "192.168.0.102"
-
-    def commit_id
-    def docker_img
 
     stage("checkout") {
         git url: "${git_url}"
@@ -18,9 +18,8 @@ node {
 
     stage("build") {
         try {
-
-        } catch (error) {
-        }
+            sh "docker image rm ${app_name}:latest"
+        } catch (error) {}
         docker_img = docker.build "${app_name}"
             docker_img.push("${commit_id}")
             docker_img.push("latest")

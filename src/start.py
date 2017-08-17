@@ -7,7 +7,7 @@ from log.console_messages import print_msg
 
 
 ################################
-# Recieve sys arguments
+# Receive sys arguments
 ################################
 try:
     self_port = sys.argv[1]
