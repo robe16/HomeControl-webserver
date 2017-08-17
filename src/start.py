@@ -9,6 +9,7 @@ from log.console_messages import print_msg
 ################################
 # Receive sys arguments
 ################################
+# First argument is the port the application listens on
 try:
     self_port = sys.argv[1]
 except:
