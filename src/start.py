@@ -1,6 +1,5 @@
 from multiprocessing import Process, Manager
 import sys
-import cfg
 from port_listener import start_bottle
 from cache.get_cache import create_cache
 from log.console_messages import print_msg
@@ -9,7 +8,8 @@ from log.console_messages import print_msg
 ################################
 # Receive sys arguments
 ################################
-# First argument is the port the application listens on
+# First argument passed through is
+# the port the application listens on
 try:
     self_port = sys.argv[1]
 except:
