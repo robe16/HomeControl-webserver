@@ -30,7 +30,7 @@ node {
                 docker_img.push("${env.BUILD_NUMBER}")
                 docker_img.push("latest")
             }
-        } catch {
+        } catch (error) {
             echo "Error attempting to deploy image to server"
         }
     }
