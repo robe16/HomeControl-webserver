@@ -25,9 +25,11 @@ node {
     }
 
     stage("deploy"){
-        docker.withRegistry("${deployment_server}", 'docker-hub-credentials') {
-            docker_img.push("${env.BUILD_NUMBER}")
-            docker_img.push("latest")
+        try {
+            docker.withRegistry("${deployment_server}", 'docker-hub-credentials') {
+                docker_img.push("${env.BUILD_NUMBER}")
+                docker_img.push("latest")
+            }
         }
     }
 
