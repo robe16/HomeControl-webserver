@@ -20,8 +20,8 @@ node {
         try {
             sh "docker image rm ${app_name}:latest"
         } catch (error) {}
-        docker_img = docker.build "${app_name}"
-        //docker_img.push("${commit_id}")
+        docker_img = docker.build "${app_name}:${commit_id}"
+        //docker_img = docker.build "${app_name}"
     }
 
     stage("deploy"){
