@@ -25,16 +25,26 @@ node {
     }
 
     stage("deploy"){
-        try {
-            /*
-            def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
-                                    | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
-                                    | reduce .[] as $item (false; . | $item)'"
-            println "Container running status: ${container_running}"
-            */
-        } catch (error) {
-            println "Error determining container status"
+        docker.withRegistry("${deployment_server}", 'docker-hub-credentials') {
+            docker_img.push("${env.BUILD_NUMBER}")
+            docker_img.push("latest")
         }
     }
 
+    stage("start container"){
+        sh 'docker rm -f ${app_name} && echo "container ${app_name} removed" || echo "container ${app_name} does not exist"'
+        sh "docker run -d -p 8080:8080 --name ${app_name} ${app_name}:latest"
+    }
+
 }
+
+/*
+    try {
+        def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
+                                | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
+                                | reduce .[] as $item (false; . | $item)'"
+        println "Container running status: ${container_running}"
+    } catch (error) {
+        println "Error determining container status"
+    }
+*/
