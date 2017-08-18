@@ -37,7 +37,7 @@ node {
 
     stage("start container"){
         sh 'docker rm -f ${app_name} && echo "container ${app_name} removed" || echo "container ${app_name} does not exist"'
-        sh "docker run -d -p 8080:8080 --name ${app_name} ${app_name}:latest"
+        sh "docker run -d -p 8081:8080 --name ${app_name} ${app_name}:latest"
     }
 
 }
