@@ -1,8 +1,9 @@
 echo "Running Build ID: ${env.BUILD_ID}"
 
-def git_url = "https://github.com/robe16/HomeControl-webserver.git"
-def app_name = "homecontrol-webserver"
-def deployment_server = "192.168.0.102"
+// Parameters passed through from the Jenkins Pipeline configuration
+git_url: githubUrl
+app_name: appName
+deployment_server: deploymentServer
 
 def commit_id
 def docker_img
