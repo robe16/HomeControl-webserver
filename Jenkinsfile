@@ -10,7 +10,8 @@ node {
         string(defaultValue: 'https://github.com/robe16/HomeControl-webserver.git', description: 'GitHub URL for checking out project', name: 'githubUrl')
         string(defaultValue: 'homecontrol-webserver', description: 'Name of application for Docker image and container', name: 'appName')
         string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
-        string(defaultValue: '8080', description: 'Port number for python application to listen on and to be mapped to when running the Docker container', name: 'port')
+        string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
+        string(defaultValue: '8080', description: 'Port number to map the conatiner to', name: 'portMapped')
     }
 
     stage("checkout") {
@@ -41,7 +42,7 @@ node {
 
     stage("start container"){
         sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        sh "docker run -d -p ${params.port}:${params.port} --name ${params.appName} ${params.appName}:${commit_id}"
+        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${params.appName}:${commit_id}"
 
     }
 
