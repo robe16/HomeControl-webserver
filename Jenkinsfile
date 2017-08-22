@@ -39,7 +39,7 @@ node {
     }
 
     stage("start container"){
-        sh 'docker rm -f ${params.appName} && echo "container ${params.appName} removed" || echo "container ${params.appName} does not exist"'
+        sh "docker rm -f ${params.appName} && echo \\"container ${params.appName} removed\\" || echo \\"container ${params.appName} does not exist\\""
         sh "docker run -d -p 8081:8080 --name ${params.appName} ${params.appName}:${commit_id}"
 
     }
