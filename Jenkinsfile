@@ -11,7 +11,7 @@ node {
         string(defaultValue: 'homecontrol-webserver', description: 'Name of application for Docker image and container', name: 'appName')
         string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
-        string(defaultValue: '8080', description: 'Port number to map the conatiner to', name: 'portMapped')
+        string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
     }
 
     stage("checkout") {
