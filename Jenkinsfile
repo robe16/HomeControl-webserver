@@ -7,9 +7,10 @@ node {
 
     stage("parameters") {
         // Parameters passed through from the Jenkins Pipeline configuration
-        string(defaultValue: '*', description: 'GitHub URL for checking out project', name: 'githubUrl')
-        string(defaultValue: '*', description: 'Name of application for Docker image and container', name: 'appName')
+        string(defaultValue: 'https://github.com/robe16/HomeControl-webserver.git', description: 'GitHub URL for checking out project', name: 'githubUrl')
+        string(defaultValue: 'homecontrol-webserver', description: 'Name of application for Docker image and container', name: 'appName')
         string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
+        string(defaultValue: '8080', description: 'Port number for python application to listen on and the to be mapped to when running the Docker container', name: 'port')
     }
 
     stage("checkout") {
@@ -40,7 +41,7 @@ node {
 
     stage("start container"){
         sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        sh "docker run -d -p 8081:8080 --name ${params.appName} ${params.appName}:${commit_id}"
+        sh "docker run -d -p ${params.port}:${params.port} --name ${params.appName} ${params.appName}:${commit_id}"
 
     }
 
