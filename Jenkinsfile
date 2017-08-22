@@ -3,7 +3,7 @@ echo "Running Build ID: ${env.BUILD_ID}"
 def commit_id
 def docker_img
 
-pipeline {
+node {
 
     stage("parameters") {
         // Parameters passed through from the Jenkins Pipeline configuration
