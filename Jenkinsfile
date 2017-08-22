@@ -10,7 +10,7 @@ node {
         string(defaultValue: 'https://github.com/robe16/HomeControl-webserver.git', description: 'GitHub URL for checking out project', name: 'githubUrl')
         string(defaultValue: 'homecontrol-webserver', description: 'Name of application for Docker image and container', name: 'appName')
         string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
-        string(defaultValue: '8080', description: 'Port number for python application to listen on and the to be mapped to when running the Docker container', name: 'port')
+        string(defaultValue: '8080', description: 'Port number for python application to listen on and to be mapped to when running the Docker container', name: 'port')
     }
 
     stage("checkout") {
