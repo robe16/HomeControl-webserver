@@ -1,46 +1,51 @@
 echo "Running Build ID: ${env.BUILD_ID}"
 
-// Parameters passed through from the Jenkins Pipeline configuration
-git_url: githubUrl
-app_name: appName
-deployment_server: deploymentServer
-
 def commit_id
 def docker_img
 
-node {
+pipeline {
 
-    stage("checkout") {
-        git url: "${git_url}"
-        sh "git rev-parse HEAD > .git/commit-id"
-        commit_id = readFile('.git/commit-id').trim()
-        echo "Git commit ID: ${commit_id}"
+    parameters {
+        // Parameters passed through from the Jenkins Pipeline configuration
+        string(defaultValue: '*', description: 'GitHub URL for checking out project', name: 'githubUrl')
+        string(defaultValue: '*', description: 'Name of application for Docker image and container', name: 'appName')
+        string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
     }
 
-    stage("build") {
-        try {
-            sh "docker image rm ${app_name}:latest"
-        } catch (error) {}
-        docker_img = docker.build "${app_name}:${commit_id}"
-        //docker_img = docker.build "${app_name}"
-    }
+    stages {
 
-    stage("deploy"){
-        try {
-            docker.withRegistry("${deployment_server}", 'docker-hub-credentials') {
-                docker_img.push("${env.BUILD_NUMBER}")
-                docker_img.push("latest")
-            }
-        } catch (error) {
-            echo "Error attempting to deploy image to server"
+        stage("checkout") {
+            git url: "${params.githubUrl}"
+            sh "git rev-parse HEAD > .git/commit-id"
+            commit_id = readFile('.git/commit-id').trim()
+            echo "Git commit ID: ${commit_id}"
         }
-    }
 
-    stage("start container"){
-        sh 'docker rm -f ${app_name} && echo "container ${app_name} removed" || echo "container ${app_name} does not exist"'
-        sh "docker run -d -p 8081:8080 --name ${app_name} ${app_name}:${commit_id}"
-    }
+        stage("build") {
+            try {
+                sh "docker image rm ${params.appName}:latest"
+            } catch (error) {}
+            docker_img = docker.build "${params.appName}:${commit_id}"
+            //docker_img = docker.build "${params.appName}"
+        }
 
+        stage("deploy"){
+            try {
+                docker.withRegistry("${params.deploymentServer}", 'docker-hub-credentials') {
+                    docker_img.push("${env.BUILD_NUMBER}")
+                    docker_img.push("latest")
+                }
+            } catch (error) {
+                echo "Error attempting to deploy image to server"
+            }
+        }
+
+        stage("start container"){
+            sh 'docker rm -f ${params.appName} && echo "container ${params.appName} removed" || echo "container ${params.appName} does not exist"'
+            sh "docker run -d -p 8081:8080 --name ${params.appName} ${params.appName}:${commit_id}"
+        }
+
+    }
 }
 
 /*
