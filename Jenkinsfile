@@ -26,18 +26,20 @@ node {
         /*try {
             sh "docker image rm ${params.appName}:latest"
         } catch (error) {}*/
-        docker_img = docker.build("${params.appName}:${commit_id}", "--build-arg portApplication=${params.portApplication} --build-arg portServer=${params.portServer}")
+        //docker_img = docker.build("${params.appName}:${commit_id}", "--build-arg portApplication=${params.portApplication} --build-arg portServer=${params.portServer}")
+        sh "docker build ${params.appName}:${commit_id} --build-arg portApplication=${params.portApplication} --build-arg portServer=${params.portServer}"
     }
 
     stage("deploy"){
-        try {
+        /*try {
             docker.withRegistry("${params.deploymentServer}", 'docker-hub-credentials') {
                 docker_img.push("${env.BUILD_NUMBER}")
                 docker_img.push("latest")
             }
         } catch (error) {
             echo "Error attempting to deploy image to server"
-        }
+        }*/
+        echo "Deployment to server 'on hold' - awaiting future development"
     }
 
     stage("start container"){
