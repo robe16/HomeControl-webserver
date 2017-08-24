@@ -15,6 +15,14 @@ try:
 except:
     self_port = 8080  # default port
 #
+# TODO - utilise 'server_port' from this value and not from cfg.py
+# Second argument passed through is the port that
+# the core server application is listening on
+try:
+    server_port = sys.argv[2]
+except:
+    server_port = 1600  # default port
+#
 ################################
 # Shared variable for processes
 ################################

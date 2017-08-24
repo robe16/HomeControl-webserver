@@ -12,6 +12,7 @@ node {
         string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
+        string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
     }
 
     stage("checkout") {
@@ -25,7 +26,7 @@ node {
         try {
             sh "docker image rm ${params.appName}:latest"
         } catch (error) {}
-        docker_img = docker.build "${params.appName}:${commit_id}"
+        docker_img = docker.build("${params.appName}:${commit_id}", "--build-arg portApplication=${params.portApplication}", "--build-arg portServer=${params.portServer}")
         //docker_img = docker.build "${params.appName}"
     }
 

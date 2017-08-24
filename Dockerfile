@@ -2,7 +2,9 @@ FROM resin/rpi-raspbian:latest
 MAINTAINER robe16
 
 # Port number to listen on - default 8080
-ARG port=8080
+ARG portApplication=8080
+# Port number the core server listens on - default 1600
+ARG portServer=1600
 
 # Update
 RUN apt-get update && apt-get install -y python python-pip
@@ -19,5 +21,5 @@ COPY req.txt requirements.txt
 RUN pip install -r requirements.txt
 
 # Expose the application port and run application
-EXPOSE ${port}
-CMD python start.py ${port}
+EXPOSE ${portApplication}
+CMD python start.py ${portApplication} ${portServer}
