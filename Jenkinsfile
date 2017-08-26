@@ -41,7 +41,7 @@ pipeline {
                 /*try {
                     sh "docker image rm ${params.appName}:latest"
                 } catch (error) {}*/
-                docker_img = docker.build("${params.appName}:${commit_id}", "--build-arg portApplication=${params.portApplication}", "--build-arg portServer=${params.portServer}")
+                docker.build("${params.appName}:${commit_id}")
             }
         }
 
