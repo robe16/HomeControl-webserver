@@ -96,9 +96,6 @@ pipeline {
                     additionalBuildArgs "--build-arg portApplication=${params.portApplication} portServer=${params.portServer}"
                 }}
             steps {
-                /*try {
-                    sh "docker image rm ${params.appName}:latest"
-                } catch (error) {}*/
                 docker.build("${params.appName}:${commit_id}")
             }
         }
