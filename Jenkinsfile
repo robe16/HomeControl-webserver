@@ -2,6 +2,7 @@ echo "Running Build ID: ${env.BUILD_ID}"
 
 String commit_id
 String build_args
+String docker_img_name
 def docker_img
 
 node {
@@ -28,9 +29,11 @@ node {
         echo "Git commit ID: ${commit_id}"
     }
 
+    docker_img_name = "${params.appName}:${commit_id}"
+
     stage("build") {
         //try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
-        docker_img = docker.build "${params.appName}:${commit_id}", "${build_args}"
+        docker_img = docker.build "${docker_img_name}", "${build_args}"
     }
 
     stage("deploy"){
@@ -48,7 +51,7 @@ node {
 
     stage("start container"){
         sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${params.appName}:${commit_id}"
+        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name}"
 
     }
 
