@@ -24,7 +24,7 @@ node {
 
     stage("build") {
         //try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
-        docker_img = docker.build "${params.appName}:${commit_id}", "--build-arg portApplication=${params.portApplication} --build-arg portServer=${params.portServer}"
+        docker_img = docker.build "${docker_img_name}", "${build_args}"
     }
 
     stage("deploy"){
@@ -42,7 +42,7 @@ node {
 
     stage("start container"){
         sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${params.appName}:${commit_id}"
+        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name}"
 
     }
 
@@ -58,3 +58,17 @@ node {
         println "Error determining container status"
     }
 */
+
+
+
+// Support functions:
+
+def docker_img_name() {
+    return "${params.appName}:${commit_id}"
+}
+
+def docker_build_args() {
+    def build_args = ["--build-arg portApplication=${params.portApplication}",
+                      "--build-arg portServer=${params.portServer"}]
+    return build_args.join(" ")
+}
