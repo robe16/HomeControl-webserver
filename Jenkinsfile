@@ -66,6 +66,8 @@ node {
 //TODO
 pipeline {
 
+    def commitHash
+
     agent none
 
     parameters {
@@ -76,7 +78,7 @@ pipeline {
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
-        def commitHash = checkout(scm).GIT_COMMIT
+        commitHash = checkout(scm).GIT_COMMIT
         echo "Git commitID Hash: ${commitHash}"
     }
 
