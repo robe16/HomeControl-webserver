@@ -69,6 +69,6 @@ def docker_img_name() {
 
 def docker_build_args() {
     def build_args = ["--build-arg portApplication=${params.portApplication}",
-                      "--build-arg portServer=${params.portServer"}]
+                      "--build-arg portServer=${params.portServer}"]
     return build_args.join(" ")
 }
