@@ -1,10 +1,12 @@
 echo "Running Build ID: ${env.BUILD_ID}"
 
-def commit_id
+String commit_id
+String build_args
 def docker_img
-def build_args
 
 node {
+
+    deleteDir()
 
     stage("parameters") {
         // Parameters passed through from the Jenkins Pipeline configuration
@@ -17,7 +19,6 @@ node {
         //
         build_args = ["--build-arg portApplication=${params.portApplication}",
                       "--build-arg portServer=${params.portServer}"].join(" ")
-        echo "${build_args}"
     }
 
     stage("checkout") {
