@@ -4,8 +4,6 @@ def commit_id
 
 pipeline {
 
-    def commitHash
-
     agent none
 
     // Parameters passed through from the Jenkins Pipeline configuration
