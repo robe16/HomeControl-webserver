@@ -2,6 +2,7 @@ echo "Running Build ID: ${env.BUILD_ID}"
 
 def commit_id
 def docker_img
+def build_args
 
 node {
 
@@ -14,8 +15,8 @@ node {
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
         //
-        def build_args = ["--build-arg portApplication=${params.portApplication}",
-                          "--build-arg portServer=${params.portServer}"].join(" ")
+        build_args = ["--build-arg portApplication=${params.portApplication}",
+                      "--build-arg portServer=${params.portServer}"].join(" ")
     }
 
     stage("checkout") {
