@@ -17,6 +17,7 @@ node {
         //
         build_args = ["--build-arg portApplication=${params.portApplication}",
                       "--build-arg portServer=${params.portServer}"].join(" ")
+        echo "${build_args}"
     }
 
     stage("checkout") {
