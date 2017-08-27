@@ -3,7 +3,7 @@ echo "Running Build ID: ${env.BUILD_ID}"
 def commit_id
 def docker_img
 
-
+/*
 node {
 
     stage("parameters") {
@@ -29,14 +29,14 @@ node {
     }
 
     stage("deploy"){
-        /*try {
-            docker.withRegistry("${params.deploymentServer}", 'docker-hub-credentials') {
-                docker_img.push("${env.BUILD_NUMBER}")
-                docker_img.push("latest")
-            }
-        } catch (error) {
-            echo "Error attempting to deploy image to server"
-        }*/
+        //try {
+        //    docker.withRegistry("${params.deploymentServer}", 'docker-hub-credentials') {
+        //        docker_img.push("${env.BUILD_NUMBER}")
+        //        docker_img.push("latest")
+        //    }
+        //} catch (error) {
+        //    echo "Error attempting to deploy image to server"
+        //}
         // See:    https://jenkins.io/doc/book/pipeline/docker/#using-a-remote-docker-server
         echo "Deployment to server 'on hold' - awaiting future development"
     }
@@ -48,6 +48,7 @@ node {
     }
 
 }
+*/
 
 /*
     try {
@@ -61,8 +62,8 @@ node {
 */
 
 
-/*
-TODO
+
+//TODO
 pipeline {
 
     agent none
@@ -75,6 +76,8 @@ pipeline {
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
+        def commitHash = checkout(scm).GIT_COMMIT
+        echo "Git commitID Hash: ${commitHash}"
     }
 
     stages {
@@ -116,4 +119,3 @@ pipeline {
 
     }
 }
-*/
