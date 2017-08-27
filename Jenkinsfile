@@ -1,10 +1,13 @@
-echo "Running Build ID: ${env.BUILD_ID}"
+//echo "Running Build ID: ${env.BUILD_ID}"
 
-def commit_id
 
 pipeline {
 
     agent none
+
+    environment {
+        def commit_id
+    }
 
     // Parameters passed through from the Jenkins Pipeline configuration
     parameters {
@@ -22,8 +25,6 @@ pipeline {
             steps {
                 git url: "${params.githubUrl}"
                 commit_id = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-                //sh "git rev-parse HEAD > .git/commit-id"
-                //commit_id = readFile('.git/commit-id').trim()
                 echo "Git commit ID: ${commit_id}"
             }
         }
