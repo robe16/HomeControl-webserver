@@ -24,7 +24,7 @@ node {
 
     stage("build") {
         //try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
-        docker_img = docker.build docker_img_name, docker_build_args
+        docker_img = docker.build docker_img_name(), docker_build_args()
     }
 
     stage("deploy"){
