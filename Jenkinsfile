@@ -1,60 +1,5 @@
-//echo "Running Build ID: ${env.BUILD_ID}"
+echo "Running Build ID: ${env.BUILD_ID}"
 
-
-pipeline {
-
-    agent none
-
-    environment {}
-
-    // Parameters passed through from the Jenkins Pipeline configuration
-    parameters {
-        string(defaultValue: 'https://github.com/robe16/HomeControl-webserver.git', description: 'GitHub URL for checking out project', name: 'githubUrl')
-        string(defaultValue: 'homecontrol-webserver', description: 'Name of application for Docker image and container', name: 'appName')
-        string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
-        string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
-        string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
-        string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
-    }
-
-    stages {
-
-        stage("checkout") {
-            steps {
-                git url: "${params.githubUrl}"
-                commit_id = sh(returnStdout: true, script: 'git rev-parse HEAD').trim()
-                echo "Git commit ID: ${commit_id}"
-            }
-        }
-
-        stage("build") {
-            agent {dockerfile {
-                additionalBuildArgs "--build-arg portApplication=${params.portApplication} portServer=${params.portServer}"
-            }}
-            steps {
-                docker.build("${params.appName}:${commit_id}")
-            }
-        }
-
-        stage("deploy") {
-            steps {
-                // See:    https://jenkins.io/doc/book/pipeline/docker/#using-a-remote-docker-server
-                echo "Deployment to server 'on hold' - awaiting future development"
-            }
-        }
-
-        stage("start container") {
-            steps {
-                sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-                sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${params.appName}:${commit_id}"
-            }
-        }
-
-    }
-
-}
-
-/*
 def commit_id
 def docker_img
 def build_args
@@ -106,7 +51,7 @@ node {
     }
 
 }
-*/
+
 
 /*
     try {
