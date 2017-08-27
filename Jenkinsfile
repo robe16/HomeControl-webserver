@@ -13,6 +13,9 @@ node {
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
+        //
+        def build_args = ["--build-arg portApplication=${params.portApplication}",
+                          "--build-arg portServer=${params.portServer}"].join(" ")
     }
 
     stage("checkout") {
@@ -24,7 +27,7 @@ node {
 
     stage("build") {
         //try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
-        docker_img = docker.build docker_img_name(), docker_build_args()
+        docker_img = docker.build "${params.appName}:${commit_id}", "${build_args}"
     }
 
     stage("deploy"){
@@ -42,7 +45,7 @@ node {
 
     stage("start container"){
         sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name}"
+        sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${params.appName}:${commit_id}"
 
     }
 
@@ -58,17 +61,3 @@ node {
         println "Error determining container status"
     }
 */
-
-
-
-// Support functions:
-
-def docker_img_name() {
-    return "${params.appName}:${commit_id}"
-}
-
-def docker_build_args() {
-    def build_args = ["--build-arg portApplication=${params.portApplication}",
-                      "--build-arg portServer=${params.portServer}"]
-    return build_args.join(" ")
-}
