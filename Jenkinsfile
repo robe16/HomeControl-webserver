@@ -33,7 +33,6 @@ node {
 
     stage("build") {
         //try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
-        //docker_img = docker.build "${docker_img_name}", "${build_args}"
         sh "docker build -t ${docker_img_name} ${build_args} ."
     }
 
