@@ -5,9 +5,7 @@ pipeline {
 
     agent none
 
-    environment {
-        def commit_id
-    }
+    environment {}
 
     // Parameters passed through from the Jenkins Pipeline configuration
     parameters {
