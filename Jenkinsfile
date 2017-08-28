@@ -29,12 +29,13 @@ node {
         echo "Git commit ID: ${commit_id}"
     }
 
-    docker_img_name = "${params.appName}:${commit_id}"
+    docker_img_name_commit = "${params.appName}:${commit_id}"
+    docker_img_name_latest = "${params.appName}:latest"
 
     stage("build") {
-        try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
-        sh "docker build -t ${docker_img_name} ${build_args} ."
-        sh "docker tag ${docker_img_name} ${params.appName}:latest"
+        try {sh "docker image rm ${docker_img_name_latest}"} catch (error) {}
+        sh "docker build -t ${docker_img_name_commit} ${build_args} ."
+        sh "docker tag ${docker_img_name_commit} ${docker_img_name_latest}"
     }
 
     stage("deploy"){
@@ -54,7 +55,7 @@ node {
         // TODO - to start container on deployment server as opposed to on local machine
         echo "Starting of container 'on hold' - awaiting future development"
         //sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        //sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name}"
+        //sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name_latest}"
 
     }
 
