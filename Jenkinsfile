@@ -32,8 +32,9 @@ node {
     docker_img_name = "${params.appName}:${commit_id}"
 
     stage("build") {
-        //try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
+        try {sh "docker image rm ${params.appName}:latest"} catch (error) {}
         sh "docker build -t ${docker_img_name} ${build_args} ."
+        sh "docker tag ${docker_img_name} ${params.appName}:latest"
     }
 
     stage("deploy"){
