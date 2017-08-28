@@ -52,6 +52,7 @@ node {
 
     stage("start container"){
         // TODO - to start container on deployment server as opposed to on local machine
+        echo "Starting of container 'on hold' - awaiting future development"
         //sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
         //sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name}"
 
