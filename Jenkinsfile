@@ -2,6 +2,7 @@ echo "Running Build ID: ${env.BUILD_ID}"
 
 String commit_id
 String build_args
+String deployLogin
 String docker_img_name
 def docker_img
 
@@ -14,12 +15,16 @@ node {
         string(defaultValue: 'https://github.com/robe16/HomeControl-webserver.git', description: 'GitHub URL for checking out project', name: 'githubUrl')
         string(defaultValue: 'homecontrol-webserver', description: 'Name of application for Docker image and container', name: 'appName')
         string(defaultValue: '*', description: 'Server to deploy the Docker container', name: 'deploymentServer')
+        string(defaultValue: '*', description: 'Username for the server the Docker container will be deployed to (used for ssh/scp)', name: 'deploymentUsername')
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
         //
         build_args = ["--build-arg portApplication=${params.portApplication}",
                       "--build-arg portServer=${params.portServer}"].join(" ")
+        //
+        deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
+        //
     }
 
     stage("checkout") {
@@ -39,36 +44,20 @@ node {
     }
 
     stage("deploy"){
-        //try {
-        //    docker.withRegistry("${params.deploymentServer}", 'docker-hub-credentials') {
-        //        docker_img.push("${env.BUILD_NUMBER}")
-        //        docker_img.push("latest")
-        //    }
-        //} catch (error) {
-        //    echo "Error attempting to deploy image to server"
-        //}
-        // See:    https://jenkins.io/doc/book/pipeline/docker/#using-a-remote-docker-server
-        echo "Deployment to server 'on hold' - awaiting future development"
+        //
+        String docker_img_tar = "docker_img.tar"
+        //
+        sh "docker save -o ${docker_img_tar} ${docker_img_name_latest}"     // create tar file of image
+        sh "scp ${docker_img_tar} ${deployLogin}:~"                         // xfer tar to deploy server
+        sh "ssh ${deployLogin} \"docker load -i ~/${docker_img_tar}\""      // load tar into deploy server registry
+        sh "ssh ${deployLogin} \"rm ~/${docker_img_tar}\""                  // remove the tar file from deploy server
+        sh "rm ${docker_img_tar}"                                           // remove the tar file from cicd server
+        //
     }
 
     stage("start container"){
-        // TODO - to start container on deployment server as opposed to on local machine
-        echo "Starting of container 'on hold' - awaiting future development"
-        //sh "docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\""
-        //sh "docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name_latest}"
-
+        sh "ssh ${deployLogin} \"docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\"\""
+        sh "ssh ${deployLogin} \"docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name_latest}\""
     }
 
 }
-
-
-/*
-    try {
-        def container_running = "echo curl -X GET http://${deployment_server}:2375/containers/json?all=false \
-                                | ./jq '[ .[].Names | .[] | . == ${app_name} ] \
-                                | reduce .[] as $item (false; . | $item)'"
-        println "Container running status: ${container_running}"
-    } catch (error) {
-        println "Error determining container status"
-    }
-*/
