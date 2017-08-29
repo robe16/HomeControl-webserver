@@ -47,8 +47,9 @@ node {
         //
         String docker_img_tar = "docker_img.tar"
         //
+        sh "rm ~/${docker_img_tar}"                                                                     // remove any old tar files from cicd server
         sh "docker save -o ~/${docker_img_tar} ${docker_img_name_latest}"                               // create tar file of image
-        sh "scp -o StrictHostKeyChecking=no ~/${docker_img_tar} ${deployLogin}:~"                       // xfer tar to deploy server
+        sh "scp -v -o StrictHostKeyChecking=no ~/${docker_img_tar} ${deployLogin}:~"                    // xfer tar to deploy server
         sh "ssh -o StrictHostKeyChecking=no ${deployLogin} \"docker load -i ~/${docker_img_tar}\""      // load tar into deploy server registry
         sh "ssh -o StrictHostKeyChecking=no ${deployLogin} \"rm ~/${docker_img_tar}\""                  // remove the tar file from deploy server
         sh "rm ~/${docker_img_tar}"                                                                     // remove the tar file from cicd server
