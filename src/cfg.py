@@ -12,7 +12,6 @@ server_ip = 'http://0.0.0.0'
 self_ip = 'http://0.0.0.0'
 server_port = 1600
 self_port = 8080
-self_port_cache = 1611
 
 def server_url(uri):
     return '{ip}:{port}/{uri}'.format(ip=server_ip,

@@ -15,7 +15,6 @@ try:
 except:
     self_port = 8080  # default port
 #
-# TODO - utilise 'server_port' from this value and not from cfg.py
 # Second argument passed through is the port that
 # the core server application is listening on
 try:
