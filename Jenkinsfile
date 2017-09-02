@@ -27,7 +27,7 @@ node {
         //
     }
 
-    if (params["deploymentServer"]!="*" and params["deploymentUsername"]!="*") {
+    if (params["deploymentServer"]!="*" && params["deploymentUsername"]!="*") {
 
         stage("checkout") {
             git url: "${params.githubUrl}"
