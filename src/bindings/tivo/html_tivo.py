@@ -89,7 +89,7 @@ def _html_recordings(json_recordings):
                 seriesdrop_html += '<div class="col-xs-9"><h5>{ep_title}</h5></div>'.format(ep_title=iFile['episodeTitle'])
                 seriesdrop_html += '<div class="col-xs-3" style="text-align: right;">{img}</div>'.format(img=img)
                 seriesdrop_html += '</div>'
-                seriesdrop_html += '<div class="row"><div class="col-xs-12"><p>{desc}</p></div></div>'.format(desc=iFile['description'])
+                seriesdrop_html += '<div class="row"><div class="col-xs-12"><p>{desc}</p></div></div>'.format(desc=iFile['description'].encode('utf-8'))
                 seriesdrop_html += '<div class="row" style="margin-bottom: 20px">'
                 seriesdrop_html += '<div class="col-xs-6"><p>{episodenumber}</p></div>'.format(episodenumber=episodenumber)
                 seriesdrop_html += '<div class="col-xs-6" align="right"><p>{date}</p></div>'.format(date=iFile['recordingDate'])
