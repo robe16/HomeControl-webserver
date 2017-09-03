@@ -2,14 +2,13 @@ import datetime
 import requests
 import ast
 from urllib import urlopen
-from cfg import server_url
 from cache.setup import cfg_urlencode, get_cfg_info_name
 from log.console_messages import print_msg, print_error
 from weather_lists import *
 
-def weather_body(_cache, info_seq):
+def weather_body(_cache, server_url, info_seq):
     #
-    forecast = request_weather(_cache, info_seq)
+    forecast = request_weather(_cache, server_url, info_seq)
     #
     if not str(forecast)=='False':
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
@@ -25,8 +24,8 @@ def weather_body(_cache, info_seq):
     return urlopen('bindings/weather/weather_main.html').read().encode('utf-8').format(**args)
 
 
-def request_weather(_cache, info_seq):
-    url = server_url('data/info/{info}/forecast'.format(info=cfg_urlencode(get_cfg_info_name(_cache, info_seq))))
+def request_weather(_cache, server_url, info_seq):
+    url = '{url}/{uri}'.format(url=server_url, uri='data/info/{info}/forecast'.format(info=cfg_urlencode(get_cfg_info_name(_cache, info_seq))))
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:

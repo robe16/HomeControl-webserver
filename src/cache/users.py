@@ -1,5 +1,4 @@
 import requests
-from cfg import server_url
 
 def check_user(data, user):
     if data != None:
@@ -9,14 +8,14 @@ def check_user(data, user):
     return False
 
 
-def check_userpin(user, pin):
+def check_userpin(server_url, user, pin):
     #
     try:
         #
         payload = {'user': user,
                    'pin': pin}
         #
-        r = requests.post(server_url('user/pin'), data=payload)
+        r = requests.post('{url}/{uri}'.format(url=server_url, uri='user/pin'), data=payload)
         #
         if r.status_code == requests.codes.ok:
             return True

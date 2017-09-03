@@ -1,24 +1,23 @@
 import requests
 import ast
 from urllib import urlopen
-from cfg import server_url
 from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
 from log.console_messages import print_error
 
 
-def html_tv_lg_netcast(_cache, group_seq, thing_seq):
+def html_tv_lg_netcast(_cache, server_url, group_seq, thing_seq):
     #
     args = {'group': cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
             'thing': cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
-            'apps': _html_apps(_cache, group_seq, thing_seq)}
+            'apps': _html_apps(_cache, server_url, group_seq, thing_seq)}
     #
     return urlopen('bindings/tv_lg_netcast/object_device_tv_lg_netcast.html').read().encode('utf-8').format(**args)
 
 
-def _html_apps(_cache, group_seq, thing_seq):
+def _html_apps(_cache, server_url, group_seq, thing_seq):
     #
     try:
-        json_applist = _get_applist(_cache, group_seq, thing_seq)
+        json_applist = _get_applist(_cache, server_url, group_seq, thing_seq)
         #
         html = '<table style="width:100%">' +\
                '<tr style="height:80px; padding-bottom:2px; padding-top:2px">'
@@ -51,18 +50,18 @@ def _html_apps(_cache, group_seq, thing_seq):
                '<p style="text-align:center">Please check the TV is turned on and then try again.</p>'
 
 
-def _get_applist(_cache, group_seq, thing_seq):
-    data = _getData(_cache, group_seq, thing_seq, 'applist')
+def _get_applist(_cache, server_url, group_seq, thing_seq):
+    data = _getData(_cache, server_url, group_seq, thing_seq, 'applist')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(_cache, group_seq, thing_seq, datarequest):
-    r = requests.get(server_url('data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
-                                                                            thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
-                                                                            datarequest=datarequest)))
+def _getData(_cache, server_url, group_seq, thing_seq, datarequest):
+    r = requests.get('{url}/{uri}'.format(url=server_url, uri='data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
+                                                                                                          thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
+                                                                                                          datarequest=datarequest)))
     if r.status_code == requests.codes.ok:
         return r.content
     else:

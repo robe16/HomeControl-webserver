@@ -1,16 +1,14 @@
 import datetime
 import requests
-import ast
 from urllib import urlopen
-from cfg import server_url
 from log.console_messages import print_msg, print_error
 from cache.users import get_usernews
 from cache.setup import cfg_urlencode, get_cfg_info_name
 
-def news_body(user, _cache, info_seq):
+def news_body(user, _cache, server_url, info_seq):
     #
     try:
-        news = request_news(user, _cache, info_seq)
+        news = request_news(user, _cache, server_url, info_seq)
         args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
                 'body_news_articles': _create_html(news)}
     except Exception as e:
@@ -20,7 +18,7 @@ def news_body(user, _cache, info_seq):
     return urlopen('bindings/news/news_main.html').read().encode('utf-8').format(**args)
 
 
-def request_news(user, _cache, info_seq):
+def request_news(user, _cache, server_url, info_seq):
     #
     if user:
         cache_users = _cache['users']
@@ -34,7 +32,7 @@ def request_news(user, _cache, info_seq):
             user_sources += ' '
         user_sources += user_src
     #
-    url = server_url('data/info/{info}/articles?sources={sources}&sortby={sortby}'.format(info=cfg_urlencode(get_cfg_info_name(_cache['setup'], info_seq)),
+    url = '{url}/{uri}'.format(url=server_url, uri='data/info/{info}/articles?sources={sources}&sortby={sortby}'.format(info=cfg_urlencode(get_cfg_info_name(_cache['setup'], info_seq)),
                                                                                           sources=user_sources,
                                                                                           sortby='latest'))
     r = requests.get(url)

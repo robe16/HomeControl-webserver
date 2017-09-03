@@ -16,7 +16,6 @@ from cache.setup import get_cfg_thing_type, get_cfg_info_type
 from cache.setup import cfg_urldecode
 #
 from cache.users import check_user
-from cfg import server_url
 from web.web_create_error import create_error
 from web.web_create_pages import create_login, create_home, create_about, create_page_body
 
@@ -24,14 +23,18 @@ from web.web_create_pages import create_login, create_home, create_about, create
 ################################################################################################
 
 _cache = False
+_server_url = ""
 
 ################################################################################################
 
 
-def start_bottle(cache, self_port):
+def start_bottle(cache, self_port, server_url):
     #
     global _cache
     _cache = cache
+    #
+    global _server_url
+    _server_url = server_url
     #
     run_bottle(self_port)
 
@@ -86,6 +89,7 @@ def web_about():
 @get('/web/info/<info>')
 def web_info(info=False):
     global _cache
+    global _server_url
     #
     try:
         if not info:
@@ -105,13 +109,16 @@ def web_info(info=False):
         if type == 'news':
             html_body = news_body(user,
                                   _cache,
+                                  _server_url,
                                   info_seq)
         elif type == 'tvlistings':
             html_body = tvlisting_body(user,
                                        _cache,
+                                       _server_url,
                                        info_seq)
         elif type == 'weather':
             html_body = weather_body(_cache['setup'],
+                                     _server_url,
                                      info_seq)
         else:
             return HTTPError(404)
@@ -130,6 +137,7 @@ def web_info(info=False):
 @get('/web/<group>/<thing>')
 def web_devices(group=False, thing=False):
     global _cache
+    global _server_url
     #
     try:
         if (not group) or (not thing):
@@ -152,15 +160,18 @@ def web_devices(group=False, thing=False):
         #
         if type == 'tv_lg_netcast':
             html_body = html_tv_lg_netcast(_cache['setup'],
+                                           _server_url,
                                            group_seq,
                                            thing_seq)
         elif type == 'tivo':
             html_body = html_tivo(user,
                                   _cache,
+                                  _server_url,
                                   group_seq,
                                   thing_seq)
         elif type == 'nest_account':
             html_body = html_nest(_cache['setup'],
+                                  _server_url,
                                   group_seq,
                                   thing_seq,
                                   query_dict)
@@ -194,15 +205,16 @@ def get_resource(folder, filename):
 
 @get('/data/<group>/<thing>/<resource_requested>')
 def get_data_device(group=False, thing=False, resource_requested=False):
+    global _server_url
     #
     if (not group) or (not thing) or (not resource_requested):
         raise HTTPError(404)
     #
     try:
         #
-        r = requests.get(server_url('data/{group}/{thing}/{resource_requested}'.format(group=group,
-                                                                                       thing=thing,
-                                                                                       resource_requested=resource_requested)))
+        r = requests.get('{url}/{uri}'.format(url=_server_url, uri='data/{group}/{thing}/{resource_requested}'.format(group=group,
+                                                                                                                      thing=thing,
+                                                                                                                      resource_requested=resource_requested)))
         #
         if r.status_code == requests.codes.ok:
             if r.content:
@@ -224,6 +236,7 @@ def get_data_device(group=False, thing=False, resource_requested=False):
 @get('/command/<group>/<thing>')
 @post('/command/<group>/<thing>')
 def send_command_device(group=False, thing=False):
+    global _server_url
     #
     if (not group) or (not thing):
         raise HTTPError(404)
@@ -232,7 +245,7 @@ def send_command_device(group=False, thing=False):
     #
     try:
         #
-        r = requests.post(server_url('command/{group}/{thing}'.format(group=group, thing=thing)),
+        r = requests.post('{url}/{uri}'.format(url=_server_url, uri='command/{group}/{thing}'.format(group=group, thing=thing)),
                           json=cmd_dict)
         #
         if r.status_code == requests.codes.ok:
@@ -269,8 +282,9 @@ def send_command_device(group=False, thing=False):
 
 @get('/favicon.ico')
 def get_favicon():
+    global _server_url
     try:
-        r = requests.get(server_url('favicon.ico'))
+        r = requests.get('{url}/{uri}'.format(url=_server_url, uri='favicon.ico'))
         #
         if r.status_code == requests.codes.ok:
             return HTTPResponse(status=200, body=r.content)
@@ -283,9 +297,10 @@ def get_favicon():
 
 @get('/img/<category>/<filename>')
 def get_image(category, filename):
+    global _server_url
     try:
-        r = requests.get(server_url('img/{category}/{filename}'.format(category=category,
-                                                                       filename=filename)))
+        r = requests.get('{url}/{uri}'.format(url=_server_url, uri='img/{category}/{filename}'.format(category=category,
+                                                                                                      filename=filename)))
         #
         if r.status_code == requests.codes.ok:
             response = HTTPResponse(status=200, body=r.content)

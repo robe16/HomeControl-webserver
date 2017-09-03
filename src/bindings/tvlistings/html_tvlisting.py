@@ -2,7 +2,6 @@ import datetime
 import requests
 import ast
 from urllib import urlopen
-from cfg import server_url
 from cache.setup import cfg_urlencode, get_cfg_info_name
 from log.console_messages import print_msg, print_error
 from cache.users import get_userchannels
@@ -14,10 +13,10 @@ isoformat = '%Y-%m-%d %H:%M:%S'
 time_format = '%H:%M'
 
 
-def tvlisting_body(user, _cache, info_seq):
+def tvlisting_body(user, _cache, server_url, info_seq):
     #
     try:
-        listings = request_tvlistings(_cache, info_seq)
+        listings = request_tvlistings(_cache, server_url, info_seq)
         #
         if not str(listings)=='False':
             args = {'timestamp': datetime.datetime.now().strftime('%d/%m/%Y %H:%M:%S'),
@@ -32,8 +31,8 @@ def tvlisting_body(user, _cache, info_seq):
         raise Exception
 
 
-def request_tvlistings(_cache, info_seq):
-    url = server_url('data/info/{info}/alllistings'.format(info=cfg_urlencode(get_cfg_info_name(_cache['setup'], info_seq))))
+def request_tvlistings(_cache, server_url, info_seq):
+    url = '{url}/{uri}'.format(url=server_url, uri='data/info/{info}/alllistings'.format(info=cfg_urlencode(get_cfg_info_name(_cache['setup'], info_seq))))
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:

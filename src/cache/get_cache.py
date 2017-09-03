@@ -1,14 +1,13 @@
-from cfg import server_url, self_ip, self_port_cache
 from log.console_messages import print_msg, print_error
 import requests
 import time
 
 
-def create_cache(cache):
+def create_cache(cache, server_url):
     while True:
-        cache['setup'] = request_setup()
-        cache['users'] = request_users()
-        cache['tvchannels'] = request_tvchannels()
+        cache['setup'] = request_setup(server_url)
+        cache['users'] = request_users(server_url)
+        cache['tvchannels'] = request_tvchannels(server_url)
         #
         if not cache['setup'] or not cache['setup'] or not cache['setup']:
             time.sleep(60)  # 1 minute
@@ -16,8 +15,8 @@ def create_cache(cache):
             time.sleep(3600)  # 1 hour
 
 
-def request_setup():
-    url = server_url('cache/setup')
+def request_setup(server_url):
+    url = '{url}/{uri}'.format(url=server_url, uri='cache/setup')
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
@@ -28,8 +27,8 @@ def request_setup():
         return False
 
 
-def request_users():
-    url = server_url('cache/users')
+def request_users(server_url):
+    url = '{url}/{uri}'.format(url=server_url, uri='cache/users')
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
@@ -40,8 +39,8 @@ def request_users():
         return False
 
 
-def request_tvchannels():
-    url = server_url('cache/tvchannels')
+def request_tvchannels(server_url):
+    url = '{url}/{uri}'.format(url=server_url, uri='cache/tvchannels')
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:

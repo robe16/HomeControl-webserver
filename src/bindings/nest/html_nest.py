@@ -2,16 +2,15 @@ import datetime
 import ast
 from urllib import urlopen
 import requests
-from cfg import server_url
 from log.console_messages import print_error
 from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
 
 
 _temp_unit = 'c'
 
-def html_nest(_cache, group_seq, thing_seq, query_dict):
+def html_nest(_cache, server_url, group_seq, thing_seq, query_dict):
     #
-    body = _htmlbody(_cache, group_seq, thing_seq)
+    body = _htmlbody(_cache, server_url, group_seq, thing_seq)
     #
     script = ("\r\n<script>\r\n" +
               "setTimeout(function () {\r\n" +
@@ -39,7 +38,7 @@ def html_nest(_cache, group_seq, thing_seq, query_dict):
     return urlopen('bindings/nest/object_account_nest.html').read().encode('utf-8').format(**args_html)
 
 
-def _htmlbody(_cache, group_seq, thing_seq):
+def _htmlbody(_cache, server_url, group_seq, thing_seq):
     #
     devices_therm_html = ''
     devices_protect_html = ''
@@ -48,7 +47,7 @@ def _htmlbody(_cache, group_seq, thing_seq):
     dvc_id = str(group_seq) + ':' + str(thing_seq)
     #
     try:
-        json_devices = _get_nest_data(_cache, group_seq, thing_seq)
+        json_devices = _get_nest_data(_cache, server_url, group_seq, thing_seq)
         json_devices = json_devices['devices']
         #
         if not json_devices:
@@ -284,18 +283,18 @@ def _htmlbody(_cache, group_seq, thing_seq):
             'nest_cam': devices_cam_html}
 
 
-def _get_nest_data(_cache, group_seq, thing_seq):
-    data = _getData(_cache, group_seq, thing_seq, 'data')
+def _get_nest_data(_cache, server_url, group_seq, thing_seq):
+    data = _getData(_cache, server_url, group_seq, thing_seq, 'data')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(_cache, group_seq, thing_seq, datarequest):
-    r = requests.get(server_url('data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
-                                                                            thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
-                                                                            datarequest=datarequest)))
+def _getData(_cache, server_url, group_seq, thing_seq, datarequest):
+    r = requests.get('{url}/{uri}'.format(url=server_url, uri='data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
+                                                                                                          thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
+                                                                                                          datarequest=datarequest)))
     if r.status_code == requests.codes.ok:
         return r.content
     else:

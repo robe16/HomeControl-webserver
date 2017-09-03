@@ -18,16 +18,18 @@ node {
         string(defaultValue: '*', description: 'Username for the server the Docker container will be deployed to (used for ssh/scp)', name: 'deploymentUsername')
         string(defaultValue: '8080', description: 'Port number for python application running within container', name: 'portApplication')
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
-        string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'portServer')
+        string(defaultValue: '*', description: 'IP address for that the core server is running on', name: 'serverIp')
+        string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'serverPort')
         //
         build_args = ["--build-arg portApplication=${params.portApplication}",
-                      "--build-arg portServer=${params.portServer}"].join(" ")
+                      "--build-arg serverIp=${params.serverIp}",
+                      "--build-arg serverPort=${params.serverPort}"].join(" ")
         //
         deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
         //
     }
 
-    if (params["deploymentServer"]!="*" && params["deploymentUsername"]!="*") {
+    if (params["deploymentServer"]!="*" && params["deploymentUsername"]!="*" && params["serverIp"]!="*") {
 
         stage("checkout") {
             git url: "${params.githubUrl}"

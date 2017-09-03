@@ -1,18 +1,17 @@
 import requests
 import ast
 from urllib import urlopen
-from cfg import server_url
 from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
 from cache.setup import get_cfg_thing_detail_public
 from log.console_messages import print_error, print_msg
 from web.web_tvchannels import html_channels_user_and_all
 
 
-def html_tivo(user, _cache, group_seq, thing_seq):
+def html_tivo(user, _cache, server_url, group_seq, thing_seq):
     #
-    json_recordings = _get_recordings(_cache['setup'], group_seq, thing_seq)
+    json_recordings = _get_recordings(_cache['setup'], server_url, group_seq, thing_seq)
     #
-    chan_current = _get_current_chan(_cache['setup'], group_seq, thing_seq)
+    chan_current = _get_current_chan(_cache['setup'], server_url, group_seq, thing_seq)
     if chan_current:
         currentChan_name = chan_current['channel']['name']
         currentChan_number = chan_current['channel']['number']
@@ -130,26 +129,26 @@ def _html_recordings(json_recordings):
         return '<p>Error</p>'
 
 
-def _get_recordings(_cache, group_seq, thing_seq):
-    data = _getData(_cache, group_seq, thing_seq, 'recordings')
+def _get_recordings(_cache, server_url, group_seq, thing_seq):
+    data = _getData(_cache, server_url, group_seq, thing_seq, 'recordings')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _get_current_chan(_cache, group_seq, thing_seq):
-    data = _getData(_cache, group_seq, thing_seq, 'channel')
+def _get_current_chan(_cache, server_url, group_seq, thing_seq):
+    data = _getData(_cache, server_url, group_seq, thing_seq, 'channel')
     if data:
         return ast.literal_eval(data)
     else:
         return False
 
 
-def _getData(_cache, group_seq, thing_seq, datarequest):
-    r = requests.get(server_url('data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
-                                                                            thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
-                                                                            datarequest=datarequest)))
+def _getData(_cache, server_url, group_seq, thing_seq, datarequest):
+    r = requests.get('{url}/{uri}'.format(url=server_url, uri='data/{group}/{thing}/{datarequest}'.format(group=cfg_urlencode(get_cfg_group_name(_cache, group_seq)),
+                                                                                                          thing=cfg_urlencode(get_cfg_thing_name(_cache, group_seq, thing_seq)),
+                                                                                                          datarequest=datarequest)))
     if r.status_code == requests.codes.ok:
         return r.content
     else:
