@@ -22,7 +22,7 @@ node {
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'serverPort')
         //
         build_args = ["--build-arg portApplication=${params.portApplication}",
-                      "--build-arg serverIp=${params.serverIp}",
+                      "--build-arg serverIp=\"${params.serverIp}\"",
                       "--build-arg serverPort=${params.serverPort}"].join(" ")
         //
         deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
