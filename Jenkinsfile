@@ -38,7 +38,7 @@ node {
             echo "Git commit ID: ${commit_id}"
         }
 
-        docker_img_name_commit = "${deploymentServer}:${commit_id}"
+        docker_img_name_commit = "${params.appName}:${commit_id}"
         docker_img_name_latest = "${params.appName}:latest"
 
         stage("build") {
