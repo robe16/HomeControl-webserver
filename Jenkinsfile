@@ -25,6 +25,8 @@ node {
                       "--build-arg serverIp=\"${params.serverIp}\"",
                       "--build-arg serverPort=${params.serverPort}"].join(" ")
         //
+        link_command = " --link homecontrol-server:homecontrol-server"
+        //
         deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
         //
     }
@@ -66,7 +68,7 @@ node {
 
         stage("start container"){
             sh "ssh ${deployLogin} \"docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\"\""
-            sh "ssh ${deployLogin} \"docker run -d --net=host -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name_latest}\""
+            sh "ssh ${deployLogin} \"docker run -d --net=host -p ${params.portMapped}:${params.portApplication} --name ${params.appName} $(link_command) ${docker_img_name_latest}\""
         }
 
     } else {
