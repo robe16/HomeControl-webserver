@@ -25,8 +25,6 @@ node {
                       "--build-arg serverIp=\"${params.serverIp}\"",
                       "--build-arg serverPort=${params.serverPort}"].join(" ")
         //
-        link_command = "--link homecontrol-server:homecontrol-server"
-        //
         deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
         //
     }
