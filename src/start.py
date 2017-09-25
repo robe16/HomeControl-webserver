@@ -4,25 +4,6 @@ from port_listener import start_bottle
 from cache.get_cache import create_cache
 from log.console_messages import print_msg
 
-################################################################
-# TODO - CODE FOR TESTING DOCKER
-################################################################
-
-import requests
-
-def test():
-    url = 'http://google.com'
-    r = requests.get(url)
-    #
-    if r.status_code == requests.codes.ok:
-        print_msg('**** Test code run successfull - {status_code}'.format(status_code=r.status_code))
-    else:
-        print_msg('**** Test code failed to run correctly - {status_code}'.format(status_code=r.status_code))
-
-test()
-
-################################################################
-################################################################
 
 ################################
 # Receive sys arguments
