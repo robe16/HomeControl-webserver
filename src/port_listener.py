@@ -18,6 +18,8 @@ from cache.setup import cfg_urldecode
 from cache.users import check_user
 from web.web_create_error import create_error
 from web.web_create_pages import create_login, create_home, create_about, create_page_body
+#
+from lists.resources.english import *
 
 
 ################################################################################################
@@ -42,12 +44,12 @@ def start_bottle(cache, self_port, server_url):
 # Web UI
 ################################################################################################
 
-@get('/')
+@get(uri_null)
 def web_redirect():
-    redirect('/web/')
+    redirect(uri_web)
 
 
-@get('/web/login')
+@get(uri_web_login)
 def web_login():
     global _cache
     user = request.query.user
@@ -55,38 +57,38 @@ def web_login():
         return HTTPResponse(body=create_login(_cache), status=200)
     else:
         response.set_cookie('user', user, path='/', secret=None)
-        return redirect('/web/')
+        return redirect(uri_web)
 
 
-@get('/web/logout')
+@get(uri_web_logout)
 def web_logout():
     response.delete_cookie('user')
-    return redirect('/web/login')
+    return redirect(uri_web_login)
 
 
-@get('/web/')
-@get('/web/home/')
+@get(uri_web)
+@get(uri_web_home)
 def web_home():
     global _cache
     # Get and check user
     user = _check_user(request.get_cookie('user'))
     if not user:
-        redirect('/web/login')
+        redirect(uri_web_login)
     #
     return HTTPResponse(body=create_home(user, _cache), status=200)
 
 
-@get('/web/about/')
+@get(uri_web_about)
 def web_about():
     # Get and check user
     user = _check_user(request.get_cookie('user'))
     if not user:
-        redirect('/web/login')
+        redirect(uri_web_login)
     #
     return HTTPResponse(body=create_about(user, _cache), status=200)
 
 
-@get('/web/info/<info>')
+@get(uri_web_infoservice)
 def web_info(info=False):
     global _cache
     global _server_url
@@ -98,7 +100,7 @@ def web_info(info=False):
         # Get and check user
         user = _check_user(request.get_cookie('user'))
         if not user:
-            redirect('/web/login')
+            redirect(uri_web_login)
         #
         info = cfg_urldecode(info)
         #
@@ -134,7 +136,7 @@ def web_info(info=False):
         raise HTTPError(500)
 
 
-@get('/web/<group>/<thing>')
+@get(uri_web_devices)
 def web_devices(group=False, thing=False):
     global _cache
     global _server_url
@@ -146,7 +148,7 @@ def web_devices(group=False, thing=False):
         # Get and check user
         user = _check_user(request.get_cookie('user'))
         if not user:
-            redirect('/web/login')
+            redirect(uri_web_login)
         #
         group = cfg_urldecode(group)
         thing = cfg_urldecode(thing)
@@ -194,7 +196,7 @@ def web_devices(group=False, thing=False):
         raise HTTPError(500)
 
 
-@get('/web/static/<folder>/<filename>')
+@get(uri_web_static_resources)
 def get_resource(folder, filename):
     return static_file(filename, root=os.path.join(os.path.dirname(__file__),('web/html/static/{folder}'.format(folder=folder))))
 
@@ -203,7 +205,7 @@ def get_resource(folder, filename):
 # Handle requests for resource data
 ################################################################################################
 
-@get('/data/<group>/<thing>/<resource_requested>')
+@get(uri_data_device)
 def get_data_device(group=False, thing=False, resource_requested=False):
     global _server_url
     #
@@ -233,8 +235,8 @@ def get_data_device(group=False, thing=False, resource_requested=False):
 ################################################################################################
 
 
-@get('/command/<group>/<thing>')
-@post('/command/<group>/<thing>')
+@get(uri_command)
+@post(uri_command)
 def send_command_device(group=False, thing=False):
     global _server_url
     #
@@ -280,7 +282,7 @@ def send_command_device(group=False, thing=False):
 # Image files
 ################################################################################################
 
-@get('/favicon.ico')
+@get(uri_favicon)
 def get_favicon():
     global _server_url
     try:
@@ -295,7 +297,7 @@ def get_favicon():
         raise HTTPError(500)
 
 
-@get('/img/<category>/<filename>')
+@get(uri_image)
 def get_image(category, filename):
     global _server_url
     try:
