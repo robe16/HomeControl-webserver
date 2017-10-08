@@ -26,7 +26,7 @@ node {
                       "--build-arg serverIp=\"${params.serverIp}\"",
                       "--build-arg serverPort=${params.serverPort}"].join(" ")
         //
-        docker_volumes = ["-v ${params.fileLog}:/HomeControl/server/log/webserver.log"].join(" ")
+        docker_volumes = ["-v ${params.fileLog}:/HomeControl/webserver/log/webserver.log"].join(" ")
         //
         deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
         //
