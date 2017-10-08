@@ -3,7 +3,7 @@ import requests
 import ast
 from urllib import urlopen
 from cache.setup import cfg_urlencode, get_cfg_info_name
-from log.console_messages import print_msg, print_error
+from log.log import log_general, log_error
 from cache.users import get_userchannels
 
 
@@ -36,10 +36,10 @@ def request_tvlistings(_cache, server_url, info_seq):
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
-        print_msg('TV Listing info retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        log_general('TV Listing info retrieved successfully - {status_code}'.format(status_code=r.status_code))
         return ast.literal_eval(r.content)
     else:
-        print_error('TV Listing info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        log_error('TV Listing info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         return False
 
 

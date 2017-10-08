@@ -2,7 +2,7 @@ import requests
 import ast
 from urllib import urlopen
 from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
-from log.console_messages import print_error
+from log.log import log_error
 
 
 def html_tv_lg_netcast(_cache, server_url, group_seq, thing_seq):
@@ -65,6 +65,6 @@ def _getData(_cache, server_url, group_seq, thing_seq, datarequest):
     if r.status_code == requests.codes.ok:
         return r.content
     else:
-        print_error('LG TV - Attempted to request {data} from server - {status}'.format(data=datarequest,
-                                                                                        status=r.status_code))
+        log_error('LG TV - Attempted to request {data} from server - {status}'.format(data=datarequest,
+                                                                                      status=r.status_code))
         return False

@@ -1,7 +1,7 @@
 import datetime
 import requests
 from urllib import urlopen
-from log.console_messages import print_msg, print_error
+from log.log import log_general, log_error
 from cache.users import get_usernews
 from cache.setup import cfg_urlencode, get_cfg_info_name
 
@@ -38,10 +38,10 @@ def request_news(user, _cache, server_url, info_seq):
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
-        print_msg('News articles retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        log_general('News articles retrieved successfully - {status_code}'.format(status_code=r.status_code))
         return r.json()
     else:
-        print_error('News articles failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        log_error('News articles failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         raise Exception
 
 

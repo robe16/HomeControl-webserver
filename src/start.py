@@ -2,7 +2,7 @@ from multiprocessing import Process, Manager
 import sys
 from port_listener import start_bottle
 from cache.get_cache import create_cache
-from log.console_messages import print_msg
+from log.log import print_msg
 
 
 ################################

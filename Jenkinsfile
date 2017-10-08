@@ -20,10 +20,13 @@ node {
         string(defaultValue: '8080', description: 'Port number to map portApplication to', name: 'portMapped')
         string(defaultValue: '*', description: 'IP address for that the core server is running on', name: 'serverIp')
         string(defaultValue: '1600', description: 'Port number that the core server application listens on', name: 'serverPort')
+        string(defaultValue: '~/logs/webserver.log', description: 'Location of log file on host device', name: 'fileLog')
         //
         build_args = ["--build-arg portApplication=${params.portApplication}",
                       "--build-arg serverIp=\"${params.serverIp}\"",
                       "--build-arg serverPort=${params.serverPort}"].join(" ")
+        //
+        docker_volumes = ["-v ${params.fileLog}:/HomeControl/server/log/webserver.log"].join(" ")
         //
         deployLogin = "${params.deploymentUsername}@${params.deploymentServer}"
         //
@@ -68,7 +71,7 @@ node {
 
         stage("start container"){
             sh "ssh ${deployLogin} \"docker rm -f ${params.appName} && echo \"container ${params.appName} removed\" || echo \"container ${params.appName} does not exist\"\""
-            sh "ssh ${deployLogin} \"docker run -d -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name_latest}\""
+            sh "ssh ${deployLogin} \"docker run -d ${docker_volumes} -p ${params.portMapped}:${params.portApplication} --name ${params.appName} ${docker_img_name_latest}\""
         }
 
     } else {

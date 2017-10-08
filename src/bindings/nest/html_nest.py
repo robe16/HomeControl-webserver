@@ -2,7 +2,7 @@ import datetime
 import ast
 from urllib import urlopen
 import requests
-from log.console_messages import print_error
+from log.log import log_error
 from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
 
 
@@ -51,7 +51,8 @@ def _htmlbody(_cache, server_url, group_seq, thing_seq):
         json_devices = json_devices['devices']
         #
         if not json_devices:
-            print_error('Nest devices could not retrieved from Nest server', dvc_id=dvc_id)
+            log_error('Nest devices could not retrieved from Nest server',
+                      dvc_id=dvc_id)
             return False
         #
         # Thermostats
@@ -276,7 +277,8 @@ def _htmlbody(_cache, server_url, group_seq, thing_seq):
         devices_cam_html += '</div>'
         #
     except Exception as e:
-        print_error('Nest devices could not be compiled into html - ' + str(e), dvc_id=dvc_id)
+        log_error('Nest devices could not be compiled into html - ' + str(e),
+                  dvc_id=dvc_id)
     #
     return {'nest_therm': devices_therm_html,
             'nest_protect': devices_protect_html,
@@ -298,6 +300,6 @@ def _getData(_cache, server_url, group_seq, thing_seq, datarequest):
     if r.status_code == requests.codes.ok:
         return r.content
     else:
-        print_error('Nest Account - Attempted to request {data} from server - {status}'.format(data=datarequest,
-                                                                                               status=r.status_code))
+        log_error('Nest Account - Attempted to request {data} from server - {status}'.format(data=datarequest,
+                                                                                             status=r.status_code))
         return False

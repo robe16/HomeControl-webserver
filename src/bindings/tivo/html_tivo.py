@@ -3,7 +3,7 @@ import ast
 from urllib import urlopen
 from cache.setup import cfg_urlencode, get_cfg_group_name, get_cfg_thing_name
 from cache.setup import get_cfg_thing_detail_public
-from log.console_messages import print_error, print_msg
+from log.log import log_error
 from web.web_tvchannels import html_channels_user_and_all
 
 
@@ -33,7 +33,7 @@ def html_tivo(user, _cache, server_url, group_seq, thing_seq):
                                                    user=user,
                                                    _device_details=_device_details)
     except Exception as e:
-        print_error('Could not create TV channel HTML - {error}'.format(error=e))
+        log_error('Could not create TV channel HTML - {error}'.format(error=e))
         html_channels = ''
     #
     try:
@@ -125,7 +125,7 @@ def _html_recordings(json_recordings):
             #
         return html_recordings
     except Exception as e:
-        print_error('Attempted to create recordings html - {error}'.format(error=e))
+        log_error('Attempted to create recordings html - {error}'.format(error=e))
         return '<p>Error</p>'
 
 
@@ -152,6 +152,6 @@ def _getData(_cache, server_url, group_seq, thing_seq, datarequest):
     if r.status_code == requests.codes.ok:
         return r.content
     else:
-        print_error('TIVO - Attempted to request {data} from server - {status}'.format(data=datarequest,
-                                                                                       status=r.status_code))
+        log_error('TIVO - Attempted to request {data} from server - {status}'.format(data=datarequest,
+                                                                                     status=r.status_code))
         return False

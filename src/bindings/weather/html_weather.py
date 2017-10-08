@@ -3,7 +3,7 @@ import requests
 import ast
 from urllib import urlopen
 from cache.setup import cfg_urlencode, get_cfg_info_name
-from log.console_messages import print_msg, print_error
+from log.log import log_general, log_error
 from weather_lists import *
 
 def weather_body(_cache, server_url, info_seq):
@@ -29,11 +29,11 @@ def request_weather(_cache, server_url, info_seq):
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
-        print_msg('Weather info retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        log_general('Weather info retrieved successfully - {status_code}'.format(status_code=r.status_code))
         data = r.content
         return ast.literal_eval(data)
     else:
-        print_error('Weather info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        log_error('Weather info failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         return False
 
 def _create_html(forecast):
