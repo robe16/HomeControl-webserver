@@ -1,4 +1,4 @@
-from log.console_messages import print_msg, print_error
+from log.log import log_general, log_error
 import requests
 import time
 
@@ -20,10 +20,10 @@ def request_setup(server_url):
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
-        print_msg('Cache SETUP retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        log_general('Cache SETUP retrieved successfully - {status_code}'.format(status_code=r.status_code))
         return r.json()
     else:
-        print_error('Cache SETUP failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        log_error('Cache SETUP failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         return False
 
 
@@ -32,10 +32,10 @@ def request_users(server_url):
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
-        print_msg('Cache USERS retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        log_general('Cache USERS retrieved successfully - {status_code}'.format(status_code=r.status_code))
         return r.json()
     else:
-        print_error('Cache USERS failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        log_error('Cache USERS failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         return False
 
 
@@ -44,8 +44,8 @@ def request_tvchannels(server_url):
     r = requests.get(url)
     #
     if r.status_code == requests.codes.ok:
-        print_msg('Cache TVCHANNELS retrieved successfully - {status_code}'.format(status_code=r.status_code))
+        log_general('Cache TVCHANNELS retrieved successfully - {status_code}'.format(status_code=r.status_code))
         return r.json()
     else:
-        print_error('Cache TVCHANNELS failed to be retrieved - {status_code}'.format(status_code=r.status_code))
+        log_error('Cache TVCHANNELS failed to be retrieved - {status_code}'.format(status_code=r.status_code))
         return False

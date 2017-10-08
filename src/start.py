@@ -2,7 +2,7 @@ from multiprocessing import Process, Manager
 import sys
 from port_listener import start_bottle
 from cache.get_cache import create_cache
-from log.log import print_msg
+from log.log import log_general
 
 
 ################################
@@ -46,18 +46,18 @@ if __name__ == "__main__":
     ################################
     # Process for building caches
     ################################
-    print_msg('Starting process: Cache')
+    log_general('Starting process: Cache')
     process_cache = Process(target=create_cache, args=(cache, server_url, ))
     process_cache.start()
-    print_msg('Process started: Cache')
+    log_general('Process started: Cache')
     #
     ################################
     # Process for port_listener
     ################################
-    print_msg('Starting process: "bottle" server on port {port}'.format(port=self_port))
+    log_general('Starting process: "bottle" server on port {port}'.format(port=self_port))
     process_bottle = Process(target=start_bottle, args=(cache, self_port, server_url, ))
     process_bottle.start()
-    print_msg('Process started: "bottle" server on port {port}'.format(port=self_port))
+    log_general('Process started: "bottle" server on port {port}'.format(port=self_port))
     #
     ################################
     # Use .join() to ensure main process with Manager() items remains open
